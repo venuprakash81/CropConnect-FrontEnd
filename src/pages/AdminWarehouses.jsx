@@ -36,7 +36,7 @@ function getPhotoUrl(photo) {
     return photo;
   }
 
-  return `http://localhost:8081/api/warehouses/profile-photo/${encodeURIComponent(
+  return `https://cropconnect-backend-exn7.onrender.com/api/warehouses/profile-photo/${encodeURIComponent(
     photo
   )}`;
 }
