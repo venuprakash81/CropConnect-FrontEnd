@@ -1,3 +1,4 @@
+
 import React, { useCallback, useEffect, useState } from "react";
 import "./MyWarehouseBookings.css";
 
@@ -6,14 +7,10 @@ const API_BASE = "http://localhost:8081/api";
 function MyWarehouseBookings() {
   const [warehouse, setWarehouse] = useState(null);
   const [bookings, setBookings] = useState([]);
-
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-
-  const [editingBooking, setEditingBooking] =
-    useState(null);
+  const [editingBooking, setEditingBooking] = useState(null);
 
   const [editForm, setEditForm] = useState({
     customerName: "",
@@ -29,151 +26,94 @@ function MyWarehouseBookings() {
     notes: "",
   });
 
-  /* =====================================================
-     LOAD WAREHOUSE
-  ===================================================== */
+  // LOAD BOOKINGS FOR THE LOGGED-IN WAREHOUSE
+  const loadBookings = useCallback(async (warehouseId) => {
+    if (!warehouseId) {
+      setBookings([]);
+      return;
+    }
 
-  useEffect(() => {
-    loadWarehouse();
+    try {
+      const response = await fetch(
+        `${API_BASE}/warehouse-bookings/warehouse/${encodeURIComponent(
+          warehouseId
+        )}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Unable to load bookings");
+      }
+
+      const data = await response.json();
+      setBookings(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Booking loading error:", err);
+      setError("Unable to load warehouse bookings.");
+    }
   }, []);
 
-  const loadWarehouse = async () => {
+  // LOAD WAREHOUSE DETAILS
+  const loadWarehouse = useCallback(async () => {
+    setLoading(true);
+    setError("");
+
     try {
-      setLoading(true);
-      setError("");
-
-      /*
-       * Your warehouse login should store the
-       * warehouse ID in localStorage.
-       *
-       * Example:
-       * localStorage.setItem("warehouseId", warehouse.id)
-       */
-
-      const warehouseId =
-        localStorage.getItem("warehouseId");
+      const warehouseId = localStorage.getItem("warehouseId");
 
       if (!warehouseId) {
-        setError(
-          "Warehouse ID not found. Please login again."
-        );
-
-        setLoading(false);
+        setWarehouse(null);
+        setBookings([]);
+        setError("Warehouse ID not found. Please login again.");
         return;
       }
 
       const response = await fetch(
-        `${API_BASE}/warehouses/${warehouseId}`
+        `${API_BASE}/warehouses/${encodeURIComponent(warehouseId)}`
       );
 
       if (!response.ok) {
-        throw new Error(
-          "Unable to load warehouse"
-        );
+        throw new Error("Unable to load warehouse");
       }
 
       const data = await response.json();
 
       setWarehouse(data);
-
       await loadBookings(warehouseId);
-
-    } catch (error) {
-      console.error(
-        "Warehouse loading error:",
-        error
-      );
-
-      setError(
-        "Unable to load warehouse details."
-      );
+    } catch (err) {
+      console.error("Warehouse loading error:", err);
+      setError("Unable to load warehouse details.");
     } finally {
       setLoading(false);
     }
-  };
+  }, [loadBookings]);
 
-  /* =====================================================
-     LOAD ONLY MY WAREHOUSE BOOKINGS
-  ===================================================== */
+  useEffect(() => {
+    loadWarehouse();
+  }, [loadWarehouse]);
 
-  const loadBookings = async (warehouseId) => {
-    try {
-      const response = await fetch(
-        `${API_BASE}/warehouse-bookings/warehouse/${warehouseId}`
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          "Unable to load bookings"
-        );
-      }
-
-      const data = await response.json();
-
-      setBookings(
-        Array.isArray(data) ? data : []
-      );
-
-    } catch (error) {
-      console.error(
-        "Booking loading error:",
-        error
-      );
-
-      setError(
-        "Unable to load warehouse bookings."
-      );
-    }
-  };
-
-  /* =====================================================
-     EDIT
-  ===================================================== */
-
+  // EDIT BOOKING
   const openEdit = (booking) => {
+    setError("");
+    setMessage("");
     setEditingBooking(booking);
 
     setEditForm({
-      customerName:
-        booking.customerName || "",
-
-      customerEmail:
-        booking.customerEmail || "",
-
-      customerPhone:
-        booking.customerPhone || "",
-
-      customerType:
-        booking.customerType || "FARMER",
-
-      cropName:
-        booking.cropName || "",
-
-      quantity:
-        booking.quantity || "",
-
-      quantityUnit:
-        booking.quantityUnit || "KG",
-
-      startDate:
-        booking.startDate || "",
-
-      endDate:
-        booking.endDate || "",
-
-      purpose:
-        booking.purpose || "",
-
-      notes:
-        booking.notes || "",
+      customerName: booking.customerName || "",
+      customerEmail: booking.customerEmail || "",
+      customerPhone: booking.customerPhone || "",
+      customerType: booking.customerType || "FARMER",
+      cropName: booking.cropName || "",
+      quantity: booking.quantity ?? "",
+      quantityUnit: booking.quantityUnit || "KG",
+      startDate: booking.startDate || "",
+      endDate: booking.endDate || "",
+      purpose: booking.purpose || "",
+      notes: booking.notes || "",
     });
   };
 
   const handleEditChange = (event) => {
-    const {
-      name,
-      value,
-    } = event.target;
+    const { name, value } = event.target;
 
     setEditForm((previous) => ({
       ...previous,
@@ -181,113 +121,84 @@ function MyWarehouseBookings() {
     }));
   };
 
-  /* =====================================================
-     UPDATE
-  ===================================================== */
-
+  // UPDATE BOOKING
   const updateBooking = async (event) => {
     event.preventDefault();
 
-    if (!editingBooking) {
+    if (!editingBooking) return;
+
+    if (
+      editForm.quantity === "" ||
+      !Number.isFinite(Number(editForm.quantity)) ||
+      Number(editForm.quantity) <= 0
+    ) {
+      setError("Please enter a valid quantity greater than zero.");
       return;
     }
+
+    if (
+      editForm.startDate &&
+      editForm.endDate &&
+      editForm.endDate < editForm.startDate
+    ) {
+      setError("End date cannot be earlier than start date.");
+      return;
+    }
+
+    setError("");
+    setMessage("");
 
     try {
       const response = await fetch(
         `${API_BASE}/warehouse-bookings/${editingBooking.id}`,
         {
           method: "PUT",
-
           headers: {
-            "Content-Type":
-              "application/json",
+            "Content-Type": "application/json",
           },
-
           body: JSON.stringify({
-            warehouseId:
-              editingBooking.warehouseId,
-
-            warehouseName:
-              editingBooking.warehouseName,
-
-            customerName:
-              editForm.customerName,
-
-            customerEmail:
-              editForm.customerEmail,
-
-            customerPhone:
-              editForm.customerPhone,
-
-            customerType:
-              editForm.customerType,
-
-            cropName:
-              editForm.cropName,
-
-            quantity:
-              Number(editForm.quantity),
-
-            quantityUnit:
-              editForm.quantityUnit,
-
-            startDate:
-              editForm.startDate,
-
-            endDate:
-              editForm.endDate,
-
-            purpose:
-              editForm.purpose,
-
-            notes:
-              editForm.notes,
+            warehouseId: editingBooking.warehouseId,
+            warehouseName: editingBooking.warehouseName,
+            customerName: editForm.customerName,
+            customerEmail: editForm.customerEmail,
+            customerPhone: editForm.customerPhone,
+            customerType: editForm.customerType,
+            cropName: editForm.cropName,
+            quantity: Number(editForm.quantity),
+            quantityUnit: editForm.quantityUnit,
+            startDate: editForm.startDate || null,
+            endDate: editForm.endDate || null,
+            purpose: editForm.purpose,
+            notes: editForm.notes,
           }),
         }
       );
 
       if (!response.ok) {
-        throw new Error(
-          "Update failed"
-        );
+        throw new Error("Update failed");
       }
 
-      setMessage(
-        "Booking updated successfully."
-      );
-
       setEditingBooking(null);
+      setMessage("Booking updated successfully.");
 
-      const warehouseId =
-        localStorage.getItem("warehouseId");
-
+      const warehouseId = localStorage.getItem("warehouseId");
       await loadBookings(warehouseId);
-
-    } catch (error) {
-      console.error(
-        "Update error:",
-        error
-      );
-
-      setError(
-        "Unable to update booking."
-      );
+    } catch (err) {
+      console.error("Update error:", err);
+      setError("Unable to update booking.");
     }
   };
 
-  /* =====================================================
-     DELETE
-  ===================================================== */
-
+  // DELETE BOOKING
   const deleteBooking = async (id) => {
-    const confirmed =
-      window.confirm(
-        "Are you sure you want to delete this booking?"
-      );
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this booking?"
+    );
 
-    if (!confirmed) {
-      return;
-    }
+    if (!confirmed) return;
+
+    setError("");
+    setMessage("");
 
     try {
       const response = await fetch(
@@ -298,93 +209,63 @@ function MyWarehouseBookings() {
       );
 
       if (!response.ok) {
-        throw new Error(
-          "Delete failed"
-        );
+        throw new Error("Delete failed");
       }
 
-      setMessage(
-        "Booking deleted successfully."
-      );
+      setMessage("Booking deleted successfully.");
 
-      const warehouseId =
-        localStorage.getItem("warehouseId");
-
+      const warehouseId = localStorage.getItem("warehouseId");
       await loadBookings(warehouseId);
-
-    } catch (error) {
-      console.error(
-        "Delete error:",
-        error
-      );
-
-      setError(
-        "Unable to delete booking."
-      );
+    } catch (err) {
+      console.error("Delete error:", err);
+      setError("Unable to delete booking.");
     }
   };
 
-  /* =====================================================
-     APPROVE / REJECT
-  ===================================================== */
+  // APPROVE OR REJECT BOOKING
+  const updateStatus = async (id, status) => {
+    setError("");
+    setMessage("");
 
-  const updateStatus = async (
-    id,
-    status
-  ) => {
     try {
       const response = await fetch(
-        `${API_BASE}/warehouse-bookings/${id}/status?status=${status}`,
+        `${API_BASE}/warehouse-bookings/${id}/status?status=${encodeURIComponent(
+          status
+        )}`,
         {
           method: "PUT",
         }
       );
 
       if (!response.ok) {
-        throw new Error(
-          "Status update failed"
-        );
+        throw new Error("Status update failed");
       }
 
-      setMessage(
-        `Booking ${status.toLowerCase()} successfully.`
-      );
+      setMessage(`Booking ${status.toLowerCase()} successfully.`);
 
-      const warehouseId =
-        localStorage.getItem("warehouseId");
-
+      const warehouseId = localStorage.getItem("warehouseId");
       await loadBookings(warehouseId);
-
-    } catch (error) {
-      console.error(
-        "Status error:",
-        error
-      );
-
-      setError(
-        "Unable to update booking status."
-      );
+    } catch (err) {
+      console.error("Status error:", err);
+      setError("Unable to update booking status.");
     }
   };
 
-  /* =====================================================
-     LOCATION
-  ===================================================== */
-
+  // OPEN WAREHOUSE LOCATION IN GOOGLE MAPS
   const openLocation = () => {
-    if (!warehouse) {
-      return;
-    }
+    if (!warehouse) return;
 
     let url = "";
 
     if (
-      warehouse.latitude &&
-      warehouse.longitude
+      warehouse.latitude != null &&
+      warehouse.longitude != null &&
+      warehouse.latitude !== "" &&
+      warehouse.longitude !== ""
     ) {
-      url =
-        `https://www.google.com/maps/search/?api=1&query=` +
-        `${warehouse.latitude},${warehouse.longitude}`;
+      url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+        `${warehouse.latitude},${warehouse.longitude}`
+      )}`;
     } else {
       const location = [
         warehouse.address,
@@ -395,153 +276,87 @@ function MyWarehouseBookings() {
         .join(", ");
 
       if (!location) {
-        setError(
-          "Warehouse location is not available."
-        );
-
+        setError("Warehouse location is not available.");
         return;
       }
 
-      url =
-        `https://www.google.com/maps/search/?api=1&query=` +
-        encodeURIComponent(location);
+      url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+        location
+      )}`;
     }
 
-    window.open(
-      url,
-      "_blank",
-      "noopener,noreferrer"
-    );
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  /* =====================================================
-     LOADING
-  ===================================================== */
-
+  // LOADING SCREEN
   if (loading) {
     return (
       <div className="my-bookings-page">
-
         <div className="loading-screen">
-
           <div className="booking-spinner"></div>
-
-          <p>
-            Loading your warehouse...
-          </p>
-
+          <p>Loading your warehouse...</p>
         </div>
-
       </div>
     );
   }
 
-  /* =====================================================
-     PAGE
-  ===================================================== */
-
+  // PAGE
   return (
     <div className="my-bookings-page">
-
       {/* HEADER */}
-
       <header className="my-bookings-header">
-
         <div className="my-brand">
-
-          <div className="my-brand-logo">
-            C
-          </div>
-
+          <div className="my-brand-logo">C</div>
           <div>
-            <h1>
-              CropConnect
-            </h1>
-
-            <p>
-              My Warehouse Bookings
-            </p>
+            <h1>CropConnect</h1>
+            <p>My Warehouse Bookings</p>
           </div>
-
         </div>
 
         <div className="header-booking-count">
-
-          <strong>
-            {bookings.length}
-          </strong>
-
-          <span>
-            Bookings
-          </span>
-
+          <strong>{bookings.length}</strong>
+          <span>Bookings</span>
         </div>
-
       </header>
 
       <main className="my-bookings-container">
-
-        {/* ALERT */}
-
+        {/* ALERTS */}
         {message && (
           <div className="my-success">
-
-            <span>
-              ✓
-            </span>
-
+            <span>✓</span>
             {message}
-
             <button
-              onClick={() =>
-                setMessage("")
-              }
+              type="button"
+              aria-label="Dismiss success message"
+              onClick={() => setMessage("")}
             >
               ×
             </button>
-
           </div>
         )}
 
         {error && (
           <div className="my-error">
-
-            <span>
-              !
-            </span>
-
+            <span>!</span>
             {error}
-
             <button
-              onClick={() =>
-                setError("")
-              }
+              type="button"
+              aria-label="Dismiss error message"
+              onClick={() => setError("")}
             >
               ×
             </button>
-
           </div>
         )}
 
-        {/* WAREHOUSE INFO */}
-
+        {/* WAREHOUSE INFORMATION */}
         {warehouse && (
-
           <section className="my-warehouse-card">
-
-            <div className="warehouse-icon">
-              W
-            </div>
+            <div className="warehouse-icon">W</div>
 
             <div className="my-warehouse-details">
-
-              <span>
-                MY WAREHOUSE
-              </span>
-
-              <h2>
-                {warehouse.warehouseName}
-              </h2>
+              <span>MY WAREHOUSE</span>
+              <h2>{warehouse.warehouseName}</h2>
 
               <p>
                 {[
@@ -554,647 +369,335 @@ function MyWarehouseBookings() {
               </p>
 
               <div className="warehouse-contact">
-
                 <span>
-                  Owner:{" "}
-                  {warehouse.ownerName ||
-                    "Not Available"}
+                  Owner: {warehouse.ownerName || "Not Available"}
                 </span>
-
                 <span>
-                  Phone:{" "}
-                  {warehouse.phone ||
-                    "Not Available"}
+                  Phone: {warehouse.phone || "Not Available"}
                 </span>
-
                 <span>
                   Capacity:{" "}
-                  {warehouse.totalStorageCapacity ||
-                    "Not Available"}
+                  {warehouse.totalStorageCapacity || "Not Available"}
                 </span>
-
               </div>
-
             </div>
 
             <button
+              type="button"
               className="warehouse-location-button"
               onClick={openLocation}
             >
               ⌖ Location
             </button>
-
           </section>
-
         )}
 
         {/* TITLE */}
-
         <section className="my-bookings-title">
-
           <div>
-
-            <span>
-              WAREHOUSE MANAGEMENT
-            </span>
-
-            <h2>
-              My Bookings
-            </h2>
-
-            <p>
-              These are the bookings made for
-              your warehouse only.
-            </p>
-
+            <span>WAREHOUSE MANAGEMENT</span>
+            <h2>My Bookings</h2>
+            <p>These are the bookings made for your warehouse only.</p>
           </div>
 
           <div className="total-bookings">
-
-            <strong>
-              {bookings.length}
-            </strong>
-
-            <span>
-              Total
-            </span>
-
+            <strong>{bookings.length}</strong>
+            <span>Total</span>
           </div>
-
         </section>
 
-        {/* NO BOOKINGS */}
-
+        {/* EMPTY STATE */}
         {bookings.length === 0 ? (
-
           <div className="no-my-bookings">
-
-            <div className="no-booking-icon">
-              ▣
-            </div>
-
-            <h3>
-              No Bookings Yet
-            </h3>
-
-            <p>
-              No customers have booked your
-              warehouse yet.
-            </p>
-
+            <div className="no-booking-icon">▣</div>
+            <h3>No Bookings Yet</h3>
+            <p>No customers have booked your warehouse yet.</p>
           </div>
-
         ) : (
-
           <section className="my-bookings-table-card">
-
             <div className="my-table-scroll">
-
               <div className="my-table">
-
-                {/* HEADER */}
-
+                {/* TABLE HEADER */}
                 <div className="my-row my-row-header">
-
-                  <div>
-                    ID
-                  </div>
-
-                  <div>
-                    Customer
-                  </div>
-
-                  <div>
-                    Type
-                  </div>
-
-                  <div>
-                    Phone
-                  </div>
-
-                  <div>
-                    Crop
-                  </div>
-
-                  <div>
-                    Quantity
-                  </div>
-
-                  <div>
-                    Start Date
-                  </div>
-
-                  <div>
-                    End Date
-                  </div>
-
-                  <div>
-                    Purpose
-                  </div>
-
-                  <div>
-                    Status
-                  </div>
-
-                  <div>
-                    Payment
-                  </div>
-
-                  <div>
-                    Amount
-                  </div>
-
-                  <div>
-                    Actions
-                  </div>
-
+                  <div>ID</div>
+                  <div>Customer</div>
+                  <div>Type</div>
+                  <div>Phone</div>
+                  <div>Crop</div>
+                  <div>Quantity</div>
+                  <div>Start Date</div>
+                  <div>End Date</div>
+                  <div>Purpose</div>
+                  <div>Status</div>
+                  <div>Payment</div>
+                  <div>Amount</div>
+                  <div>Actions</div>
                 </div>
 
-                {/* BOOKINGS */}
+                {/* BOOKING ROWS */}
+                {bookings.map((booking) => (
+                  <div
+                    className="my-row my-row-data"
+                    key={booking.id}
+                  >
+                    <div className="booking-id">#{booking.id}</div>
 
-                {bookings.map(
-                  (booking) => (
-
-                    <div
-                      className="my-row my-row-data"
-                      key={booking.id}
-                    >
-
-                      <div className="booking-id">
-                        #
-                        {booking.id}
-                      </div>
-
-                      <div className="customer-info">
-
-                        <strong>
-                          {
-                            booking.customerName ||
-                            "Customer"
-                          }
-                        </strong>
-
-                        <small>
-                          {
-                            booking.customerEmail ||
-                            ""
-                          }
-                        </small>
-
-                      </div>
-
-                      <div>
-
-                        <span className="customer-type">
-                          {
-                            booking.customerType ||
-                            "FARMER"
-                          }
-                        </span>
-
-                      </div>
-
-                      <div>
-                        {
-                          booking.customerPhone ||
-                          "-"
-                        }
-                      </div>
-
-                      <div className="crop-name">
-                        {
-                          booking.cropName ||
-                          "-"
-                        }
-                      </div>
-
-                      <div>
-                        {
-                          booking.quantity ||
-                          "-"
-                        }{" "}
-                        {
-                          booking.quantityUnit ||
-                          "KG"
-                        }
-                      </div>
-
-                      <div>
-                        {
-                          booking.startDate ||
-                          "-"
-                        }
-                      </div>
-
-                      <div>
-                        {
-                          booking.endDate ||
-                          "-"
-                        }
-                      </div>
-
-                      <div>
-                        {
-                          booking.purpose ||
-                          "-"
-                        }
-                      </div>
-
-                      <div>
-
-                        <span
-                          className={
-                            `status status-${String(
-                              booking.status ||
-                                "PENDING"
-                            ).toLowerCase()}`
-                          }
-                        >
-                          {
-                            booking.status ||
-                            "PENDING"
-                          }
-                        </span>
-
-                      </div>
-
-                      <div>
-
-                        <span
-                          className={
-                            `payment payment-${String(
-                              booking.paymentStatus ||
-                                "NOT_PAID"
-                            ).toLowerCase()}`
-                          }
-                        >
-                          {
-                            booking.paymentStatus ||
-                            "NOT_PAID"
-                          }
-                        </span>
-
-                      </div>
-
-                      <div className="amount">
-                        ₹
-                        {Number(
-                          booking.amount || 0
-                        ).toLocaleString(
-                          "en-IN"
-                        )}
-                      </div>
-
-                      {/* ACTIONS */}
-
-                      <div className="my-actions">
-
-                        <button
-                          className="edit-button"
-                          onClick={() =>
-                            openEdit(
-                              booking
-                            )
-                          }
-                        >
-                          Edit
-                        </button>
-
-                        <button
-                          className="delete-button"
-                          onClick={() =>
-                            deleteBooking(
-                              booking.id
-                            )
-                          }
-                        >
-                          Delete
-                        </button>
-
-                        {String(
-                          booking.status ||
-                            "PENDING"
-                        ).toUpperCase() ===
-                          "PENDING" && (
-
-                          <>
-
-                            <button
-                              className="approve-button"
-                              onClick={() =>
-                                updateStatus(
-                                  booking.id,
-                                  "APPROVED"
-                                )
-                              }
-                            >
-                              Approve
-                            </button>
-
-                            <button
-                              className="reject-button"
-                              onClick={() =>
-                                updateStatus(
-                                  booking.id,
-                                  "REJECTED"
-                                )
-                              }
-                            >
-                              Reject
-                            </button>
-
-                          </>
-
-                        )}
-
-                      </div>
-
+                    <div className="customer-info">
+                      <strong>{booking.customerName || "Customer"}</strong>
+                      <small>{booking.customerEmail || ""}</small>
                     </div>
 
-                  )
-                )}
+                    <div>
+                      <span className="customer-type">
+                        {booking.customerType || "FARMER"}
+                      </span>
+                    </div>
 
+                    <div>{booking.customerPhone || "-"}</div>
+
+                    <div className="crop-name">
+                      {booking.cropName || "-"}
+                    </div>
+
+                    <div>
+                      {booking.quantity ?? "-"}{" "}
+                      {booking.quantityUnit || "KG"}
+                    </div>
+
+                    <div>{booking.startDate || "-"}</div>
+                    <div>{booking.endDate || "-"}</div>
+                    <div>{booking.purpose || "-"}</div>
+
+                    <div>
+                      <span
+                        className={`status status-${String(
+                          booking.status || "PENDING"
+                        ).toLowerCase()}`}
+                      >
+                        {booking.status || "PENDING"}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span
+                        className={`payment payment-${String(
+                          booking.paymentStatus || "NOT_PAID"
+                        ).toLowerCase()}`}
+                      >
+                        {booking.paymentStatus || "NOT_PAID"}
+                      </span>
+                    </div>
+
+                    <div className="amount">
+                      ₹
+                      {Number(booking.amount || 0).toLocaleString("en-IN")}
+                    </div>
+
+                    {/* ACTIONS */}
+                    <div className="my-actions">
+                      <button
+                        type="button"
+                        className="edit-button"
+                        onClick={() => openEdit(booking)}
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        type="button"
+                        className="delete-button"
+                        onClick={() => deleteBooking(booking.id)}
+                      >
+                        Delete
+                      </button>
+
+                      {String(booking.status || "PENDING").toUpperCase() ===
+                        "PENDING" && (
+                        <>
+                          <button
+                            type="button"
+                            className="approve-button"
+                            onClick={() =>
+                              updateStatus(booking.id, "APPROVED")
+                            }
+                          >
+                            Approve
+                          </button>
+
+                          <button
+                            type="button"
+                            className="reject-button"
+                            onClick={() =>
+                              updateStatus(booking.id, "REJECTED")
+                            }
+                          >
+                            Reject
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
-
             </div>
-
           </section>
-
         )}
-
       </main>
 
-      {/* =================================================
-          EDIT MODAL
-      ================================================= */}
-
+      {/* EDIT MODAL */}
       {editingBooking && (
-
         <div className="modal-overlay">
-
           <div className="edit-modal">
-
             <div className="modal-header">
-
               <div>
-
-                <span>
-                  BOOKING
-                </span>
-
-                <h3>
-                  Edit Booking
-                </h3>
-
+                <span>BOOKING</span>
+                <h3>Edit Booking</h3>
               </div>
 
               <button
-                onClick={() =>
-                  setEditingBooking(null)
-                }
+                type="button"
+                aria-label="Close edit modal"
+                onClick={() => setEditingBooking(null)}
               >
                 ×
               </button>
-
             </div>
 
-            <form
-              onSubmit={updateBooking}
-            >
-
+            <form onSubmit={updateBooking}>
               <div className="edit-grid">
-
                 <div>
-                  <label>
-                    Customer Name
-                  </label>
-
+                  <label>Customer Name</label>
                   <input
                     name="customerName"
-                    value={
-                      editForm.customerName
-                    }
-                    onChange={
-                      handleEditChange
-                    }
+                    value={editForm.customerName}
+                    onChange={handleEditChange}
+                    required
                   />
                 </div>
 
                 <div>
-                  <label>
-                    Email
-                  </label>
-
+                  <label>Email</label>
                   <input
+                    type="email"
                     name="customerEmail"
-                    value={
-                      editForm.customerEmail
-                    }
-                    onChange={
-                      handleEditChange
-                    }
+                    value={editForm.customerEmail}
+                    onChange={handleEditChange}
                   />
                 </div>
 
                 <div>
-                  <label>
-                    Phone
-                  </label>
-
+                  <label>Phone</label>
                   <input
                     name="customerPhone"
-                    value={
-                      editForm.customerPhone
-                    }
-                    onChange={
-                      handleEditChange
-                    }
+                    value={editForm.customerPhone}
+                    onChange={handleEditChange}
                   />
                 </div>
 
                 <div>
-                  <label>
-                    Customer Type
-                  </label>
-
+                  <label>Customer Type</label>
                   <select
                     name="customerType"
-                    value={
-                      editForm.customerType
-                    }
-                    onChange={
-                      handleEditChange
-                    }
+                    value={editForm.customerType}
+                    onChange={handleEditChange}
                   >
-                    <option value="FARMER">
-                      FARMER
-                    </option>
-
-                    <option value="BUYER">
-                      BUYER
-                    </option>
+                    <option value="FARMER">FARMER</option>
+                    <option value="BUYER">BUYER</option>
                   </select>
                 </div>
 
                 <div>
-                  <label>
-                    Crop
-                  </label>
-
+                  <label>Crop</label>
                   <input
                     name="cropName"
-                    value={
-                      editForm.cropName
-                    }
-                    onChange={
-                      handleEditChange
-                    }
+                    value={editForm.cropName}
+                    onChange={handleEditChange}
                   />
                 </div>
 
                 <div>
-                  <label>
-                    Quantity
-                  </label>
-
+                  <label>Quantity</label>
                   <input
                     type="number"
+                    min="0.01"
+                    step="any"
                     name="quantity"
-                    value={
-                      editForm.quantity
-                    }
-                    onChange={
-                      handleEditChange
-                    }
+                    value={editForm.quantity}
+                    onChange={handleEditChange}
+                    required
                   />
                 </div>
 
                 <div>
-                  <label>
-                    Quantity Unit
-                  </label>
-
+                  <label>Quantity Unit</label>
                   <select
                     name="quantityUnit"
-                    value={
-                      editForm.quantityUnit
-                    }
-                    onChange={
-                      handleEditChange
-                    }
+                    value={editForm.quantityUnit}
+                    onChange={handleEditChange}
                   >
-                    <option value="KG">
-                      KG
-                    </option>
-
-                    <option value="TON">
-                      TON
-                    </option>
-
-                    <option value="QUINTAL">
-                      QUINTAL
-                    </option>
+                    <option value="KG">KG</option>
+                    <option value="TON">TON</option>
+                    <option value="QUINTAL">QUINTAL</option>
                   </select>
                 </div>
 
                 <div>
-                  <label>
-                    Start Date
-                  </label>
-
+                  <label>Start Date</label>
                   <input
                     type="date"
                     name="startDate"
-                    value={
-                      editForm.startDate
-                    }
-                    onChange={
-                      handleEditChange
-                    }
+                    value={editForm.startDate}
+                    onChange={handleEditChange}
                   />
                 </div>
 
                 <div>
-                  <label>
-                    End Date
-                  </label>
-
+                  <label>End Date</label>
                   <input
                     type="date"
                     name="endDate"
-                    value={
-                      editForm.endDate
-                    }
-                    onChange={
-                      handleEditChange
-                    }
+                    value={editForm.endDate}
+                    onChange={handleEditChange}
                   />
                 </div>
 
                 <div className="edit-full">
-                  <label>
-                    Purpose
-                  </label>
-
+                  <label>Purpose</label>
                   <input
                     name="purpose"
-                    value={
-                      editForm.purpose
-                    }
-                    onChange={
-                      handleEditChange
-                    }
+                    value={editForm.purpose}
+                    onChange={handleEditChange}
                   />
                 </div>
 
                 <div className="edit-full">
-                  <label>
-                    Notes
-                  </label>
-
+                  <label>Notes</label>
                   <textarea
                     name="notes"
-                    value={
-                      editForm.notes
-                    }
-                    onChange={
-                      handleEditChange
-                    }
+                    value={editForm.notes}
+                    onChange={handleEditChange}
                     rows="3"
                   />
                 </div>
-
               </div>
 
               <div className="modal-actions">
-
                 <button
                   type="button"
                   className="modal-cancel"
-                  onClick={() =>
-                    setEditingBooking(null)
-                  }
+                  onClick={() => setEditingBooking(null)}
                 >
                   Cancel
                 </button>
 
-                <button
-                  type="submit"
-                  className="modal-save"
-                >
+                <button type="submit" className="modal-save">
                   Update Booking
                 </button>
-
               </div>
-
             </form>
-
           </div>
-
         </div>
-
       )}
-
     </div>
   );
 }
