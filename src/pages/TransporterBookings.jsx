@@ -12,7 +12,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./TransporterBookings.css";
 
-const API = "http://localhost:8081/api";
+const API = "https://cropconnect-backend-exn7.onrender.com/api";
 const defaultCenter = [17.3850, 78.4867];
 
 const pickupIcon = new L.Icon({
