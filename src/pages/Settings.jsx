@@ -38,7 +38,7 @@ function Settings() {
                 <img
                     src={
                         farmer?.photo
-                            ? `http://localhost:8081/uploads/${farmer.photo}`
+                            ? `https://cropconnect-backend-exn7.onrender.com/uploads/${farmer.photo}`
                             : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                     }
                     alt="Farmer"
