@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "./ChatPage.css";
 
-const API_BASE = "http://localhost:8081/api/chat";
+const API_BASE = "https://cropconnect-backend-exn7.onrender.com/api/chat";
 
 // Change these according to the logged-in account.
 // Roles: FARMER, BUYER, TRANSPORTER, WAREHOUSE, ADMIN
