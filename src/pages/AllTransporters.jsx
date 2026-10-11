@@ -23,7 +23,7 @@ import {
 
 import "./AllTransporters.css";
 
-const API = "http://localhost:8081/api";
+const API = "https://cropconnect-backend-exn7.onrender.com/api";
 
 function AllTransporters() {
   const { id } = useParams();
