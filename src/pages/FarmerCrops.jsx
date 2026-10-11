@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./FarmerCrops.css";
 
-const API = "http://localhost:8081/api";
-const SERVER = "http://localhost:8081";
+const API = "https://cropconnect-backend-exn7.onrender.com/api";
+const SERVER = "https://cropconnect-backend-exn7.onrender.com";
 
 const INITIAL_FORM = {
     cropName: "",
