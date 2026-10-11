@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./AllFarmers.css";
 
-const API_BASE = "http://localhost:8081/api/farmers";
+const API_BASE = "https://cropconnect-backend-exn7.onrender.com/api/farmers";
 
 const AllFarmers = () => {
   const [farmers, setFarmers] = useState([]);
