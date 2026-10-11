@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./AgritechPages.css";
 
-const API = "http://localhost:8081/api";
+const API = "https://cropconnect-backend-exn7.onrender.com/api";
 
 export default function FarmerCropBookings() {
   const email = localStorage.getItem("farmerEmail");
