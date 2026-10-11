@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./BuyerLogin.css";
 
-const API_BASE = "http://localhost:8081/api";
+const API_BASE = "https://cropconnect-backend-exn7.onrender.com/api";
 
 export default function BuyerLogin() {
   const navigate = useNavigate();
