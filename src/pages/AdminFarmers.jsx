@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminFarmers.css";
 
-const API = "http://localhost:8081/api/farmers";
+const API = "https://cropconnect-backend-exn7.onrender.com/api/farmers";
 
 function AdminFarmers() {
   const [farmers, setFarmers] = useState([]);
