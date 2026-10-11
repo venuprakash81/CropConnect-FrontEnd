@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./TransporterPages.css";
 
-const API = "http://localhost:8081/api/transporters";
+const API = "https://cropconnect-backend-exn7.onrender.com/api/transporters";
 
 export default function ChangeTransporterPassword() {
   const navigate = useNavigate();
