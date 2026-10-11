@@ -3,8 +3,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminCrops.css";
 
-const API = "http://localhost:8081/api/crops";
-const BACKEND_URL = "http://localhost:8081";
+const API = "https://cropconnect-backend-exn7.onrender.com/api/crops";
+const BACKEND_URL = "https://cropconnect-backend-exn7.onrender.com";
 
 function AdminCrops() {
   const navigate = useNavigate();
