@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./farmerBookings.css";
 
-const API = "http://localhost:8081/api";
+const API = "https://cropconnect-backend-exn7.onrender.com/api";
 
 function getStoredValue(key) {
   return localStorage.getItem(key) || sessionStorage.getItem(key) || "";
