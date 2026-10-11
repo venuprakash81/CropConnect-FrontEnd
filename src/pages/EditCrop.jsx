@@ -94,7 +94,7 @@ function EditCrop(){
 
             const response=await axios.get(
 
-                "http://localhost:8081/crop/"+id
+                "https://cropconnect-backend-exn7.onrender.com/crop/"+id
 
             );
 
@@ -102,7 +102,7 @@ function EditCrop(){
 
             setPreview(
 
-                "http://localhost:8081/uploads/"+response.data.image
+                "https://cropconnect-backend-exn7.onrender.com/uploads/"+response.data.image
 
             );
 
