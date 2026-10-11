@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./AllBuyers.css";
 
-const API_URL = "http://localhost:8081/api/buyers";
+const API_URL = "https://cropconnect-backend-exn7.onrender.com/api/buyers";
 
 const AllBuyers = () => {
   const [buyers, setBuyers] = useState([]);
