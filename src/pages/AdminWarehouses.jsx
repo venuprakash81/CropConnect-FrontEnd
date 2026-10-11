@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./AdminWarehouses.css";
 
-const API_URL = "http://localhost:8081/api/warehouses";
+const API_URL = "https://cropconnect-backend-exn7.onrender.com/api/warehouses";
 
 function getMapUrl(warehouse) {
   const lat = warehouse.latitude;
