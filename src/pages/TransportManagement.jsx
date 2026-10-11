@@ -15,7 +15,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./TransportManagement.css";
 
-const API = "http://localhost:8081/api";
+const API = "https://cropconnect-backend-exn7.onrender.com/api";
 
 const DEFAULT_CENTER = [17.3850, 78.4867];
 
