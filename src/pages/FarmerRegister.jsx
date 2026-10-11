@@ -429,7 +429,7 @@ const FarmerRegister = () => {
 
       const response = await fetch(
 
-        "http://localhost:8081/api/farmers/register",
+        "https://cropconnect-backend-exn7.onrender.com/api/farmers/register",
 
         {
 
