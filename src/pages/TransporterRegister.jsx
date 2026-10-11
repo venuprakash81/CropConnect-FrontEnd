@@ -447,7 +447,7 @@ const TransporterRegister = () => {
 
       const response = await fetch(
 
-        "http://localhost:8081/api/transporters/register",
+        "https://cropconnect-backend-exn7.onrender.com/api/transporters/register",
 
         {
 
