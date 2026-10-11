@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./WarehousePages.css";
 
-const API = "http://localhost:8081/api/warehouses";
+const API = "https://cropconnect-backend-exn7.onrender.com/api/warehouses";
 
 export default function WarehouseChangePassword() {
   const navigate = useNavigate();
