@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import "./AdminTransporters.css";
 
-const API = "http://localhost:8081/api/transporters";
+const API = "https://cropconnect-backend-exn7.onrender.com/api/transporters";
 
 function AdminTransporters() {
   const [transporters, setTransporters] = useState([]);
