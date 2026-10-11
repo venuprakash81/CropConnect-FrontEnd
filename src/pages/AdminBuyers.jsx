@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminBuyers.css";
 
-const API = "http://localhost:8081/api/buyers";
+const API = "https://cropconnect-backend-exn7.onrender.com/api/buyers";
 
 function AdminBuyers() {
   const navigate = useNavigate();
