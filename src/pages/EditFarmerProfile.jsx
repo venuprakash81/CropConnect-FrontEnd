@@ -38,7 +38,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-const API_BASE = "http://localhost:8081/api";
+const API_BASE = "https://cropconnect-backend-exn7.onrender.com/api";
 const DEFAULT_CENTER = [17.385, 78.4867];
 
 const initialForm = {
