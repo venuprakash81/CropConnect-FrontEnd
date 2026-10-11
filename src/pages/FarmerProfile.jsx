@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import "./FarmerProfile.css";
 
-const API_BASE = "http://localhost:8081/api";
+const API_BASE = "https://cropconnect-backend-exn7.onrender.com/api";
 
 export default function FarmerProfile() {
   const navigate = useNavigate();
