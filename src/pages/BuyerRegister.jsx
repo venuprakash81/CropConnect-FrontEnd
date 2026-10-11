@@ -24,7 +24,7 @@ L.Icon.Default.mergeOptions({
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
 });
 
-const API_BASE = "http://localhost:8081/api";
+const API_BASE = "https://cropconnect-backend-exn7.onrender.com/api";
 
 // Map click handler
 function LocationMarker({ position, onSelect }) {
