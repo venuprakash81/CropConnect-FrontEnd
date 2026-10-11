@@ -1,2440 +1,559 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useCallback, useEffect, useState } from "react";
 
 import {
   MapContainer,
   TileLayer,
   Marker,
   Popup,
-  useMapEvents,
   Polyline,
+  useMapEvents,
 } from "react-leaflet";
 
 import L from "leaflet";
 
 import "leaflet/dist/leaflet.css";
-
 import "./TransportManagement.css";
-
-
-// =====================================================
-// API
-// =====================================================
 
 const API = "http://localhost:8081/api";
 
+const DEFAULT_CENTER = [17.3850, 78.4867];
 
-// =====================================================
-// DEFAULT MAP LOCATION
-// Hyderabad
-// =====================================================
-
-const DEFAULT_CENTER = [
-  17.3850,
-  78.4867,
-];
-
-
-// =====================================================
-// MARKER ICONS
-// =====================================================
-
-const pickupIcon = new L.Icon({
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-
+// Leaflet marker icons
+const defaultIcon = new L.Icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
   shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
   iconSize: [25, 41],
-
   iconAnchor: [12, 41],
-
   popupAnchor: [1, -34],
-
   shadowSize: [41, 41],
 });
 
+L.Marker.prototype.options.icon = defaultIcon;
 
-const destinationIcon = new L.Icon({
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-
-  iconSize: [25, 41],
-
-  iconAnchor: [12, 41],
-
-  popupAnchor: [1, -34],
-
-  shadowSize: [41, 41],
-});
-
-
-// =====================================================
-// MAP CLICK COMPONENT
-// =====================================================
-
-function BookingMapClick({
-  selectionMode,
-  setBooking,
-}) {
-
+function MapClickHandler({ onSelect }) {
   useMapEvents({
-
-    click(e) {
-
-      const latitude =
-        Number(e.latlng.lat.toFixed(6));
-
-      const longitude =
-        Number(e.latlng.lng.toFixed(6));
-
-
-      if (selectionMode === "pickup") {
-
-        setBooking(prev => ({
-          ...prev,
-
-          pickupLatitude: latitude,
-
-          pickupLongitude: longitude,
-        }));
-
+    click(event) {
+      if (onSelect) {
+        onSelect([event.latlng.lat, event.latlng.lng]);
       }
-
-
-      if (selectionMode === "destination") {
-
-        setBooking(prev => ({
-          ...prev,
-
-          destinationLatitude: latitude,
-
-          destinationLongitude: longitude,
-        }));
-
-      }
-
     },
-
   });
-
 
   return null;
 }
 
+function getCoordinates(item) {
+  const latitude = Number(
+    item.latitude ?? item.lat ?? item.pickupLatitude
+  );
+  const longitude = Number(
+    item.longitude ?? item.lng ?? item.pickupLongitude
+  );
 
-// =====================================================
-// MAIN COMPONENT
-// =====================================================
+  if (
+    Number.isFinite(latitude) &&
+    Number.isFinite(longitude) &&
+    (latitude !== 0 || longitude !== 0)
+  ) {
+    return [latitude, longitude];
+  }
 
-function TransportManagement() {
+  return null;
+}
 
-  const [transporters, setTransporters] =
-    useState([]);
+export default function TransportManagement() {
+  const [transporters, setTransporters] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [loadingTransporters, setLoadingTransporters] = useState(true);
+  const [loadingBookings, setLoadingBookings] = useState(true);
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const [search, setSearch] = useState("");
+  const [selectedTransporter, setSelectedTransporter] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [routeCoordinates, setRouteCoordinates] = useState([]);
 
-  const [bookings, setBookings] =
-    useState([]);
+  const loadTransporters = useCallback(async () => {
+    setLoadingTransporters(true);
 
+    try {
+      const response = await fetch(`${API}/transporters/all`);
 
-  const [showBooking, setShowBooking] =
-    useState(false);
+      if (!response.ok) {
+        throw new Error(`Transporters request failed: ${response.status}`);
+      }
 
-
-  const [selectedTransporter, setSelectedTransporter] =
-    useState(null);
-
-
-  const [editingBooking, setEditingBooking] =
-    useState(null);
-
-
-  const [selectionMode, setSelectionMode] =
-    useState("pickup");
-
-
-  const [showMap, setShowMap] =
-    useState(false);
-
-
-  const [location, setLocation] =
-    useState(null);
-
-
-  const [booking, setBooking] =
-    useState({
-
-      userType: "FARMER",
-
-      userId: "",
-
-      userName: "",
-
-      userEmail: "",
-
-      userPhone: "",
-
-      pickupLatitude: null,
-
-      pickupLongitude: null,
-
-      destinationLatitude: null,
-
-      destinationLongitude: null,
-
-      goodsName: "",
-
-      quantity: "",
-
-      quantityUnit: "Quintal",
-
-      bookingDate: "",
-
-      notes: "",
-
-      status: "PENDING",
-
-    });
-
-
-  // =====================================================
-  // LOAD
-  // =====================================================
-
-  useEffect(() => {
-
-    loadTransporters();
-
-    loadBookings();
-
+      const data = await response.json();
+      setTransporters(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Transporter loading error:", err);
+      setError("Unable to load transporters. Check your backend connection.");
+    } finally {
+      setLoadingTransporters(false);
+    }
   }, []);
 
-
-  // =====================================================
-  // TRANSPORTERS
-  // =====================================================
-
-  const loadTransporters = async () => {
+  const loadBookings = useCallback(async () => {
+    setLoadingBookings(true);
 
     try {
+      // Change this endpoint only if your backend uses a different route.
+      const response = await fetch(`${API}/transport-bookings`);
 
+      if (response.status === 404) {
+        setBookings([]);
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(`Bookings request failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setBookings(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Transport booking loading error:", err);
+      setBookings([]);
+    } finally {
+      setLoadingBookings(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadTransporters();
+    loadBookings();
+  }, [loadTransporters, loadBookings]);
+
+  const deleteTransporter = async (id) => {
+    if (id == null) {
+      setError("Transporter ID is missing.");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this transporter?"
+    );
+
+    if (!confirmed) return;
+
+    setError("");
+    setMessage("");
+
+    try {
       const response = await fetch(
-        `${API}/transporters/all`
+        `${API}/transporters/${encodeURIComponent(id)}`,
+        { method: "DELETE" }
       );
-
 
       if (!response.ok) {
-
+        const detail = await response.text().catch(() => "");
         throw new Error(
-          "Failed to load transporters"
+          detail || `Delete failed with status ${response.status}`
         );
       }
 
+      setMessage("Transporter deleted successfully.");
 
-      const data =
-        await response.json();
-
-
-      setTransporters(data);
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-        "Unable to load transporters"
-      );
-    }
-  };
-
-
-  // =====================================================
-  // BOOKINGS
-  // =====================================================
-
-  const loadBookings = async () => {
-
-    try {
-
-      const response = await fetch(
-        `${API}/transport-bookings/all`
-      );
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          "Failed to load bookings"
-        );
+      if (selectedTransporter?.id === id) {
+        setSelectedTransporter(null);
       }
 
-
-      const data =
-        await response.json();
-
-
-      setBookings(data);
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-        "Unable to load bookings"
-      );
+      await loadTransporters();
+    } catch (err) {
+      console.error("Transporter deletion error:", err);
+      setError(err.message || "Unable to delete transporter.");
     }
   };
 
+  const filteredTransporters = transporters.filter((transporter) => {
+    const searchable = [
+      transporter.name,
+      transporter.transporterName,
+      transporter.fullName,
+      transporter.email,
+      transporter.phone,
+      transporter.vehicleType,
+      transporter.vehicleNumber,
+      transporter.city,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
 
-  // =====================================================
-  // OPEN BOOKING
-  // =====================================================
+    return searchable.includes(search.toLowerCase());
+  });
 
-  const openBooking = (transporter) => {
+  const mapCenter =
+    selectedLocation ||
+    getCoordinates(selectedTransporter || {}) ||
+    DEFAULT_CENTER;
 
-    setSelectedTransporter(
-      transporter
-    );
+  const displayedRoute = routeCoordinates.length > 1
+    ? routeCoordinates
+    : [];
 
-    setEditingBooking(null);
-
-
-    setBooking({
-
-      userType: "FARMER",
-
-      userId: "",
-
-      userName: "",
-
-      userEmail: "",
-
-      userPhone: "",
-
-      pickupLatitude: null,
-
-      pickupLongitude: null,
-
-      destinationLatitude: null,
-
-      destinationLongitude: null,
-
-      goodsName: "",
-
-      quantity: "",
-
-      quantityUnit: "Quintal",
-
-      bookingDate: "",
-
-      notes: "",
-
-      status: "PENDING",
-
-    });
-
-
-    setSelectionMode(
-      "pickup"
-    );
-
-
-    setShowBooking(true);
+  const handleSelectMapLocation = (coordinates) => {
+    setSelectedLocation(coordinates);
+    setRouteCoordinates([]);
   };
 
-
-  // =====================================================
-  // FORM CHANGE
-  // =====================================================
-
-  const handleChange = (e) => {
-
-    const {
-      name,
-      value,
-    } = e.target;
-
-
-    setBooking(prev => ({
-
-      ...prev,
-
-      [name]: value,
-
-    }));
-  };
-
-
-  // =====================================================
-  // OPEN MAP
-  // =====================================================
-
-  const openLocationMap = (
-    mode
-  ) => {
-
-    setSelectionMode(mode);
-
-    setShowMap(true);
-  };
-
-
-  // =====================================================
-  // CLEAR PICKUP
-  // =====================================================
-
-  const clearPickup = () => {
-
-    setBooking(prev => ({
-
-      ...prev,
-
-      pickupLatitude: null,
-
-      pickupLongitude: null,
-
-    }));
-
-    setSelectionMode(
-      "pickup"
-    );
-  };
-
-
-  // =====================================================
-  // CLEAR DESTINATION
-  // =====================================================
-
-  const clearDestination = () => {
-
-    setBooking(prev => ({
-
-      ...prev,
-
-      destinationLatitude: null,
-
-      destinationLongitude: null,
-
-    }));
-
-    setSelectionMode(
-      "destination"
-    );
-  };
-
-
-  // =====================================================
-  // SUBMIT
-  // =====================================================
-
-  const submitBooking = async (e) => {
-
-    e.preventDefault();
-
-
-    if (
-      booking.pickupLatitude === null ||
-      booking.pickupLongitude === null
-    ) {
-
-      alert(
-        "Please select pickup location on the map."
-      );
-
+  const handleUseCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by this browser.");
       return;
     }
 
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const coordinates = [
+          position.coords.latitude,
+          position.coords.longitude,
+        ];
 
-    if (
-      booking.destinationLatitude === null ||
-      booking.destinationLongitude === null
-    ) {
-
-      alert(
-        "Please select destination on the map."
-      );
-
-      return;
-    }
-
-
-    if (!selectedTransporter) {
-
-      alert(
-        "Transporter not selected."
-      );
-
-      return;
-    }
-
-
-    const payload = {
-
-      ...booking,
-
-      userId:
-        booking.userId
-          ? Number(booking.userId)
-          : null,
-
-      quantity:
-        booking.quantity
-          ? Number(booking.quantity)
-          : null,
-
-    };
-
-
-    try {
-
-      const response = await fetch(
-
-        `${API}/transport-bookings/transporter/${selectedTransporter.id}`,
-
-        {
-
-          method: "POST",
-
-          headers: {
-
-            "Content-Type":
-              "application/json",
-
-          },
-
-          body:
-            JSON.stringify(
-              payload
-            ),
-
-        }
-
-      );
-
-
-      const data =
-        await response.json();
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          data.message ||
-          "Booking failed"
+        setSelectedLocation(coordinates);
+        setRouteCoordinates([]);
+        setError("");
+      },
+      (err) => {
+        console.error("Geolocation error:", err);
+        setError(
+          "Unable to get your location. Please allow location access."
         );
-      }
-
-
-      alert(
-        "Transport booked successfully!"
-      );
-
-
-      setShowBooking(false);
-
-      loadBookings();
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-        error.message
-      );
-    }
-  };
-
-
-  // =====================================================
-  // EDIT BOOKING
-  // =====================================================
-
-  const editBooking = (item) => {
-
-    setEditingBooking(item);
-
-
-    setSelectedTransporter(
-      item.transporter
-    );
-
-
-    setBooking({
-
-      userType:
-        item.userType ||
-        "FARMER",
-
-      userId:
-        item.userId ||
-        "",
-
-      userName:
-        item.userName ||
-        "",
-
-      userEmail:
-        item.userEmail ||
-        "",
-
-      userPhone:
-        item.userPhone ||
-        "",
-
-      pickupLatitude:
-        item.pickupLatitude ??
-        null,
-
-      pickupLongitude:
-        item.pickupLongitude ??
-        null,
-
-      destinationLatitude:
-        item.destinationLatitude ??
-        null,
-
-      destinationLongitude:
-        item.destinationLongitude ??
-        null,
-
-      goodsName:
-        item.goodsName ||
-        "",
-
-      quantity:
-        item.quantity ||
-        "",
-
-      quantityUnit:
-        item.quantityUnit ||
-        "Quintal",
-
-      bookingDate:
-        item.bookingDate ||
-        "",
-
-      notes:
-        item.notes ||
-        "",
-
-      status:
-        item.status ||
-        "PENDING",
-
-    });
-
-
-    setSelectionMode(
-      "pickup"
-    );
-
-
-    setShowBooking(true);
-  };
-
-
-  // =====================================================
-  // UPDATE BOOKING
-  // =====================================================
-
-  const updateBooking = async (e) => {
-
-    e.preventDefault();
-
-
-    if (
-      booking.pickupLatitude === null ||
-      booking.pickupLongitude === null
-    ) {
-
-      alert(
-        "Please select pickup location."
-      );
-
-      return;
-    }
-
-
-    if (
-      booking.destinationLatitude === null ||
-      booking.destinationLongitude === null
-    ) {
-
-      alert(
-        "Please select destination."
-      );
-
-      return;
-    }
-
-
-    try {
-
-      const response = await fetch(
-
-        `${API}/transport-bookings/${editingBooking.id}`,
-
-        {
-
-          method: "PUT",
-
-          headers: {
-
-            "Content-Type":
-              "application/json",
-
-          },
-
-          body: JSON.stringify({
-
-            ...booking,
-
-            userId:
-              booking.userId
-                ? Number(
-                    booking.userId
-                  )
-                : null,
-
-            quantity:
-              booking.quantity
-                ? Number(
-                    booking.quantity
-                  )
-                : null,
-
-          }),
-
-        }
-
-      );
-
-
-      const data =
-        await response.json();
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          data.message ||
-          "Update failed"
-        );
-      }
-
-
-      alert(
-        "Booking updated successfully!"
-      );
-
-
-      setShowBooking(false);
-
-      setEditingBooking(null);
-
-      loadBookings();
-
-    } catch (error) {
-
-      alert(
-        error.message
-      );
-    }
-  };
-
-
-  // =====================================================
-  // DELETE TRANSPORTER
-  // =====================================================
-
-  const deleteTransporter = async (
-    id
-  ) => {
-
-    if (
-      !window.confirm(
-        "Delete this transporter?"
-      )
-    ) {
-
-      return;
-    }
-
-
-    try {
-
-      const response =
-        await fetch(
-
-          `${API}/transporters/${id}`,
-
-          {
-            method: "DELETE",
-          }
-
-        );
-
-
-      const data =
-        await response.json();
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          data.message ||
-          "Delete failed"
-        );
-      }
-
-
-      alert(
-        "Transporter deleted."
-      );
-
-
-      loadTransporters();
-
-    } catch (error) {
-
-      alert(
-        error.message
-      );
-    }
-  };
-
-
-  // =====================================================
-  // DELETE BOOKING
-  // =====================================================
-
-  const deleteBooking = async (
-    id
-  ) => {
-
-    if (
-      !window.confirm(
-        "Delete this booking?"
-      )
-    ) {
-
-      return;
-    }
-
-
-    try {
-
-      const response =
-        await fetch(
-
-          `${API}/transport-bookings/${id}`,
-
-          {
-            method: "DELETE",
-          }
-
-        );
-
-
-      const data =
-        await response.json();
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          data.message ||
-          "Delete failed"
-        );
-      }
-
-
-      alert(
-        "Booking deleted."
-      );
-
-
-      loadBookings();
-
-    } catch (error) {
-
-      alert(
-        error.message
-      );
-    }
-  };
-
-
-  // =====================================================
-  // TRACK TRANSPORTER
-  // =====================================================
-
-  const trackTransporter =
-    async (
-      transporter
-    ) => {
-
-      try {
-
-        const response =
-          await fetch(
-
-            `${API}/transporters/${transporter.id}/location`
-
-          );
-
-
-        if (!response.ok) {
-
-          alert(
-            "Transporter location is unavailable."
-          );
-
-          return;
-        }
-
-
-        const data =
-          await response.json();
-
-
-        setLocation(data);
-
-      } catch (error) {
-
-        alert(
-          "Unable to load location."
-        );
-      }
-    };
-
-
-  // =====================================================
-  // GOOGLE MAP
-  // =====================================================
-
-  const openGoogleMaps = () => {
-
-    if (!location) return;
-
-
-    window.open(
-
-      `https://www.google.com/maps?q=${location.latitude},${location.longitude}`,
-
-      "_blank"
-
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
     );
   };
-
-
-  // =====================================================
-  // RENDER
-  // =====================================================
 
   return (
-
     <div className="transport-management">
-
-
-      {/* =================================================
-          HEADER
-      ================================================= */}
-
-      <div className="transport-header">
-
+      <header className="transport-header">
         <div>
+          <h1>Transport Management</h1>
+          <p>Manage transporters, view locations, and monitor bookings.</p>
+        </div>
 
-          <h1>
-            Transport Management
-          </h1>
+        <button
+          type="button"
+          className="refresh-btn"
+          onClick={() => {
+            setError("");
+            setMessage("");
+            loadTransporters();
+            loadBookings();
+          }}
+        >
+          Refresh
+        </button>
+      </header>
 
-          <p>
-            Find transporters and manage
-            transport bookings
+      {message && (
+        <div className="success-message" role="status">
+          {message}
+          <button type="button" onClick={() => setMessage("")}>
+            ×
+          </button>
+        </div>
+      )}
+
+      {error && (
+        <div className="error-message" role="alert">
+          {error}
+          <button type="button" onClick={() => setError("")}>
+            ×
+          </button>
+        </div>
+      )}
+
+      <section className="transport-summary">
+        <div className="summary-card">
+          <span>Total Transporters</span>
+          <strong>{transporters.length}</strong>
+        </div>
+
+        <div className="summary-card">
+          <span>Total Bookings</span>
+          <strong>{bookings.length}</strong>
+        </div>
+
+        <div className="summary-card">
+          <span>Map Location</span>
+          <strong>
+            {selectedLocation ? "Selected" : "Hyderabad"}
+          </strong>
+        </div>
+      </section>
+
+      <section className="transport-map-section">
+        <div className="section-heading">
+          <div>
+            <h2>Transport Map</h2>
+            <p>Select a point on the map to mark a location.</p>
+          </div>
+
+          <button
+            type="button"
+            className="location-btn"
+            onClick={handleUseCurrentLocation}
+          >
+            Use My Location
+          </button>
+        </div>
+
+        <div className="transport-map">
+          <MapContainer
+            center={mapCenter}
+            zoom={11}
+            scrollWheelZoom
+            style={{ height: "100%", minHeight: "350px", width: "100%" }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+
+            <MapClickHandler onSelect={handleSelectMapLocation} />
+
+            {selectedLocation && (
+              <Marker position={selectedLocation}>
+                <Popup>Selected location</Popup>
+              </Marker>
+            )}
+
+            {filteredTransporters.map((transporter) => {
+              const coordinates = getCoordinates(transporter);
+
+              if (!coordinates) return null;
+
+              return (
+                <Marker
+                  key={transporter.id}
+                  position={coordinates}
+                  eventHandlers={{
+                    click: () => setSelectedTransporter(transporter),
+                  }}
+                >
+                  <Popup>
+                    <strong>
+                      {transporter.name ||
+                        transporter.transporterName ||
+                        transporter.fullName ||
+                        "Transporter"}
+                    </strong>
+                    <br />
+                    {transporter.phone || "No phone provided"}
+                  </Popup>
+                </Marker>
+              );
+            })}
+
+            {displayedRoute.length > 1 && (
+              <Polyline positions={displayedRoute} />
+            )}
+          </MapContainer>
+        </div>
+
+        {selectedLocation && (
+          <p className="selected-coordinates">
+            Selected coordinates: {selectedLocation[0].toFixed(6)},{" "}
+            {selectedLocation[1].toFixed(6)}
           </p>
+        )}
 
+        {selectedTransporter && (
+          <div className="selected-transporter">
+            <strong>
+              {selectedTransporter.name ||
+                selectedTransporter.transporterName ||
+                selectedTransporter.fullName ||
+                "Transporter"}
+            </strong>
+            <span>{selectedTransporter.email || "No email provided"}</span>
+            <span>{selectedTransporter.phone || "No phone provided"}</span>
+            <button
+              type="button"
+              onClick={() => setSelectedTransporter(null)}
+            >
+              Clear selection
+            </button>
+          </div>
+        )}
+      </section>
+
+      <section className="transporters-section">
+        <div className="section-heading">
+          <div>
+            <h2>All Transporters</h2>
+            <p>View and manage registered transporters.</p>
+          </div>
+
+          <input
+            type="search"
+            className="transporter-search"
+            placeholder="Search transporters..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
         </div>
 
-
-        <div className="transport-count">
-
-          {transporters.length}
-          {" "}
-          Transporters
-
-        </div>
-
-      </div>
-
-
-      {/* =================================================
-          TRANSPORTERS
-      ================================================= */}
-
-      <section className="transport-section">
-
-        <div className="section-title">
-
-          <h2>
-            Available Transporters
-          </h2>
-
-          <span>
-            {transporters.length}
-            {" "}
-            available
-          </span>
-
-        </div>
-
-
-        <div className="transporter-grid">
-
-          {transporters.map(
-            transporter => (
-
-              <div
-                className="transporter-card"
-                key={
-                  transporter.id
-                }
-              >
-
-                <div className="transporter-top">
-
-                  <div className="profile-circle">
-
-                    {transporter.fullName
-                      ?.charAt(0)
-                      ?.toUpperCase() ||
-                      "T"}
-
+        {loadingTransporters ? (
+          <p className="loading-text">Loading transporters...</p>
+        ) : filteredTransporters.length === 0 ? (
+          <div className="empty-state">
+            <h3>No transporters found</h3>
+            <p>Try another search or register a transporter first.</p>
+          </div>
+        ) : (
+          <div className="transporter-grid">
+            {filteredTransporters.map((transporter) => (
+              <article className="transporter-card" key={transporter.id}>
+                <div className="transporter-card-header">
+                  <div className="transporter-avatar">
+                    {(
+                      transporter.name ||
+                      transporter.transporterName ||
+                      transporter.fullName ||
+                      "T"
+                    )
+                      .trim()
+                      .charAt(0)
+                      .toUpperCase()}
                   </div>
 
-
                   <div>
-
                     <h3>
-                      {
-                        transporter.fullName
-                      }
+                      {transporter.name ||
+                        transporter.transporterName ||
+                        transporter.fullName ||
+                        "Transporter"}
                     </h3>
-
-                    <p>
-                      {
-                        transporter.businessName ||
-                        "Transport Service"
-                      }
-                    </p>
-
+                    <p>{transporter.email || "No email provided"}</p>
                   </div>
-
                 </div>
 
-
-                <div className="transporter-info">
-
-                  <div>
-
-                    <span>
-                      Vehicle
-                    </span>
-
-                    <strong>
-                      {
-                        transporter.vehicleNumber ||
-                        "-"
-                      }
-                    </strong>
-
-                  </div>
-
-
-                  <div>
-
-                    <span>
-                      Vehicle Type
-                    </span>
-
-                    <strong>
-                      {
-                        transporter.vehicleType ||
-                        "-"
-                      }
-                    </strong>
-
-                  </div>
-
-
-                  <div>
-
-                    <span>
-                      Capacity
-                    </span>
-
-                    <strong>
-
-                      {
-                        transporter.vehicleCapacity
-                          ? `${transporter.vehicleCapacity} ${transporter.capacityUnit || ""}`
-                          : "-"
-                      }
-
-                    </strong>
-
-                  </div>
-
-
-                  <div>
-
-                    <span>
-                      Phone
-                    </span>
-
-                    <strong>
-                      {
-                        transporter.phone ||
-                        "-"
-                      }
-                    </strong>
-
-                  </div>
-
+                <div className="transporter-details">
+                  <p>
+                    <strong>Phone:</strong>{" "}
+                    {transporter.phone || "Not provided"}
+                  </p>
+                  <p>
+                    <strong>Vehicle:</strong>{" "}
+                    {transporter.vehicleType || "Not provided"}
+                  </p>
+                  <p>
+                    <strong>Vehicle Number:</strong>{" "}
+                    {transporter.vehicleNumber || "Not provided"}
+                  </p>
+                  <p>
+                    <strong>Location:</strong>{" "}
+                    {[transporter.city, transporter.state]
+                      .filter(Boolean)
+                      .join(", ") || "Not provided"}
+                  </p>
                 </div>
-
-
-                <div className="transporter-actions">
-
-                  <button
-                    className="location-btn"
-                    onClick={() =>
-                      trackTransporter(
-                        transporter
-                      )
-                    }
-                  >
-                    📍 Track Location
-                  </button>
-
-
-                  <button
-                    className="book-btn"
-                    onClick={() =>
-                      openBooking(
-                        transporter
-                      )
-                    }
-                  >
-                    🚚 Book Transport
-                  </button>
-
-                </div>
-
 
                 <div className="secondary-actions">
-
-              
-
-                </div>
-
-              </div>
-
-            )
-          )}
-
-        </div>
-
-      </section>
-
-
-      {/* =================================================
-          BOOKINGS
-      ================================================= */}
-
-      <section className="booking-section">
-
-        <div className="section-title">
-
-          <h2>
-            Transport Bookings
-          </h2>
-
-          <span>
-            {bookings.length}
-            {" "}
-            bookings
-          </span>
-
-        </div>
-
-
-        <div className="booking-list">
-
-          {bookings.map(
-            item => (
-
-              <div
-                className="booking-card"
-                key={item.id}
-              >
-
-                <div className="booking-card-header">
-
-                  <div>
-
-                    <span className="booking-number">
-                      Booking #{item.id}
-                    </span>
-
-                    <h3>
-
-                      {
-                        item.transporter
-                          ?.fullName ||
-                        "Transporter"
-                      }
-
-                    </h3>
-
-                  </div>
-
-
-                  <span
-                    className={
-                      `status ${
-                        (
-                          item.status ||
-                          "PENDING"
-                        ).toLowerCase()
-                      }`
-                    }
-                  >
-                    {
-                      item.status ||
-                      "PENDING"
-                    }
-                  </span>
-
-                </div>
-
-
-                <div className="booking-details">
-
-                  <div>
-
-                    <label>
-                      User Type
-                    </label>
-
-                    <strong>
-                      {
-                        item.userType
-                      }
-                    </strong>
-
-                  </div>
-
-
-                  <div>
-
-                    <label>
-                      User
-                    </label>
-
-                    <strong>
-                      {
-                        item.userName ||
-                        "-"
-                      }
-                    </strong>
-
-                  </div>
-
-
-                  <div>
-
-                    <label>
-                      Goods
-                    </label>
-
-                    <strong>
-                      {
-                        item.goodsName ||
-                        "-"
-                      }
-                    </strong>
-
-                  </div>
-
-
-                  <div>
-
-                    <label>
-                      Quantity
-                    </label>
-
-                    <strong>
-
-                      {
-                        item.quantity
-                          ? `${item.quantity} ${item.quantityUnit || ""}`
-                          : "-"
-                      }
-
-                    </strong>
-
-                  </div>
-
-
-                  <div>
-
-                    <label>
-                      Pickup Coordinates
-                    </label>
-
-                    <strong>
-
-                      {
-                        item.pickupLatitude != null
-                          ? `${item.pickupLatitude}, ${item.pickupLongitude}`
-                          : "-"
-                      }
-
-                    </strong>
-
-                  </div>
-
-
-                  <div>
-
-                    <label>
-                      Destination Coordinates
-                    </label>
-
-                    <strong>
-
-                      {
-                        item.destinationLatitude != null
-                          ? `${item.destinationLatitude}, ${item.destinationLongitude}`
-                          : "-"
-                      }
-
-                    </strong>
-
-                  </div>
-
-
-                  <div>
-
-                    <label>
-                      Booking Date
-                    </label>
-
-                    <strong>
-                      {
-                        item.bookingDate ||
-                        "-"
-                      }
-                    </strong>
-
-                  </div>
-
-                </div>
-
-
-                <div className="booking-actions">
-
                   <button
-                    className="location-btn"
-                    onClick={() =>
-                      trackTransporter(
-                        item.transporter
-                      )
-                    }
-                  >
-                    📍 Track Transporter
-                  </button>
-
-
-                  <button
-                    className="map-booking-btn"
+                    type="button"
+                    className="view-btn"
                     onClick={() => {
-
-                      setLocation({
-
-                        name:
-                          "Pickup Location",
-
-                        latitude:
-                          item.pickupLatitude,
-
-                        longitude:
-                          item.pickupLongitude,
-
-                      });
-
+                      setSelectedTransporter(transporter);
+                      setSelectedLocation(getCoordinates(transporter));
                     }}
                   >
-                    🟢 Pickup
+                    View on Map
                   </button>
 
-
                   <button
-                    className="map-booking-btn"
-                    onClick={() => {
-
-                      setLocation({
-
-                        name:
-                          "Destination",
-
-                        latitude:
-                          item.destinationLatitude,
-
-                        longitude:
-                          item.destinationLongitude,
-
-                      });
-
-                    }}
-                  >
-                    🔴 Destination
-                  </button>
-
-
-                  <button
-                    className="edit-btn"
-                    onClick={() =>
-                      editBooking(item)
-                    }
-                  >
-                    ✏️ Edit
-                  </button>
-
-
-                  <button
+                    type="button"
                     className="delete-btn"
-                    onClick={() =>
-                      deleteBooking(
-                        item.id
-                      )
-                    }
+                    onClick={() => deleteTransporter(transporter.id)}
                   >
-                    🗑️ Delete
+                    Delete Transporter
                   </button>
-
                 </div>
-
-              </div>
-
-            )
-          )}
-
-        </div>
-
+              </article>
+            ))}
+          </div>
+        )}
       </section>
 
-
-      {/* =================================================
-          BOOKING MODAL
-      ================================================= */}
-
-      {showBooking && (
-
-        <div
-          className="modal-overlay"
-          onClick={() =>
-            setShowBooking(false)
-          }
-        >
-
-          <div
-            className="booking-modal"
-            onClick={e =>
-              e.stopPropagation()
-            }
-          >
-
-            <div className="modal-header">
-
-              <div>
-
-                <h2>
-
-                  {
-                    editingBooking
-                      ? "Edit Transport Booking"
-                      : "Book Transport"
-                  }
-
-                </h2>
-
-                <p>
-
-                  Transporter:
-                  {" "}
-
-                  <strong>
-
-                    {
-                      selectedTransporter?.fullName
-                    }
-
-                  </strong>
-
-                </p>
-
-              </div>
-
-
-              <button
-                className="close-btn"
-                onClick={() =>
-                  setShowBooking(false)
-                }
-              >
-                ×
-              </button>
-
-            </div>
-
-
-            <form
-              onSubmit={
-                editingBooking
-                  ? updateBooking
-                  : submitBooking
-              }
-            >
-
-              {/* =================================================
-                  USER DETAILS
-              ================================================= */}
-
-              <div className="form-grid">
-
-                <div className="form-group">
-
-                  <label>
-                    User Type *
-                  </label>
-
-                  <select
-                    name="userType"
-                    value={
-                      booking.userType
-                    }
-                    onChange={
-                      handleChange
-                    }
-                    required
-                  >
-
-                    <option value="FARMER">
-                      Farmer
-                    </option>
-
-                    <option value="BUYER">
-                      Buyer
-                    </option>
-
-                    <option value="WAREHOUSE">
-                      Warehouse
-                    </option>
- <option value="TRANSPORTER">
-                      Transporter
-                    </option>
-                  </select>
-
-                </div>
-
-
-                <div className="form-group">
-
-                  <label>
-                    User ID
-                  </label>
-
-                  <input
-                    name="userId"
-                    type="number"
-                    value={
-                      booking.userId
-                    }
-                    onChange={
-                      handleChange
-                    }
-                    placeholder="User ID"
-                  />
-
-                </div>
-
-
-                <div className="form-group">
-
-                  <label>
-                    Name *
-                  </label>
-
-                  <input
-                    name="userName"
-                    value={
-                      booking.userName
-                    }
-                    onChange={
-                      handleChange
-                    }
-                    placeholder="Enter name"
-                    required
-                  />
-
-                </div>
-
-
-                <div className="form-group">
-
-                  <label>
-                    Email
-                  </label>
-
-                  <input
-                    name="userEmail"
-                    type="email"
-                    value={
-                      booking.userEmail
-                    }
-                    onChange={
-                      handleChange
-                    }
-                    placeholder="Email"
-                  />
-
-                </div>
-
-
-                <div className="form-group">
-
-                  <label>
-                    Phone
-                  </label>
-
-                  <input
-                    name="userPhone"
-                    value={
-                      booking.userPhone
-                    }
-                    onChange={
-                      handleChange
-                    }
-                    placeholder="Phone"
-                  />
-
-                </div>
-
-
-                <div className="form-group">
-
-                  <label>
-                    Crop / Goods *
-                  </label>
-
-                  <input
-                    name="goodsName"
-                    value={
-                      booking.goodsName
-                    }
-                    onChange={
-                      handleChange
-                    }
-                    placeholder="Rice, Wheat..."
-                    required
-                  />
-
-                </div>
-
-
-                <div className="form-group">
-
-                  <label>
-                    Quantity *
-                  </label>
-
-                  <input
-                    name="quantity"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={
-                      booking.quantity
-                    }
-                    onChange={
-                      handleChange
-                    }
-                    placeholder="Quantity"
-                    required
-                  />
-
-                </div>
-
-
-                <div className="form-group">
-
-                  <label>
-                    Unit
-                  </label>
-
-                  <select
-                    name="quantityUnit"
-                    value={
-                      booking.quantityUnit
-                    }
-                    onChange={
-                      handleChange
-                    }
-                  >
-
-                    <option value="Kg">
-                      Kg
-                    </option>
-
-                    <option value="Quintal">
-                      Quintal
-                    </option>
-
-                    <option value="Ton">
-                      Ton
-                    </option>
-
-                    <option value="Crate">
-                      Crate
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                <div className="form-group">
-
-                  <label>
-                    Booking Date *
-                  </label>
-
-                  <input
-                    type="date"
-                    name="bookingDate"
-                    value={
-                      booking.bookingDate
-                    }
-                    onChange={
-                      handleChange
-                    }
-                    required
-                  />
-
-                </div>
-
-              </div>
-
-
-              {/* =================================================
-                  PICKUP
-              ================================================= */}
-
-              <div className="map-selection-card">
-
-                <div className="map-selection-header">
-
-                  <div>
-
-                    <span className="map-number pickup-number">
-                      1
-                    </span>
-
-                    <div>
-
-                      <h3>
-                        Pickup Location
-                      </h3>
-
-                      <p>
-                        Select pickup point
-                        directly on the map
-                      </p>
-
-                    </div>
-
-                  </div>
-
-
-                  {booking.pickupLatitude !== null && (
-
-                    <span className="selected-badge">
-                      ✓ Selected
-                    </span>
-
-                  )}
-
-                </div>
-
-
-                {booking.pickupLatitude !== null ? (
-
-                  <div className="coordinate-box">
-
-                    <span>
-                      Latitude
-                    </span>
-
-                    <strong>
-                      {
-                        booking.pickupLatitude
-                      }
-                    </strong>
-
-
-                    <span>
-                      Longitude
-                    </span>
-
-                    <strong>
-                      {
-                        booking.pickupLongitude
-                      }
-                    </strong>
-
-                  </div>
-
-                ) : (
-
-                  <p className="not-selected">
-                    Pickup location not selected
-                  </p>
-
-                )}
-
-
-                <div className="map-button-row">
-
-                  <button
-                    type="button"
-                    className="select-map-btn"
-                    onClick={() =>
-                      openLocationMap(
-                        "pickup"
-                      )
-                    }
-                  >
-                    🗺️ Select Pickup on Map
-                  </button>
-
-
-                  {booking.pickupLatitude !== null && (
-
-                    <button
-                      type="button"
-                      className="clear-map-btn"
-                      onClick={
-                        clearPickup
-                      }
-                    >
-                      Clear
-                    </button>
-
-                  )}
-
-                </div>
-
-              </div>
-
-
-              {/* =================================================
-                  DESTINATION
-              ================================================= */}
-
-              <div className="map-selection-card">
-
-                <div className="map-selection-header">
-
-                  <div>
-
-                    <span className="map-number destination-number">
-                      2
-                    </span>
-
-                    <div>
-
-                      <h3>
-                        Destination
-                      </h3>
-
-                      <p>
-                        Select destination
-                        directly on the map
-                      </p>
-
-                    </div>
-
-                  </div>
-
-
-                  {booking.destinationLatitude !== null && (
-
-                    <span className="selected-badge">
-                      ✓ Selected
-                    </span>
-
-                  )}
-
-                </div>
-
-
-                {booking.destinationLatitude !== null ? (
-
-                  <div className="coordinate-box">
-
-                    <span>
-                      Latitude
-                    </span>
-
-                    <strong>
-                      {
-                        booking.destinationLatitude
-                      }
-                    </strong>
-
-
-                    <span>
-                      Longitude
-                    </span>
-
-                    <strong>
-                      {
-                        booking.destinationLongitude
-                      }
-                    </strong>
-
-                  </div>
-
-                ) : (
-
-                  <p className="not-selected">
-                    Destination not selected
-                  </p>
-
-                )}
-
-
-                <div className="map-button-row">
-
-                  <button
-                    type="button"
-                    className="select-map-btn"
-                    onClick={() =>
-                      openLocationMap(
-                        "destination"
-                      )
-                    }
-                  >
-                    🗺️ Select Destination on Map
-                  </button>
-
-
-                  {booking.destinationLatitude !== null && (
-
-                    <button
-                      type="button"
-                      className="clear-map-btn"
-                      onClick={
-                        clearDestination
-                      }
-                    >
-                      Clear
-                    </button>
-
-                  )}
-
-                </div>
-
-              </div>
-
-
-              {/* =================================================
-                  NOTES
-              ================================================= */}
-
-              <div className="form-group full">
-
-                <label>
-                  Notes
-                </label>
-
-                <textarea
-                  name="notes"
-                  value={
-                    booking.notes
-                  }
-                  onChange={
-                    handleChange
-                  }
-                  rows="3"
-                  placeholder="Additional instructions..."
-                />
-
-              </div>
-
-
-              {/* =================================================
-                  SAVE
-              ================================================= */}
-
-              <div className="modal-actions">
-
-                <button
-                  type="button"
-                  className="cancel-btn"
-                  onClick={() =>
-                    setShowBooking(false)
-                  }
-                >
-                  Cancel
-                </button>
-
-
-                <button
-                  type="submit"
-                  className="save-btn"
-                >
-
-                  {
-                    editingBooking
-                      ? "Update Booking"
-                      : "Confirm Booking"
-                  }
-
-                </button>
-
-              </div>
-
-            </form>
-
+      <section className="transport-bookings-section">
+        <div className="section-heading">
+          <div>
+            <h2>Transport Bookings</h2>
+            <p>Recent transport booking records.</p>
           </div>
-
         </div>
 
-      )}
-
-
-      {/* =================================================
-          MAP SELECTOR
-      ================================================= */}
-
-      {showMap && (
-
-        <div className="map-overlay">
-
-          <div className="map-selector">
-
-            <div className="map-selector-header">
-
-              <div>
-
-                <h2>
-
-                  {
-                    selectionMode ===
-                    "pickup"
-
-                      ? "📍 Select Pickup Location"
-
-                      : "🎯 Select Destination"
-
-                  }
-
-                </h2>
-
-                <p>
-
-                  Click anywhere on the map
-                  to select the location.
-
-                </p>
-
-              </div>
-
-
-              <button
-                className="close-btn"
-                onClick={() =>
-                  setShowMap(false)
-                }
-              >
-                ×
-              </button>
-
-            </div>
-
-
-            <div className="map-instructions">
-
-              {selectionMode ===
-              "pickup"
-
-                ? "Click on the map to select the pickup point."
-
-                : "Click on the map to select the destination."}
-
-            </div>
-
-
-            <div className="leaflet-wrapper">
-
-              <MapContainer
-                center={
-                  booking.pickupLatitude
-                    ? [
-                        booking.pickupLatitude,
-                        booking.pickupLongitude,
-                      ]
-                    : DEFAULT_CENTER
-                }
-                zoom={12}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-
-                <TileLayer
-                  attribution='&copy; OpenStreetMap contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-
-
-                <BookingMapClick
-                  selectionMode={
-                    selectionMode
-                  }
-                  setBooking={
-                    setBooking
-                  }
-                />
-
-
-                {/* PICKUP */}
-
-                {booking.pickupLatitude !== null && (
-
-                  <Marker
-                    position={[
-                      booking.pickupLatitude,
-                      booking.pickupLongitude,
-                    ]}
-                    icon={
-                      pickupIcon
-                    }
-                  >
-
-                    <Popup>
-                      <strong>
-                        Pickup Location
-                      </strong>
-
-                      <br />
-
-                      {
-                        booking.pickupLatitude
-                      }
-
-                      ,
-
-                      {
-                        booking.pickupLongitude
-                      }
-
-                    </Popup>
-
-                  </Marker>
-
-                )}
-
-
-                {/* DESTINATION */}
-
-                {booking.destinationLatitude !== null && (
-
-                  <Marker
-                    position={[
-                      booking.destinationLatitude,
-                      booking.destinationLongitude,
-                    ]}
-                    icon={
-                      destinationIcon
-                    }
-                  >
-
-                    <Popup>
-                      <strong>
-                        Destination
-                      </strong>
-
-                      <br />
-
-                      {
-                        booking.destinationLatitude
-                      }
-
-                      ,
-
-                      {
-                        booking.destinationLongitude
-                      }
-
-                    </Popup>
-
-                  </Marker>
-
-                )}
-
-
-                {/* ROUTE LINE */}
-
-                {booking.pickupLatitude !== null &&
-                  booking.destinationLatitude !== null && (
-
-                    <Polyline
-                      positions={[
-                        [
-                          booking.pickupLatitude,
-                          booking.pickupLongitude,
-                        ],
-                        [
-                          booking.destinationLatitude,
-                          booking.destinationLongitude,
-                        ],
-                      ]}
-                    />
-
-                  )}
-
-              </MapContainer>
-
-            </div>
-
-
-            <div className="map-selected-summary">
-
-              <div>
-
-                <span>
-                  🟢 Pickup
-                </span>
-
-                <strong>
-
-                  {
-                    booking.pickupLatitude !== null
-
-                      ? `${booking.pickupLatitude}, ${booking.pickupLongitude}`
-
-                      : "Not selected"
-
-                  }
-
-                </strong>
-
-              </div>
-
-
-              <div>
-
-                <span>
-                  🔴 Destination
-                </span>
-
-                <strong>
-
-                  {
-                    booking.destinationLatitude !== null
-
-                      ? `${booking.destinationLatitude}, ${booking.destinationLongitude}`
-
-                      : "Not selected"
-
-                  }
-
-                </strong>
-
-              </div>
-
-            </div>
-
-
-            <div className="map-selector-actions">
-
-              <button
-                className="map-cancel-btn"
-                onClick={() =>
-                  setShowMap(false)
-                }
-              >
-                Back
-              </button>
-
-
-              <button
-                className="map-confirm-btn"
-                onClick={() => {
-
-                  if (
-                    selectionMode ===
-                    "pickup" &&
-                    booking.pickupLatitude !== null
-                  ) {
-
-                    setSelectionMode(
-                      "destination"
-                    );
-
-                    alert(
-                      "Pickup selected. Now click the map to select destination."
-                    );
-
-                    return;
-                  }
-
-
-                  if (
-                    selectionMode ===
-                    "destination" &&
-                    booking.destinationLatitude !== null
-                  ) {
-
-                    setShowMap(
-                      false
-                    );
-
-                    return;
-                  }
-
-
-                  setShowMap(
-                    false
-                  );
-
-                }}
-              >
-
-                Done
-
-              </button>
-
-            </div>
-
+        {loadingBookings ? (
+          <p className="loading-text">Loading bookings...</p>
+        ) : bookings.length === 0 ? (
+          <div className="empty-state">
+            <h3>No transport bookings found</h3>
+            <p>Bookings will appear here when available.</p>
           </div>
+        ) : (
+          <div className="transport-bookings-table-wrapper">
+            <table className="transport-bookings-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Customer</th>
+                  <th>Transporter</th>
+                  <th>Pickup</th>
+                  <th>Destination</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
 
-        </div>
-
-      )}
-
-
-      {/* =================================================
-          TRACK LOCATION
-      ================================================= */}
-
-      {location && (
-
-        <div
-          className="modal-overlay"
-          onClick={() =>
-            setLocation(null)
-          }
-        >
-
-          <div
-            className="location-modal"
-            onClick={e =>
-              e.stopPropagation()
-            }
-          >
-
-            <button
-              className="close-btn"
-              onClick={() =>
-                setLocation(null)
-              }
-            >
-              ×
-            </button>
-
-
-            <h2>
-              📍 Location
-            </h2>
-
-
-            <h3>
-              {
-                location.name
-              }
-            </h3>
-
-
-            <div className="coordinates">
-
-              <div>
-
-                <span>
-                  Latitude
-                </span>
-
-                <strong>
-                  {
-                    location.latitude
-                  }
-                </strong>
-
-              </div>
-
-
-              <div>
-
-                <span>
-                  Longitude
-                </span>
-
-                <strong>
-                  {
-                    location.longitude
-                  }
-                </strong>
-
-              </div>
-
-            </div>
-
-
-            <button
-              className="map-btn"
-              onClick={
-                openGoogleMaps
-              }
-            >
-              🗺️ Open in Google Maps
-            </button>
-
+              <tbody>
+                {bookings.map((booking, index) => (
+                  <tr key={booking.id ?? index}>
+                    <td>{booking.id ?? "-"}</td>
+                    <td>
+                      {booking.customerName ||
+                        booking.farmerName ||
+                        booking.buyerName ||
+                        booking.customerEmail ||
+                        "-"}
+                    </td>
+                    <td>
+                      {booking.transporterName ||
+                        booking.transporter?.name ||
+                        booking.transporterId ||
+                        "-"}
+                    </td>
+                    <td>
+                      {booking.pickupLocation ||
+                        booking.pickupAddress ||
+                        "-"}
+                    </td>
+                    <td>
+                      {booking.destination ||
+                        booking.destinationAddress ||
+                        booking.deliveryLocation ||
+                        "-"}
+                    </td>
+                    <td>
+                      <span
+                        className={`booking-status booking-status-${String(
+                          booking.status || "PENDING"
+                        ).toLowerCase()}`}
+                      >
+                        {booking.status || "PENDING"}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-
-        </div>
-
-      )}
-
+        )}
+      </section>
     </div>
   );
 }
-
-
-export default TransportManagement;
