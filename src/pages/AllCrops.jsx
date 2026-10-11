@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./AllCrops.css";
 
-const API = "http://localhost:8081/api";
-const SERVER = "http://localhost:8081";
+const API = "https://cropconnect-backend-exn7.onrender.com/api";
+const SERVER = "https://cropconnect-backend-exn7.onrender.com";
 
 // Read buyer information from either storage.
 const getBuyerValue = (key) =>
