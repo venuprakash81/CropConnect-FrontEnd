@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import "./TransportBookingPage.css";
 
-const API_BASE = "http://localhost:8081/api";
+const API_BASE = "https://cropconnect-backend-exn7.onrender.com/api";
 const BOOKING_API = `${API_BASE}/transporter-bookings`;
 const TRANSPORTER_API = `${API_BASE}/transporters`;
 
