@@ -89,7 +89,7 @@ const FarmerDashboard = () => {
     }
 
     return (
-        "http://localhost:8081/api/farmers/profile-photo/" +
+        "https://cropconnect-backend-exn7.onrender.com/api/farmers/profile-photo/" +
         encodeURIComponent(
             farmer.profilePhoto
         )
