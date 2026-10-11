@@ -12,7 +12,7 @@ function DeliveryDashboard() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8081/delivery_partners/1") // Change the URL if needed
+      .get("https://cropconnect-backend-exn7.onrender.com/delivery_partners/1") // Change the URL if needed
       .then((response) => {
         setDeliveryPartner(response.data);
       })
