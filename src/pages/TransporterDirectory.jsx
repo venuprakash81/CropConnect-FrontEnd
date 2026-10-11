@@ -10,7 +10,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./TransporterDirectory.css";
 
-const API_BASE = "http://localhost:8081/api";
+const API_BASE = "https://cropconnect-backend-exn7.onrender.com/api";
 
 const pickupIcon = L.divIcon({
   className: "location-marker pickup-marker",
