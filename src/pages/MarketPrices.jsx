@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./MarketPrices.css";
 
-const API_URL = "http://localhost:8081/api/market-prices";
+const API_URL = "https://cropconnect-backend-exn7.onrender.com/api/market-prices";
 
 const initialForm = {
   cropName: "",
