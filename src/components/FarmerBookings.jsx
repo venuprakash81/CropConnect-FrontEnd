@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./FarmerBookings.css";
 
-const API_BASE = "http://localhost:8081/api/crop-bookings";
+const API_BASE = "https://cropconnect-backend-exn7.onrender.com/api/crop-bookings";
 
 function formatCurrency(value) {
   const amount = Number(value);
