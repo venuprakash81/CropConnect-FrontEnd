@@ -55,8 +55,9 @@ import WarehouseRegister from "./pages/WarehouseRegister";
 import AllCrops from "./pages/AllCrops";
 import FarmerBookings from "./pages/FarmerBookings";
 import FarmerEarnings from "./pages/FarmerEarnings";
+
 import BuyerPayments from "./pages/BuyerPayments";
-import WarehouseDetails from "./pages/WarehouseDetails";
+
 import BuyerProfile from "./pages/BuyerProfile";
 import BuyerEditProfile from "./pages/BuyerEditProfile";
 import BuyerChangePassword from "./pages/BuyerChangePassword";
@@ -374,10 +375,7 @@ function App() {
         />
            <Route path="/farmer-profile" element={<FarmerProfile />} />
 
-        <Route
-          path="/warehouse-details/:id"
-          element={<WarehouseDetails />}
-        />
+      
 <Route path="/farmer-bookings" element={<FarmerBookings />} />
         {/* =================================================
             TRANSPORTER BOOKINGS
