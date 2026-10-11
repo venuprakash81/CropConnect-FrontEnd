@@ -40,7 +40,7 @@ function SellCrop() {
         try {
 
             const response = await axios.get(
-                "http://localhost:8081/crop/all"
+                "https://cropconnect-backend-exn7.onrender.com/crop/all"
             );
 
             setMyCrops(response.data);
