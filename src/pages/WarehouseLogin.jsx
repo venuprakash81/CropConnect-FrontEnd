@@ -44,7 +44,7 @@ const WarehouseLogin = () => {
     try {
 
       const response = await fetch(
-        "http://localhost:8081/api/auth/warehouse-login",
+        "https://cropconnect-backend-exn7.onrender.com/api/auth/warehouse-login",
         {
           method: "POST",
 
