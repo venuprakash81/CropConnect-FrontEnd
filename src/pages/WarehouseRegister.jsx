@@ -16,7 +16,7 @@ import "./WarehouseRegister.css";
 // =====================================================
 // API
 // =====================================================
-const API = "http://localhost:8081/api";
+const API = "https://cropconnect-backend-exn7.onrender.com/api";
 const DEFAULT_POSITION = { lat: 17.385, lng: 78.4867 };
 
 // =====================================================
