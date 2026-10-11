@@ -23,7 +23,7 @@ function CropDetails() {
 
             const response = await axios.get(
 
-                "http://localhost:8081/crop/" + id
+                "https://cropconnect-backend-exn7.onrender.com/crop/" + id
 
             );
 
@@ -51,7 +51,7 @@ function CropDetails() {
 
             await axios.delete(
 
-                "http://localhost:8081/crop/delete/" + id
+                "https://cropconnect-backend-exn7.onrender.com/crop/delete/" + id
 
             );
 
@@ -90,7 +90,7 @@ function CropDetails() {
 
                 <img
 
-                    src={`http://localhost:8081/uploads/${crop.image}`}
+                    src={`https://cropconnect-backend-exn7.onrender.com/uploads/${crop.image}`}
 
                     alt={crop.cropName}
 
