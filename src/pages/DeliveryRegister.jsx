@@ -79,7 +79,7 @@ function DeliveryRegister() {
         try {
 
             await axios.post(
-                "http://localhost:8081/delivery/register",
+                "https://cropconnect-backend-exn7.onrender.com/delivery/register",
                 formData,
                 {
                     headers: {
