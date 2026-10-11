@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -12,7 +13,6 @@ import "leaflet/dist/leaflet.css";
 import "./TransporterBookings.css";
 
 const API = "http://localhost:8081/api";
-
 const defaultCenter = [17.3850, 78.4867];
 
 const pickupIcon = new L.Icon({
@@ -35,880 +35,534 @@ const destinationIcon = new L.Icon({
   popupAnchor: [1, -34],
 });
 
-export default function TransporterBookings() {
-
-  const [transporterId, setTransporterId] =
-    useState(null);
-
-  const [bookings, setBookings] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-
-  const [error, setError] = useState("");
-
-  const [selectedBooking, setSelectedBooking] =
-    useState(null);
-
-  // =====================================================
-  // GET TRANSPORTER ID
-  // =====================================================
-
-  useEffect(() => {
-
-    /*
-      Change these localStorage keys according
-      to your transporter login code.
-    */
-
-    const storedId =
-      localStorage.getItem("transporterId");
-
-    if (storedId) {
-
-      setTransporterId(storedId);
-
-    } else {
-
-      // If your login stores the complete transporter object
-      const transporterData =
-        localStorage.getItem("transporter");
-
-      if (transporterData) {
-
-        try {
-
-          const transporter =
-            JSON.parse(transporterData);
-
-          if (transporter.id) {
-            setTransporterId(transporter.id);
-          }
-
-        } catch (error) {
-
-          console.error(
-            "Invalid transporter data",
-            error
-          );
-
+function readStoredUser() {
+  for (const storage of [localStorage, sessionStorage]) {
+    for (const key of ["transporter", "user", "loggedInUser"]) {
+      try {
+        const raw = storage.getItem(key);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === "object") return parsed;
         }
-
+      } catch {
+        // The storage value may be a plain string rather than JSON.
       }
-
     }
+  }
 
-  }, []);
+  return {};
+}
 
-  // =====================================================
-  // LOAD THIS TRANSPORTER'S BOOKINGS
-  // =====================================================
+function getCoordinates(latitude, longitude) {
+  if (
+    latitude === undefined ||
+    latitude === null ||
+    longitude === undefined ||
+    longitude === null ||
+    latitude === "" ||
+    longitude === ""
+  ) {
+    return null;
+  }
 
-  useEffect(() => {
+  const lat = Number(latitude);
+  const lng = Number(longitude);
 
-    if (!transporterId) {
-      return;
-    }
+  if (
+    !Number.isFinite(lat) ||
+    !Number.isFinite(lng) ||
+    lat < -90 ||
+    lat > 90 ||
+    lng < -180 ||
+    lng > 180 ||
+    (lat === 0 && lng === 0)
+  ) {
+    return null;
+  }
 
-    loadBookings();
+  return [lat, lng];
+}
 
-  }, [transporterId]);
+function getBookingCoordinates(booking) {
+  const pickup = getCoordinates(
+    booking.pickupLatitude ?? booking.pickupLat ?? booking.fromLatitude,
+    booking.pickupLongitude ?? booking.pickupLng ?? booking.fromLongitude
+  );
 
-  const loadBookings = async () => {
+  const destination = getCoordinates(
+    booking.destinationLatitude ??
+      booking.dropLatitude ??
+      booking.toLatitude,
+    booking.destinationLongitude ??
+      booking.dropLongitude ??
+      booking.toLongitude
+  );
+
+  return { pickup, destination };
+}
+
+function getStatusClass(status) {
+  return String(status || "PENDING")
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]/g, "-");
+}
+
+export default function TransporterBookings() {
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [selectedBooking, setSelectedBooking] = useState(null);
+
+  const transporter = useMemo(() => readStoredUser(), []);
+
+  const transporterId =
+    transporter.id ??
+    transporter.transporterId ??
+    localStorage.getItem("transporterId") ??
+    sessionStorage.getItem("transporterId");
+
+  const loadBookings = useCallback(async () => {
+    setLoading(true);
+    setError("");
 
     try {
-
-      setLoading(true);
-      setError("");
+      /*
+       * IMPORTANT:
+       * This assumes your backend supports:
+       * GET /api/transport-bookings/transporter/{transporterId}
+       *
+       * If your controller uses a different endpoint, replace this URL
+       * with the exact mapping from your TransportBookingController.
+       */
+      if (!transporterId) {
+        setBookings([]);
+        setError(
+          "Transporter ID was not found. Please log in again."
+        );
+        return;
+      }
 
       const response = await fetch(
-        `${API}/transport-bookings/transporter/${transporterId}`
+        `${API}/transport-bookings/transporter/${encodeURIComponent(
+          transporterId
+        )}`
       );
 
       if (!response.ok) {
-
         throw new Error(
-          "Failed to load transporter bookings"
+          `Unable to load bookings (HTTP ${response.status}). Check the backend endpoint.`
         );
-
       }
 
       const data = await response.json();
-
-      console.log(
-        "THIS TRANSPORTER BOOKINGS:",
-        data
-      );
-
-      setBookings(
-        Array.isArray(data) ? data : []
-      );
-
-    } catch (error) {
-
-      console.error(error);
-
-      setError(
-        "Unable to load your transport bookings."
-      );
-
+      setBookings(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Transporter bookings error:", err);
+      setBookings([]);
+      setError(err.message || "Unable to load transport bookings.");
     } finally {
-
       setLoading(false);
-
     }
+  }, [transporterId]);
 
+  useEffect(() => {
+    loadBookings();
+  }, [loadBookings]);
+
+  const filteredBookings = useMemo(() => {
+    const query = search.trim().toLowerCase();
+
+    return bookings.filter((booking) => {
+      const matchesSearch = [
+        booking.id,
+        booking.customerName,
+        booking.farmerName,
+        booking.buyerName,
+        booking.customerEmail,
+        booking.pickupLocation,
+        booking.pickupAddress,
+        booking.destination,
+        booking.destinationAddress,
+        booking.status,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(query);
+
+      const matchesStatus =
+        statusFilter === "ALL" ||
+        String(booking.status || "PENDING").toUpperCase() ===
+          statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [bookings, search, statusFilter]);
+
+  const openBookingOnMap = (booking) => {
+    setSelectedBooking(booking);
   };
 
-  // =====================================================
-  // DELETE BOOKING
-  // =====================================================
-
-  const deleteBooking = async (id) => {
-
-    const confirmDelete =
-      window.confirm(
-        "Are you sure you want to delete this booking?"
-      );
-
-    if (!confirmDelete) {
-      return;
-    }
+  const updateStatus = async (booking, status) => {
+    setError("");
+    setMessage("");
 
     try {
-
+      /*
+       * Assumes the backend supports:
+       * PUT /api/transport-bookings/{id}/status?status=APPROVED
+       *
+       * Match this URL to your existing Spring Boot controller.
+       */
       const response = await fetch(
-        `${API}/transport-bookings/${id}`,
-        {
-          method: "DELETE",
-        }
+        `${API}/transport-bookings/${encodeURIComponent(
+          booking.id
+        )}/status?status=${encodeURIComponent(status)}`,
+        { method: "PUT" }
       );
 
       if (!response.ok) {
         throw new Error(
-          "Failed to delete booking"
+          `Unable to update booking status (HTTP ${response.status}).`
         );
       }
 
-      alert(
-        "Booking deleted successfully"
-      );
-
-      loadBookings();
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-        "Failed to delete booking"
-      );
-
+      setMessage(`Booking ${status.toLowerCase()} successfully.`);
+      await loadBookings();
+    } catch (err) {
+      console.error("Booking status update error:", err);
+      setError(err.message || "Unable to update booking status.");
     }
-
   };
 
-  // =====================================================
-  // TRACK TRANSPORTER
-  // =====================================================
+  const activeBooking = filteredBookings.find(
+    (booking) => booking.id === selectedBooking?.id
+  );
 
-  const trackTransporter = () => {
+  const displayedBooking = activeBooking || selectedBooking;
+  const coordinates = displayedBooking
+    ? getBookingCoordinates(displayedBooking)
+    : { pickup: null, destination: null };
 
-    window.open(
-      `https://www.google.com/maps?q=${defaultCenter[0]},${defaultCenter[1]}`,
-      "_blank"
-    );
+  const mapCenter =
+    coordinates.pickup ||
+    coordinates.destination ||
+    defaultCenter;
 
-  };
-
-  // =====================================================
-  // OPEN PICKUP
-  // =====================================================
-
-  const openPickup = (booking) => {
-
-    if (
-      booking.pickupLatitude == null ||
-      booking.pickupLongitude == null
-    ) {
-
-      alert(
-        "Pickup location is not available."
-      );
-
-      return;
-
-    }
-
-    window.open(
-      `https://www.google.com/maps?q=${booking.pickupLatitude},${booking.pickupLongitude}`,
-      "_blank"
-    );
-
-  };
-
-  // =====================================================
-  // OPEN DESTINATION
-  // =====================================================
-
-  const openDestination = (booking) => {
-
-    if (
-      booking.destinationLatitude == null ||
-      booking.destinationLongitude == null
-    ) {
-
-      alert(
-        "Destination location is not available."
-      );
-
-      return;
-
-    }
-
-    window.open(
-      `https://www.google.com/maps?q=${booking.destinationLatitude},${booking.destinationLongitude}`,
-      "_blank"
-    );
-
-  };
-
-  // =====================================================
-  // STATUS
-  // =====================================================
-
-  const getStatusClass = (status) => {
-
-    switch (
-      status?.toUpperCase()
-    ) {
-
-      case "CONFIRMED":
-        return "confirmed";
-
-      case "ACCEPTED":
-        return "accepted";
-
-      case "COMPLETED":
-        return "completed";
-
-      case "CANCELLED":
-        return "cancelled";
-
-      default:
-        return "pending";
-
-    }
-
-  };
-
-  // =====================================================
-  // NO TRANSPORTER ID
-  // =====================================================
-
-  if (!transporterId) {
-
-    return (
-      <div className="transporter-bookings-page">
-
-        <div className="booking-error">
-
-          <h2>Transporter Login Required</h2>
-
-          <p>
-            Transporter ID was not found.
-          </p>
-
-          <p>
-            Please login again.
-          </p>
-
-        </div>
-
-      </div>
-    );
-
-  }
-
-  // =====================================================
-  // UI
-  // =====================================================
+  const routePositions =
+    coordinates.pickup && coordinates.destination
+      ? [coordinates.pickup, coordinates.destination]
+      : [];
 
   return (
-
     <div className="transporter-bookings-page">
-
-      {/* =================================================
-          HEADER
-      ================================================= */}
-
-      <div className="bookings-header">
-
+      <header className="transporter-bookings-header">
         <div>
-
-          <span className="header-label">
-            TRANSPORTER DASHBOARD
-          </span>
-
-          <h1>
-            My Transport Bookings
-          </h1>
-
-          <p>
-            All transport bookings assigned to you
-          </p>
-
+          <h1>My Transport Bookings</h1>
+          <p>View your transport requests and manage booking status.</p>
         </div>
 
-        <div className="booking-count">
+        <button
+          type="button"
+          className="refresh-btn"
+          onClick={loadBookings}
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Refresh"}
+        </button>
+      </header>
 
-          <strong>
-            {bookings.length}
-          </strong>
-
-          <span>
-            My Bookings
-          </span>
-
+      {message && (
+        <div className="success-message" role="status">
+          {message}
+          <button type="button" onClick={() => setMessage("")}>
+            ×
+          </button>
         </div>
-
-      </div>
-
-      {/* =================================================
-          TRANSPORTER ID
-      ================================================= */}
-
-      <div className="transporter-info">
-
-        <div className="info-icon">
-          🚚
-        </div>
-
-        <div>
-
-          <span>
-            Transporter ID
-          </span>
-
-          <strong>
-            {transporterId}
-          </strong>
-
-        </div>
-
-      </div>
-
-      {/* =================================================
-          ERROR
-      ================================================= */}
+      )}
 
       {error && (
-
-        <div className="booking-error">
+        <div className="error-message" role="alert">
           {error}
+          <button type="button" onClick={() => setError("")}>
+            ×
+          </button>
         </div>
-
       )}
 
-      {/* =================================================
-          LOADING
-      ================================================= */}
-
-      {loading ? (
-
-        <div className="loading-card">
-
-          <div className="loader"></div>
-
-          <p>
-            Loading your bookings...
-          </p>
-
+      <section className="transporter-bookings-summary">
+        <div className="summary-card">
+          <span>Total Bookings</span>
+          <strong>{bookings.length}</strong>
         </div>
 
-      ) : bookings.length === 0 ? (
+        <div className="summary-card">
+          <span>Pending</span>
+          <strong>
+            {
+              bookings.filter(
+                (booking) =>
+                  String(booking.status || "PENDING").toUpperCase() ===
+                  "PENDING"
+              ).length
+            }
+          </strong>
+        </div>
 
-        <div className="empty-card">
+        <div className="summary-card">
+          <span>Approved</span>
+          <strong>
+            {
+              bookings.filter(
+                (booking) =>
+                  String(booking.status || "").toUpperCase() ===
+                  "APPROVED"
+              ).length
+            }
+          </strong>
+        </div>
+      </section>
 
-          <div className="empty-icon">
-            🚚
+      <section className="transporter-bookings-map-section">
+        <div className="section-heading">
+          <div>
+            <h2>Pickup and Destination Map</h2>
+            <p>
+              Select a booking below to view its available coordinates.
+            </p>
           </div>
-
-          <h2>
-            No Transport Bookings
-          </h2>
-
-          <p>
-            You currently don't have any
-            transport bookings assigned to you.
-          </p>
-
         </div>
 
-      ) : (
-
-        <div className="bookings-container">
-
-          {bookings.map((booking) => (
-
-            <div
-              className="transporter-booking-card"
-              key={booking.id}
-            >
-
-              {/* =================================================
-                  HEADER
-              ================================================= */}
-
-              <div className="card-header">
-
-                <div>
-
-                  <span className="booking-number">
-                    BOOKING #{booking.id}
-                  </span>
-
-                  <h2>
-                    {booking.goodsName ||
-                      "Transport Booking"}
-                  </h2>
-
-                </div>
-
-                <span
-                  className={`status ${getStatusClass(
-                    booking.status
-                  )}`}
-                >
-                  {booking.status ||
-                    "PENDING"}
-                </span>
-
-              </div>
-
-              {/* =================================================
-                  CUSTOMER
-              ================================================= */}
-
-              <div className="customer-section">
-
-                <div className="customer-avatar">
-                  {booking.userName
-                    ? booking.userName
-                        .charAt(0)
-                        .toUpperCase()
-                    : "U"}
-                </div>
-
-                <div>
-
-                  <span>
-                    {booking.userType ||
-                      "USER"}
-                  </span>
-
-                  <h3>
-                    {booking.userName ||
-                      "Unknown User"}
-                  </h3>
-
-                  <p>
-                    {booking.userEmail ||
-                      "No email"}
-                  </p>
-
-                  <p>
-                    {booking.userPhone ||
-                      "No phone"}
-                  </p>
-
-                </div>
-
-              </div>
-
-              {/* =================================================
-                  BOOKING DETAILS
-              ================================================= */}
-
-              <div className="details-grid">
-
-                <div className="detail-item">
-
-                  <span>
-                    User ID
-                  </span>
-
-                  <strong>
-                    {booking.userId || "-"}
-                  </strong>
-
-                </div>
-
-                <div className="detail-item">
-
-                  <span>
-                    Goods / Crop
-                  </span>
-
-                  <strong>
-                    {booking.goodsName || "-"}
-                  </strong>
-
-                </div>
-
-                <div className="detail-item">
-
-                  <span>
-                    Quantity
-                  </span>
-
-                  <strong>
-                    {booking.quantity || "-"}{" "}
-                    {booking.quantityUnit || ""}
-                  </strong>
-
-                </div>
-
-                <div className="detail-item">
-
-                  <span>
-                    Booking Date
-                  </span>
-
-                  <strong>
-                    {booking.bookingDate || "-"}
-                  </strong>
-
-                </div>
-
-              </div>
-
-              {/* =================================================
-                  LOCATIONS
-              ================================================= */}
-
-              <div className="locations">
-
-                <div className="location-card pickup-card">
-
-                  <div className="location-dot pickup-dot">
-                    🟢
-                  </div>
-
-                  <div>
-
-                    <span>
-                      PICKUP
-                    </span>
-
-                    <strong>
-
-                      {booking.pickupLatitude != null &&
-                      booking.pickupLongitude != null
-                        ? `${Number(
-                            booking.pickupLatitude
-                          ).toFixed(6)}, ${Number(
-                            booking.pickupLongitude
-                          ).toFixed(6)}`
-                        : "Not selected"}
-
-                    </strong>
-
-                  </div>
-
-                </div>
-
-                <div className="arrow">
-                  →
-                </div>
-
-                <div className="location-card destination-card">
-
-                  <div className="location-dot">
-                    🔴
-                  </div>
-
-                  <div>
-
-                    <span>
-                      DESTINATION
-                    </span>
-
-                    <strong>
-
-                      {booking.destinationLatitude != null &&
-                      booking.destinationLongitude != null
-                        ? `${Number(
-                            booking.destinationLatitude
-                          ).toFixed(6)}, ${Number(
-                            booking.destinationLongitude
-                          ).toFixed(6)}`
-                        : "Not selected"}
-
-                    </strong>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              {/* =================================================
-                  NOTES
-              ================================================= */}
-
-              {booking.notes && (
-
-                <div className="notes">
-
-                  <span>
-                    NOTES
-                  </span>
-
-                  <p>
-                    {booking.notes}
-                  </p>
-
-                </div>
-
-              )}
-
-              {/* =================================================
-                  ACTIONS
-              ================================================= */}
-
-              <div className="actions">
-
-                <button
-                  className="route-btn"
-                  onClick={() =>
-                    setSelectedBooking(
-                      booking
-                    )
-                  }
-                >
-                  🗺️ View Route
-                </button>
-
-                <button
-                  className="track-btn"
-                  onClick={
-                    trackTransporter
-                  }
-                >
-                  📍 Track Me
-                </button>
-
-                <button
-                  className="pickup-btn"
-                  onClick={() =>
-                    openPickup(booking)
-                  }
-                >
-                  🟢 Pickup
-                </button>
-
-                <button
-                  className="destination-btn"
-                  onClick={() =>
-                    openDestination(
-                      booking
-                    )
-                  }
-                >
-                  🔴 Destination
-                </button>
-
-                <button
-                  className="delete-btn"
-                  onClick={() =>
-                    deleteBooking(
-                      booking.id
-                    )
-                  }
-                >
-                  🗑️ Delete
-                </button>
-
-              </div>
-
-            </div>
-
-          ))}
-
-        </div>
-
-      )}
-
-      {/* =================================================
-          ROUTE MAP
-      ================================================= */}
-
-      {selectedBooking && (
-
-        <div className="map-overlay">
-
-          <div className="map-container">
-
-            <div className="map-header">
-
-              <div>
-
-                <h2>
-                  Booking #{selectedBooking.id}
-                </h2>
-
-                <p>
-                  Pickup → Destination
-                </p>
-
-              </div>
-
-              <button
-                onClick={() =>
-                  setSelectedBooking(null)
-                }
-                className="close-map"
+        <div className="transporter-bookings-map">
+          <MapContainer
+            key={`${mapCenter[0]}-${mapCenter[1]}`}
+            center={mapCenter}
+            zoom={11}
+            scrollWheelZoom
+            style={{ width: "100%", height: "100%", minHeight: "350px" }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+
+            {coordinates.pickup && (
+              <Marker position={coordinates.pickup} icon={pickupIcon}>
+                <Popup>
+                  <strong>Pickup Location</strong>
+                  <br />
+                  {displayedBooking?.pickupLocation ||
+                    displayedBooking?.pickupAddress ||
+                    "Pickup"}
+                </Popup>
+              </Marker>
+            )}
+
+            {coordinates.destination && (
+              <Marker
+                position={coordinates.destination}
+                icon={destinationIcon}
               >
-                ×
-              </button>
+                <Popup>
+                  <strong>Destination</strong>
+                  <br />
+                  {displayedBooking?.destination ||
+                    displayedBooking?.destinationAddress ||
+                    "Destination"}
+                </Popup>
+              </Marker>
+            )}
 
-            </div>
-
-            <MapContainer
-              center={
-                selectedBooking.pickupLatitude != null
-                  ? [
-                      Number(
-                        selectedBooking.pickupLatitude
-                      ),
-                      Number(
-                        selectedBooking.pickupLongitude
-                      ),
-                    ]
-                  : defaultCenter
-              }
-              zoom={12}
-              className="route-map"
-            >
-
-              <TileLayer
-                attribution="&copy; OpenStreetMap contributors"
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-
-              {selectedBooking.pickupLatitude != null &&
-                selectedBooking.pickupLongitude != null && (
-
-                  <Marker
-                    position={[
-                      Number(
-                        selectedBooking.pickupLatitude
-                      ),
-                      Number(
-                        selectedBooking.pickupLongitude
-                      ),
-                    ]}
-                    icon={pickupIcon}
-                  >
-
-                    <Popup>
-                      <strong>
-                        Pickup Location
-                      </strong>
-
-                      <br />
-
-                      {
-                        selectedBooking.pickupLatitude
-                      }
-                      ,{" "}
-                      {
-                        selectedBooking.pickupLongitude
-                      }
-
-                    </Popup>
-
-                  </Marker>
-
-                )}
-
-              {selectedBooking.destinationLatitude != null &&
-                selectedBooking.destinationLongitude != null && (
-
-                  <Marker
-                    position={[
-                      Number(
-                        selectedBooking.destinationLatitude
-                      ),
-                      Number(
-                        selectedBooking.destinationLongitude
-                      ),
-                    ]}
-                    icon={destinationIcon}
-                  >
-
-                    <Popup>
-                      <strong>
-                        Destination
-                      </strong>
-
-                      <br />
-
-                      {
-                        selectedBooking.destinationLatitude
-                      }
-                      ,{" "}
-                      {
-                        selectedBooking.destinationLongitude
-                      }
-
-                    </Popup>
-
-                  </Marker>
-
-                )}
-
-              {selectedBooking.pickupLatitude != null &&
-                selectedBooking.pickupLongitude != null &&
-                selectedBooking.destinationLatitude != null &&
-                selectedBooking.destinationLongitude != null && (
-
-                  <Polyline
-                    positions={[
-                      [
-                        Number(
-                          selectedBooking.pickupLatitude
-                        ),
-                        Number(
-                          selectedBooking.pickupLongitude
-                        ),
-                      ],
-                      [
-                        Number(
-                          selectedBooking.destinationLatitude
-                        ),
-                        Number(
-                          selectedBooking.destinationLongitude
-                        ),
-                      ],
-                    ]}
-                    pathOptions={{
-                      color: "#2563eb",
-                      weight: 5,
-                    }}
-                  />
-
-                )}
-
-            </MapContainer>
-
-          </div>
-
+            {routePositions.length === 2 && (
+              <Polyline positions={routePositions} />
+            )}
+          </MapContainer>
         </div>
 
-      )}
+        {displayedBooking &&
+          !coordinates.pickup &&
+          !coordinates.destination && (
+            <p className="map-info-message">
+              This booking does not contain valid pickup or destination
+              coordinates. The map is showing Hyderabad as the default view.
+            </p>
+          )}
+      </section>
 
+      <section className="transporter-bookings-list-section">
+        <div className="section-heading">
+          <div>
+            <h2>Booking Details</h2>
+            <p>Search and filter your transport bookings.</p>
+          </div>
+        </div>
+
+        <div className="booking-filters">
+          <input
+            type="search"
+            className="booking-search"
+            placeholder="Search bookings..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+
+          <select
+            className="booking-status-filter"
+            value={statusFilter}
+            onChange={(event) => setStatusFilter(event.target.value)}
+          >
+            <option value="ALL">All Statuses</option>
+            <option value="PENDING">Pending</option>
+            <option value="APPROVED">Approved</option>
+            <option value="REJECTED">Rejected</option>
+            <option value="COMPLETED">Completed</option>
+            <option value="CANCELLED">Cancelled</option>
+          </select>
+        </div>
+
+        {loading ? (
+          <div className="empty-state">
+            <p>Loading your bookings...</p>
+          </div>
+        ) : filteredBookings.length === 0 ? (
+          <div className="empty-state">
+            <h3>No bookings found</h3>
+            <p>Try changing your search or status filter.</p>
+          </div>
+        ) : (
+          <div className="transporter-bookings-grid">
+            {filteredBookings.map((booking, index) => {
+              const status = String(
+                booking.status || "PENDING"
+              ).toUpperCase();
+
+              const bookingCoordinates =
+                getBookingCoordinates(booking);
+
+              return (
+                <article
+                  className="transporter-booking-card"
+                  key={booking.id ?? index}
+                >
+                  <div className="booking-card-header">
+                    <div>
+                      <span>BOOKING ID</span>
+                      <h3>#{booking.id ?? index + 1}</h3>
+                    </div>
+
+                    <span
+                      className={`booking-status booking-status-${getStatusClass(
+                        status
+                      )}`}
+                    >
+                      {status}
+                    </span>
+                  </div>
+
+                  <div className="booking-card-details">
+                    <p>
+                      <strong>Customer:</strong>{" "}
+                      {booking.customerName ||
+                        booking.farmerName ||
+                        booking.buyerName ||
+                        "Not provided"}
+                    </p>
+
+                    <p>
+                      <strong>Phone:</strong>{" "}
+                      {booking.customerPhone ||
+                        booking.phone ||
+                        "Not provided"}
+                    </p>
+
+                    <p>
+                      <strong>Pickup:</strong>{" "}
+                      {booking.pickupLocation ||
+                        booking.pickupAddress ||
+                        "Not provided"}
+                    </p>
+
+                    <p>
+                      <strong>Destination:</strong>{" "}
+                      {booking.destination ||
+                        booking.destinationAddress ||
+                        "Not provided"}
+                    </p>
+
+                    <p>
+                      <strong>Crop / Goods:</strong>{" "}
+                      {booking.cropName || booking.goodsName || "-"}
+                    </p>
+
+                    <p>
+                      <strong>Quantity:</strong>{" "}
+                      {booking.quantity ?? "-"}{" "}
+                      {booking.quantityUnit || ""}
+                    </p>
+
+                    <p>
+                      <strong>Booking Date:</strong>{" "}
+                      {booking.bookingDate ||
+                        booking.createdAt ||
+                        "-"}
+                    </p>
+                  </div>
+
+                  <div className="booking-card-actions">
+                    <button
+                      type="button"
+                      className="view-booking-btn"
+                      onClick={() => openBookingOnMap(booking)}
+                    >
+                      View Route
+                    </button>
+
+                    {status === "PENDING" && (
+                      <>
+                        <button
+                          type="button"
+                          className="approve-button"
+                          onClick={() => updateStatus(booking, "APPROVED")}
+                        >
+                          Approve
+                        </button>
+
+                        <button
+                          type="button"
+                          className="reject-button"
+                          onClick={() => updateStatus(booking, "REJECTED")}
+                        >
+                          Reject
+                        </button>
+                      </>
+                    )}
+
+                    {status === "APPROVED" && (
+                      <button
+                        type="button"
+                        className="complete-button"
+                        onClick={() => updateStatus(booking, "COMPLETED")}
+                      >
+                        Mark Completed
+                      </button>
+                    )}
+                  </div>
+
+                  {!bookingCoordinates.pickup &&
+                    !bookingCoordinates.destination && (
+                      <p className="map-info-message">
+                        Coordinates are not available for this booking.
+                      </p>
+                    )}
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </section>
     </div>
-
   );
 }
