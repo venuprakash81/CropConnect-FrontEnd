@@ -4,7 +4,6 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-
 import { useEffect } from "react";
 
 // =====================================================
@@ -12,7 +11,6 @@ import { useEffect } from "react";
 // =====================================================
 import FarmerCrops from "./pages/FarmerCrops";
 import FarmerProfile from "./pages/FarmerProfile";
-
 import AdminWarehouses from "./pages/AdminWarehouses";
 import AdminCrops from "./pages/AdminCrops";
 import AdminBuyers from "./pages/AdminBuyers";
@@ -44,7 +42,7 @@ import WarehouseEditProfile from "./pages/WarehouseEditProfile";
 import WarehouseChangePassword from "./pages/WarehouseChangePassword";
 
 // =====================================================
-// REGISTRATION / OTHER PAGES
+// REGISTRATION AND OTHER PAGES
 // =====================================================
 import AllBuyers from "./pages/AllBuyers";
 import AdminMarketPrices from "./pages/AdminMarketPrices";
@@ -55,14 +53,13 @@ import WarehouseRegister from "./pages/WarehouseRegister";
 import AllCrops from "./pages/AllCrops";
 import FarmerBookings from "./pages/FarmerBookings";
 import FarmerEarnings from "./pages/FarmerEarnings";
-
 import BuyerPayments from "./pages/BuyerPayments";
-
 import BuyerProfile from "./pages/BuyerProfile";
 import BuyerEditProfile from "./pages/BuyerEditProfile";
 import BuyerChangePassword from "./pages/BuyerChangePassword";
+
 // =====================================================
-// LOGIN / TRANSPORT PAGES
+// LOGIN AND TRANSPORT PAGES
 // =====================================================
 import TransportManagement from "./pages/TransportManagement";
 import FarmerLogin from "./pages/FarmerLogin";
@@ -71,7 +68,6 @@ import AllTransporters from "./pages/AllTransporters";
 import BuyerLogin from "./pages/BuyerLogin";
 import TransporterLogin from "./pages/TransporterLogin";
 import WarehouseLogin from "./pages/WarehouseLogin";
-import ProtectedRoute from "./components/ProtectedRoute";
 import CropConnectAI from "./pages/CropConnectAI";
 import TransporterPayments from "./pages/TransporterPayments";
 
@@ -88,246 +84,154 @@ import AdminTransporters from "./pages/AdminTransporters";
 import MyWarehouseBookings from "./pages/MyWarehouseBookings";
 
 // =====================================================
-// PAGE TITLE COMPONENT
+// AUTOMATIC PAGE TITLE
 // =====================================================
-
 function PageTitle() {
   const location = useLocation();
 
   useEffect(() => {
     const titles = {
+      // Main pages
+      "/": "Home",
+      "/about": "About Us",
+      "/features": "Features",
+      "/how-it-works": "How It Works",
+      "/contact": "Contact Us",
 
-      // =================================================
-      // MAIN PAGES
-      // =================================================
+      // Registration
+      "/farmer-register": "Farmer Registration",
+      "/buyer-register": "Buyer Registration",
+      "/transport-register": "Transporter Registration",
+      "/warehouse-register": "Warehouse Registration",
 
-      "/":
-        "CropConnect | Home",
+      // Login
+      "/admin/login": "Admin Login",
+      "/farmer-login": "Farmer Login",
+      "/buyer-login": "Buyer Login",
+      "/transporter-login": "Transporter Login",
+      "/transporter/login": "Transporter Login",
+      "/warehouse-login": "Warehouse Login",
 
-      "/about":
-        "CropConnect | About",
+      // Dashboards
+      "/farmer-dashboard": "Farmer Dashboard",
+      "/buyer-dashboard": "Buyer Dashboard",
+      "/transporter/dashboard": "Transporter Dashboard",
+      "/warehouse/dashboard": "Warehouse Dashboard",
+      "/admin/dashboard": "Admin Dashboard",
 
-      "/features":
-        "CropConnect | Features",
+      // Farmer pages
+      "/my-crops": "My Crops",
+      "/add-crop": "Add Crop",
+      "/all-farmers": "All Farmers",
+      "/farmer-profile": "Farmer Profile",
+      "/edit-profile": "Edit Farmer Profile",
+      "/change-password": "Change Password",
+      "/farmer-bookings": "Farmer Bookings",
+      "/farmer-orders": "Farmer Orders",
+      "/farmer-earnings": "Farmer Earnings",
+      "/farmer-transport-booking": "Farmer Transport Booking",
 
-      "/how-it-works":
-        "CropConnect | How It Works",
+      // Buyer pages
+      "/all-buyers": "All Buyers",
+      "/all-crops": "Explore Crops",
+      "/my-orders": "My Orders",
+      "/buyer-profile": "Buyer Profile",
+      "/buyer-edit-profile": "Edit Buyer Profile",
+      "/buyer-change-password": "Change Buyer Password",
+      "/buyer-payments": "Buyer Payments",
+      "/buyer-transport-booking": "Buyer Transport Booking",
 
-      "/contact":
-        "CropConnect | Contact",
+      // Transporter pages
+      "/all-transporters": "All Transporters",
+      "/transporter-bookings": "Transporter Bookings",
+      "/transporter-payments": "Transporter Payments",
+      "/transport-management": "Transport Management",
+      "/transporter/profile": "Transporter Profile",
+      "/transporter-edit-profile": "Edit Transporter Profile",
+      "/transporter-change-password": "Change Transporter Password",
 
-      // =================================================
-      // REGISTRATION PAGES
-      // =================================================
+      // Warehouse pages
+      "/book-warehouse": "Book a Warehouse",
+      "/my-warehouse-bookings": "My Warehouse Bookings",
+      "/warehouse/profile": "Warehouse Profile",
+      "/warehouse/edit-profile": "Edit Warehouse Profile",
+      "/warehouse/change-password": "Change Warehouse Password",
+      "/warehouse-payments": "Warehouse Payments",
+      "/warehouse-transport-booking": "Warehouse Transport Booking",
 
-      "/farmer-register":
-        "CropConnect | Farmer Registration",
+      // Market and weather
+      "/market-prices": "Market Prices",
+      "/admin/market-prices": "Manage Market Prices",
+      "/weather": "Weather Forecast",
 
-      "/buyer-register":
-        "CropConnect | Buyer Registration",
+      // Administration
+      "/admin/farmers": "Manage Farmers",
+      "/admin/buyers": "Manage Buyers",
+      "/admin/crops": "Manage Crops",
+      "/admin/warehouses": "Manage Warehouses",
+      "/admin/transporters": "Manage Transporters",
 
-      "/transport-register":
-        "CropConnect | Transporter Registration",
-
-      "/warehouse-register":
-        "CropConnect | Warehouse Registration",
-
-      // =================================================
-      // LOGIN PAGES
-      // =================================================
-
-      "/admin/login":
-        "CropConnect | Admin Login",
-
-      "/farmer-login":
-        "CropConnect | Farmer Login",
-
-      "/buyer-login":
-        "CropConnect | Buyer Login",
-
-      "/transporter-login":
-        "CropConnect | Transporter Login",
-
-      "/warehouse-login":
-        "CropConnect | Warehouse Login",
-
-      // =================================================
-      // DASHBOARD PAGES
-      // =================================================
-
-      "/farmer-dashboard":
-        "CropConnect | Farmer Dashboard",
-
-      "/buyer-dashboard":
-        "CropConnect | Buyer Dashboard",
-
-      "/transporter/dashboard":
-        "CropConnect | Transporter Dashboard",
-
-      "/warehouse/dashboard":
-        "CropConnect | Warehouse Dashboard",
-
-      "/admin/dashboard":
-        "CropConnect | Admin Dashboard",
-
-      // =================================================
-      // FARMER PAGES
-      // =================================================
-
-      "/my-crops":
-        "CropConnect | My Crops",
-
-      "/add-crop":
-        "CropConnect | Add Crop",
-
-      "/all-farmers":
-        "CropConnect | All Farmers",
-
-      "/farmer-earnings":
-        "CropConnect | Farmer Earnings",
-
-      "/farmer-transport-booking":
-        "CropConnect | Farmer Transport Booking",
-
-      // =================================================
-      // BUYER PAGES
-      // =================================================
-
-      "/all-buyers":
-        "CropConnect | All Buyers",
-
-      "/all-crops":
-        "CropConnect | All Crops",
-
-      "/my-orders":
-        "CropConnect | My Orders",
-
-      "/buyer-payments":
-        "CropConnect | Buyer Payments",
-
-      "/buyer-transport-booking":
-        "CropConnect | Buyer Transport Booking",
-
-      // =================================================
-      // TRANSPORTER PAGES
-      // =================================================
-
-      "/all-transporters":
-        "CropConnect | All Transporters",
-
-      "/transporter-bookings":
-        "CropConnect | Transporter Bookings",
-
-      "/transporter-payments":
-        "CropConnect | Transporter Payments",
-
-      "/transport-management":
-        "CropConnect | Transport Management",
-
-      // =================================================
-      // WAREHOUSE PAGES
-      // =================================================
-
-      "/book-warehouse":
-        "CropConnect | Book Warehouse",
-
-      "/my-warehouse-bookings":
-        "CropConnect | My Warehouse Bookings",
-
-      "/warehouse-payments":
-        "CropConnect | Warehouse Payments",
-
-      "/warehouse-transport-booking":
-        "CropConnect | Warehouse Transport Booking",
-
-      // =================================================
-      // MARKET / WEATHER
-      // =================================================
-
-      "/market-prices":
-        "CropConnect | Market Prices",
-
-      "/admin/market-prices":
-        "CropConnect | Manage Market Prices",
-
-      "/weather":
-        "CropConnect | Weather",
-
-      // =================================================
-      // ADMIN PAGES
-      // =================================================
-
-      "/admin/farmers":
-        "CropConnect | Manage Farmers",
-
-      "/admin/buyers":
-        "CropConnect | Manage Buyers",
-
-      "/admin/crops":
-        "CropConnect | Manage Crops",
-
-      "/admin/warehouses":
-        "CropConnect | Manage Warehouses",
-
-      "/admin/transporters":
-        "CropConnect | Manage Transporters",
-
-      // =================================================
-      // OTHER PAGES
-      // =================================================
-
-      "/chat":
-        "CropConnect | Chat",
-
-      "/cropconnect-ai":
-        "CropConnect | CropConnect AI",
-
+      // Other pages
+      "/chat": "Messages",
+      "/cropconnect-ai": "CropConnect AI",
     };
 
-    document.title =
-      titles[location.pathname] || "CropConnect";
+    let pageTitle = titles[location.pathname];
 
+    // Handle dynamic routes.
+    if (location.pathname.startsWith("/edit-crop/")) {
+      pageTitle = "Edit Crop";
+    }
+
+    // Fallback for any route not listed above.
+    document.title = pageTitle
+      ? `${pageTitle} | CropConnect`
+      : "CropConnect | Farmer-to-Market Platform";
   }, [location.pathname]);
 
   return null;
 }
 
 // =====================================================
-// APP
+// APPLICATION ROUTES
 // =====================================================
-
 function App() {
   return (
     <BrowserRouter>
-
-      {/* =================================================
-          AUTOMATIC PAGE TITLE
-      ================================================= */}
-
       <PageTitle />
 
       <Routes>
+        {/* Home and information */}
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/features" element={<Features />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/contact" element={<Contact />} />
 
-        {/* =================================================
-            TRANSPORTER PAYMENTS
-        ================================================= */}
-
+        {/* Farmer registration and login */}
         <Route
-          path="/transporter-payments"
-          element={<TransporterPayments />}
+          path="/farmer-register"
+          element={<FarmerRegister />}
         />
-        <Route
-  path="/buyer-edit-profile"
-  element={<BuyerEditProfile />}
-/>
-<Route
-  path="/change-password"
-  element={<ChangePassword />}
-/>
-        {/* =================================================
-            FARMER EARNINGS
-        ================================================= */}
+        <Route path="/farmer-login" element={<FarmerLogin />} />
 
+        {/* Farmer dashboard and features */}
+        <Route
+          path="/farmer-dashboard"
+          element={<FarmerDashboard />}
+        />
+        <Route path="/my-crops" element={<FarmerCrops />} />
+        <Route path="/add-crop" element={<AddCrop />} />
+        <Route path="/edit-crop/:id" element={<EditCrop />} />
+        <Route path="/farmer-profile" element={<FarmerProfile />} />
+        <Route
+          path="/edit-profile"
+          element={<EditFarmerProfile />}
+        />
+        <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/all-farmers" element={<AllFarmers />} />
+        <Route path="/farmer-bookings" element={<FarmerBookings />} />
+        <Route path="/farmer-orders" element={<FarmerBookings />} />
         <Route
           path="/farmer-earnings"
           element={
@@ -336,396 +240,166 @@ function App() {
             />
           }
         />
-
-        {/* =================================================
-            WAREHOUSE BOOKING
-        ================================================= */}
-<Route
-  path="/buyer-change-password"
-  element={<BuyerChangePassword />}
-/>
-        <Route
-          path="/book-warehouse"
-          element={<BookWarehouse />}
-        />
-
-                <Route
-          path="/warehouse/profile"
-          element={<WarehouseProfile />}
-        />
-
-        <Route
-          path="/warehouse/edit-profile"
-          element={<WarehouseEditProfile />}
-        />
-
-        <Route
-          path="/warehouse/change-password"
-          element={<WarehouseChangePassword />}
-        />
-
-
-<Route
-  path="/edit-profile"
-  element={<EditFarmerProfile />}
-/>
-        <Route
-          path="/my-warehouse-bookings"
-          element={<MyWarehouseBookings />}
-        />
-           <Route path="/farmer-profile" element={<FarmerProfile />} />
-
-      
-<Route path="/farmer-bookings" element={<FarmerBookings />} />
-        {/* =================================================
-            TRANSPORTER BOOKINGS
-        ================================================= */}
- <Route
-          path="/transporter/dashboard"
-          element={<TransporterDashboard />}
-        />
-
-        <Route
-          path="/transporter/profile"
-          element={<TransporterProfile />}
-        />
-
-        <Route
-          path="/transporter-edit-profile"
-          element={<EditTransporterProfile />}
-        />
-
-        <Route
-          path="/transporter-change-password"
-          element={<ChangeTransporterPassword />}
-        />
-
-        {/* Replace with your existing transporter login route. */}
-        <Route
-          path="/transporter/login"
-          element={<div>Please connect your existing transporter login page.</div>}
-        />
-
-        
-        <Route
-          path="/transporter-bookings"
-          element={<TransporterBookings />}
-        />
-<Route
-  path="/farmer-orders"
-  element={<FarmerBookings />}
-/>
-        <Route
-          path="/all-transporters"
-          element={<AllTransporters />}
-        />
-
-        <Route
-          path="/transport-management"
-          element={<TransportManagement />}
-        />
-
-        {/* =================================================
-            MARKET PRICES
-        ================================================= */}
-
-        <Route
-          path="/market-prices"
-          element={<MarketPrices />}
-        />
-
-        <Route
-          path="/admin/market-prices"
-          element={<AdminMarketPrices />}
-        />
-
-        {/* =================================================
-            MAIN HOME PAGE
-        ================================================= */}
-
-        <Route
-          path="/"
-          element={<Home />}
-        />
-
-        {/* =================================================
-            FARMERS
-        ================================================= */}
-
-        <Route
-          path="/all-farmers"
-          element={<AllFarmers />}
-        />
-
-        <Route path="/buyer-profile" element={<BuyerProfile />} />
-
-        <Route
-          path="/my-crops"
-          element={<FarmerCrops />}
-        />
-
-        <Route
-          path="/add-crop"
-          element={<AddCrop />}
-        />
-
-        <Route
-          path="/edit-crop/:id"
-          element={<EditCrop />}
-        />
-
         <Route
           path="/farmer-transport-booking"
           element={<FarmerTransportBooking />}
         />
 
-        {/* =================================================
-            BUYERS
-        ================================================= */}
-
+        {/* Buyer registration and login */}
         <Route
-          path="/admin/buyers"
-          element={<AdminBuyers />}
+          path="/buyer-register"
+          element={<BuyerRegister />}
         />
+        <Route path="/buyer-login" element={<BuyerLogin />} />
 
+        {/* Buyer dashboard and features */}
         <Route
-          path="/all-buyers"
-          element={<AllBuyers />}
+          path="/buyer-dashboard"
+          element={<BuyerDashboard />}
         />
-
+        <Route path="/buyer-profile" element={<BuyerProfile />} />
         <Route
-          path="/all-crops"
-          element={<AllCrops />}
+          path="/buyer-edit-profile"
+          element={<BuyerEditProfile />}
         />
-
         <Route
-          path="/my-orders"
-          element={<MyOrders />}
+          path="/buyer-change-password"
+          element={<BuyerChangePassword />}
         />
-
-        <Route
-          path="/buyer-payments"
-          element={<BuyerPayments />}
-        />
-
+        <Route path="/all-buyers" element={<AllBuyers />} />
+        <Route path="/all-crops" element={<AllCrops />} />
+        <Route path="/my-orders" element={<MyOrders />} />
+        <Route path="/buyer-payments" element={<BuyerPayments />} />
         <Route
           path="/buyer-transport-booking"
           element={<BuyerTransportBooking />}
         />
 
-        {/* =================================================
-            ADMIN
-        ================================================= */}
-
-        <Route
-          path="/admin/login"
-          element={<AdminLogin />}
-        />
-
-        <Route
-          path="/admin/dashboard"
-          element={<AdminDashboard />}
-        />
-
-        <Route
-          path="/admin/farmers"
-          element={<AdminFarmers />}
-        />
-
-        <Route
-          path="/admin/crops"
-          element={<AdminCrops />}
-        />
-
-        <Route
-          path="/admin/warehouses"
-          element={<AdminWarehouses />}
-        />
-
-        <Route
-          path="/admin/transporters"
-          element={<AdminTransporters />}
-        />
-
-        {/* =================================================
-            CHAT
-        ================================================= */}
-
-        <Route
-          path="/chat"
-          element={<ChatPage />}
-        />
-
-        {/* =================================================
-            WAREHOUSE PAYMENTS
-        ================================================= */}
-
-        <Route
-          path="/warehouse-payments"
-          element={<WarehousePayments />}
-        />
-
-        {/* =================================================
-            CROP CONNECT AI
-        ================================================= */}
-
-        <Route
-          path="/cropconnect-ai"
-          element={<CropConnectAI />}
-        />
-
-        {/* =================================================
-            WAREHOUSE TRANSPORT BOOKING
-        ================================================= */}
-
-        <Route
-          path="/warehouse-transport-booking"
-          element={<WarehouseTransportBooking />}
-        />
-
-        {/* =================================================
-            MAIN INFORMATION PAGES
-        ================================================= */}
-
-        <Route
-          path="/about"
-          element={<About />}
-        />
-
-        <Route
-          path="/features"
-          element={<Features />}
-        />
-
-        <Route
-          path="/how-it-works"
-          element={<HowItWorks />}
-        />
-
-        <Route
-          path="/contact"
-          element={<Contact />}
-        />
-
-        {/* =================================================
-            WEATHER
-        ================================================= */}
-
-        <Route
-          path="/weather"
-          element={<Weather />}
-        />
-
-        {/* =================================================
-            FARMER REGISTRATION
-        ================================================= */}
-
-        <Route
-          path="/farmer-register"
-          element={<FarmerRegister />}
-        />
-
-        {/* =================================================
-            BUYER REGISTRATION
-        ================================================= */}
-
-        <Route
-          path="/buyer-register"
-          element={<BuyerRegister />}
-        />
-
-        {/* =================================================
-            TRANSPORTER REGISTRATION
-        ================================================= */}
-
+        {/* Transporter registration and login */}
         <Route
           path="/transport-register"
           element={<TransportRegister />}
         />
-
-        {/* =================================================
-            WAREHOUSE REGISTRATION
-        ================================================= */}
-
-        <Route
-          path="/warehouse-register"
-          element={<WarehouseRegister />}
-        />
-
-        {/* =================================================
-            FARMER LOGIN
-        ================================================= */}
-
-        <Route
-          path="/farmer-login"
-          element={<FarmerLogin />}
-        />
-
-        {/* =================================================
-            BUYER LOGIN
-        ================================================= */}
-
-        <Route
-          path="/buyer-login"
-          element={<BuyerLogin />}
-        />
-
-        {/* =================================================
-            TRANSPORTER LOGIN
-        ================================================= */}
-
         <Route
           path="/transporter-login"
           element={<TransporterLogin />}
         />
+        <Route
+          path="/transporter/login"
+          element={<TransporterLogin />}
+        />
 
-        {/* =================================================
-            WAREHOUSE LOGIN
-        ================================================= */}
+        {/* Transporter dashboard and features */}
+        <Route
+          path="/transporter/dashboard"
+          element={<TransporterDashboard />}
+        />
+        <Route
+          path="/transporter/profile"
+          element={<TransporterProfile />}
+        />
+        <Route
+          path="/transporter-edit-profile"
+          element={<EditTransporterProfile />}
+        />
+        <Route
+          path="/transporter-change-password"
+          element={<ChangeTransporterPassword />}
+        />
+        <Route
+          path="/transporter-bookings"
+          element={<TransporterBookings />}
+        />
+        <Route
+          path="/transporter-payments"
+          element={<TransporterPayments />}
+        />
+        <Route
+          path="/all-transporters"
+          element={<AllTransporters />}
+        />
+        <Route
+          path="/transport-management"
+          element={<TransportManagement />}
+        />
 
+        {/* Warehouse registration and login */}
+        <Route
+          path="/warehouse-register"
+          element={<WarehouseRegister />}
+        />
         <Route
           path="/warehouse-login"
           element={<WarehouseLogin />}
         />
 
-        {/* =================================================
-            FARMER DASHBOARD
-        ================================================= */}
-
-        <Route
-          path="/farmer-dashboard"
-          element={<FarmerDashboard />}
-        />
-
-        {/* =================================================
-            BUYER DASHBOARD
-        ================================================= */}
-
-        <Route
-          path="/buyer-dashboard"
-          element={<BuyerDashboard />}
-        />
-
-        {/* =================================================
-            TRANSPORTER DASHBOARD
-        ================================================= */}
-
-        <Route
-          path="/transporter/dashboard"
-          element={<TransporterDashboard />}
-        />
-
-        {/* =================================================
-            WAREHOUSE DASHBOARD
-        ================================================= */}
-
+        {/* Warehouse dashboard and features */}
         <Route
           path="/warehouse/dashboard"
           element={<WarehouseDashboard />}
         />
+        <Route
+          path="/warehouse/profile"
+          element={<WarehouseProfile />}
+        />
+        <Route
+          path="/warehouse/edit-profile"
+          element={<WarehouseEditProfile />}
+        />
+        <Route
+          path="/warehouse/change-password"
+          element={<WarehouseChangePassword />}
+        />
+        <Route
+          path="/book-warehouse"
+          element={<BookWarehouse />}
+        />
+        <Route
+          path="/my-warehouse-bookings"
+          element={<MyWarehouseBookings />}
+        />
+        <Route
+          path="/warehouse-payments"
+          element={<WarehousePayments />}
+        />
+        <Route
+          path="/warehouse-transport-booking"
+          element={<WarehouseTransportBooking />}
+        />
 
+        {/* Market prices and weather */}
+        <Route path="/market-prices" element={<MarketPrices />} />
+        <Route
+          path="/admin/market-prices"
+          element={<AdminMarketPrices />}
+        />
+        <Route path="/weather" element={<Weather />} />
+
+        {/* Administration */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin/dashboard"
+          element={<AdminDashboard />}
+        />
+        <Route path="/admin/farmers" element={<AdminFarmers />} />
+        <Route path="/admin/buyers" element={<AdminBuyers />} />
+        <Route path="/admin/crops" element={<AdminCrops />} />
+        <Route
+          path="/admin/warehouses"
+          element={<AdminWarehouses />}
+        />
+        <Route
+          path="/admin/transporters"
+          element={<AdminTransporters />}
+        />
+
+        {/* Chat and AI */}
+        <Route path="/chat" element={<ChatPage />} />
+        <Route
+          path="/cropconnect-ai"
+          element={<CropConnectAI />}
+        />
       </Routes>
-
     </BrowserRouter>
   );
 }
