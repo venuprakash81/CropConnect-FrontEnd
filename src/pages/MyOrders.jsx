@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import "./MyOrders.css";
 
-const API = "http://localhost:8081/api";
+const API = "https://cropconnect-backend-exn7.onrender.com/api";
 
 // Replace this with your real UPI ID before accepting payments.
 const UPI_ID = "6305348465@ybl";
