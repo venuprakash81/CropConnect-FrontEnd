@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ChangePassword.css";
 
-const API_URL = "http://localhost:8081/api/farmers/change-password";
+const API_URL = "https://cropconnect-backend-exn7.onrender.com/api/farmers/change-password";
 
 function getFarmerEmail() {
   try {
