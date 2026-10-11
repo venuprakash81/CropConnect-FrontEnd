@@ -90,7 +90,7 @@ const TransporterDashboard = () => {
         
 
         return (
-            "http://localhost:8081/api/transporters/profile-photo/" +
+            "https://cropconnect-backend-exn7.onrender.com/api/transporters/profile-photo/" +
             encodeURIComponent(
                 transporter.profilePhoto
             )
