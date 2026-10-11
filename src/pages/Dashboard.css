@@ -1,0 +1,1172 @@
+/* =====================================================
+   MAIN PAGE
+===================================================== */
+
+.farmer-dashboard-page {
+    min-height: 100vh;
+    background: #f5f8f5;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #222;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.farmer-dashboard-header {
+
+    height: 82px;
+
+    background: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 35px;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    position: relative;
+
+    z-index: 100;
+}
+
+
+/* =====================================================
+   CROPCONNECT BRAND
+===================================================== */
+
+.cropconnect-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    cursor: pointer;
+
+    width: 260px;
+}
+
+
+.cropconnect-logo {
+
+    width: 45px;
+
+    height: 45px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #e8f5e9;
+
+    font-size: 25px;
+
+    border: 2px solid #2e7d32;
+}
+
+
+.cropconnect-brand-text h2 {
+
+    margin: 0;
+
+    color: #1b5e20;
+
+    font-size: 21px;
+}
+
+
+.cropconnect-brand-text span {
+
+    font-size: 12px;
+
+    color: #777;
+}
+
+
+/* =====================================================
+   CENTER TITLE
+===================================================== */
+
+.dashboard-title {
+
+    position: absolute;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    text-align: center;
+}
+
+
+.dashboard-title h1 {
+
+    margin: 0;
+
+    font-size: 23px;
+
+    color: #222;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   HEADER ACTIONS
+===================================================== */
+
+.dashboard-header-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+/* =====================================================
+   NOTIFICATION
+===================================================== */
+
+.notification-button {
+
+    width: 44px;
+
+    height: 44px;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 23px;
+
+    cursor: pointer;
+
+    position: relative;
+
+    border-radius: 50%;
+}
+
+
+.notification-button:hover {
+
+    background: #f0f5f0;
+}
+
+
+.notification-dot {
+
+    position: absolute;
+
+    top: 7px;
+
+    right: 7px;
+
+    width: 9px;
+
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #e53935;
+
+    border: 2px solid white;
+}
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+.profile-container {
+
+    position: relative;
+}
+
+
+.farmer-profile-button {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    padding: 5px 8px;
+
+    border-radius: 30px;
+}
+
+
+.farmer-profile-button:hover {
+
+    background: #f4f7f4;
+}
+
+
+/* =====================================================
+   PROFILE IMAGE
+===================================================== */
+/* Circular buyer profile photo */
+.buyer-dashboard-page .buyer-avatar-image {
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid #22c55e;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.buyer-dashboard-page .buyer-avatar-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.buyer-dashboard-page .buyer-avatar-large {
+  width: 65px;
+  height: 65px;
+}
+
+.buyer-dashboard-page .profile-image-wrapper {
+  width: 45px;
+  height: 45px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.buyer-dashboard-page .dropdown-profile-image {
+  width: 65px;
+  height: 65px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.buyer-dashboard-page .buyer-welcome-avatar .buyer-avatar-image {
+  width: 100px;
+  height: 100px;
+  border-width: 3px;
+}
+.buyer-avatar-image {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e5f5e9;
+  color: #16803d;
+  border: 2px solid #22a447;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.buyer-avatar-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.buyer-avatar-large {
+  width: 76px;
+  height: 76px;
+  min-width: 76px;
+  font-size: 30px;
+}
+
+.buyer-welcome-avatar .buyer-avatar-image {
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+}
+.profile-image-wrapper {
+
+    width: 46px;
+
+    height: 46px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    border: 3px solid #2e7d32;
+
+    background: #e8f5e9;
+}
+
+
+.farmer-profile-image {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.default-farmer-image {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+
+/* =====================================================
+   PROFILE NAME
+===================================================== */
+
+.profile-name {
+
+    display: flex;
+
+    flex-direction: column;
+
+    text-align: left;
+}
+
+
+.profile-name strong {
+
+    font-size: 14px;
+
+    color: #222;
+}
+
+
+.profile-name span {
+
+    font-size: 11px;
+
+    color: #777;
+
+    margin-top: 2px;
+}
+
+
+.profile-arrow {
+
+    font-size: 16px;
+
+    color: #555;
+}
+
+
+/* =====================================================
+   PROFILE DROPDOWN
+===================================================== */
+
+.profile-dropdown {
+
+    position: absolute;
+
+    top: 60px;
+
+    right: 0;
+
+    width: 270px;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 10px 35px
+        rgba(0, 0, 0, 0.15);
+
+    padding: 10px;
+
+    border: 1px solid #eeeeee;
+
+    z-index: 1000;
+}
+
+
+/* =====================================================
+   DROPDOWN HEADER
+===================================================== */
+
+.dropdown-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px;
+}
+
+
+.dropdown-profile-image {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background: #e8f5e9;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 25px;
+
+    flex-shrink: 0;
+}
+
+
+.dropdown-profile-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.dropdown-farmer-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+
+.dropdown-farmer-info strong {
+
+    font-size: 15px;
+
+    color: #1b5e20;
+}
+
+
+.dropdown-farmer-info span {
+
+    font-size: 11px;
+
+    color: #777;
+
+    margin-top: 3px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =====================================================
+   DROPDOWN DIVIDER
+===================================================== */
+
+.dropdown-divider {
+
+    height: 1px;
+
+    background: #eeeeee;
+
+    margin: 6px 0;
+}
+
+
+/* =====================================================
+   DROPDOWN BUTTONS
+===================================================== */
+
+.profile-dropdown button {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 11px 12px;
+
+    border: none;
+
+    background: transparent;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    text-align: left;
+
+    color: #333;
+}
+
+
+.profile-dropdown button:hover {
+
+    background: #f1f8f1;
+
+    color: #1b5e20;
+}
+
+
+.profile-dropdown button span {
+
+    width: 24px;
+
+    font-size: 17px;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+.profile-dropdown .logout-button {
+
+    color: #d32f2f;
+}
+
+
+.profile-dropdown .logout-button:hover {
+
+    background: #ffebee;
+
+    color: #c62828;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.farmer-dashboard-main {
+
+    max-width: 1150px;
+
+    margin: 0 auto;
+
+    padding: 35px 30px 50px;
+}
+
+
+/* =====================================================
+   WELCOME SECTION
+===================================================== */
+
+.dashboard-welcome {
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 25px 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 30px;
+
+    box-shadow:
+        0 4px 18px
+        rgba(0, 0, 0, 0.06);
+}
+
+
+.welcome-small {
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: #2e7d32;
+
+    letter-spacing: 1px;
+}
+
+
+.dashboard-welcome h2 {
+
+    margin: 8px 0;
+
+    font-size: 26px;
+
+    color: #1b5e20;
+}
+
+
+.dashboard-welcome p {
+
+    margin: 0;
+
+    color: #666;
+
+    max-width: 650px;
+
+    line-height: 1.6;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   WELCOME FARMER IMAGE
+===================================================== */
+
+.welcome-farmer-icon {
+
+    width: 95px;
+
+    height: 95px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background: #e8f5e9;
+
+    border: 4px solid #c8e6c9;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+
+.welcome-farmer-icon img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.welcome-farmer-icon span {
+
+    font-size: 45px;
+}
+
+
+/* =====================================================
+   3 × 3 DASHBOARD GRID
+===================================================== */
+
+.dashboard-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 22px;
+
+    margin-bottom: 30px;
+}
+
+
+/* =====================================================
+   DASHBOARD CARD
+===================================================== */
+
+.farmer-dashboard-card {
+
+    min-height: 145px;
+
+    background: #ffffff;
+
+    border: 1px solid #e3e9e3;
+
+    border-radius: 16px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        border-color 0.2s;
+
+    padding: 20px;
+}
+
+
+.farmer-dashboard-card:hover {
+
+    transform: translateY(-5px);
+
+    border-color: #81c784;
+
+    box-shadow:
+        0 10px 25px
+        rgba(46, 125, 50, 0.12);
+}
+
+
+/* =====================================================
+   CARD ICON
+===================================================== */
+
+.dashboard-card-icon {
+
+    width: 55px;
+
+    height: 55px;
+
+    border-radius: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #e8f5e9;
+
+    font-size: 28px;
+}
+
+
+/* =====================================================
+   CARD TITLE
+===================================================== */
+
+.dashboard-card-title {
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    color: #333;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   BOTTOM MESSAGE
+===================================================== */
+
+.dashboard-message {
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 20px 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0, 0, 0, 0.05);
+}
+
+
+.dashboard-message-icon {
+
+    width: 50px;
+
+    height: 50px;
+
+    border-radius: 50%;
+
+    background: #e8f5e9;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+
+.dashboard-message h3 {
+
+    margin: 0 0 5px;
+
+    color: #1b5e20;
+}
+
+
+.dashboard-message p {
+
+    margin: 0;
+
+    color: #666;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.farmer-dashboard-footer {
+
+    background: #1b5e20;
+
+    color: white;
+
+    min-height: 60px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 35px;
+
+    font-size: 13px;
+}
+
+
+.farmer-dashboard-footer p {
+
+    margin: 0;
+}
+
+
+.farmer-dashboard-footer span {
+
+    opacity: 0.85;
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.farmer-dashboard-loading {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #f5f8f5;
+
+    color: #1b5e20;
+}
+
+
+.loading-spinner {
+
+    width: 40px;
+
+    height: 40px;
+
+    border: 4px solid #d8ead9;
+
+    border-top: 4px solid #2e7d32;
+
+    border-radius: 50%;
+
+    animation: spin 1s linear infinite;
+
+    margin-bottom: 15px;
+}
+
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .dashboard-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .profile-name {
+
+        display: none;
+    }
+
+
+    .cropconnect-brand {
+
+        width: auto;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .farmer-dashboard-header {
+
+        padding: 0 15px;
+
+        height: 70px;
+    }
+
+
+    .cropconnect-brand-text {
+
+        display: none;
+    }
+
+
+    .dashboard-title h1 {
+
+        font-size: 17px;
+    }
+
+
+    .dashboard-header-actions {
+
+        gap: 5px;
+    }
+
+
+    .farmer-dashboard-main {
+
+        padding: 20px 15px 40px;
+    }
+
+
+    .dashboard-welcome {
+
+        padding: 20px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+    }
+
+
+    .welcome-farmer-icon {
+
+        width: 75px;
+
+        height: 75px;
+    }
+
+
+    .dashboard-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+
+    .farmer-dashboard-card {
+
+        min-height: 120px;
+    }
+
+
+    .dashboard-message {
+
+        padding: 18px;
+    }
+
+
+    .farmer-dashboard-footer {
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        gap: 5px;
+
+        padding: 15px;
+    }
+
+
+    .profile-dropdown {
+
+        right: -5px;
+
+        width: 250px;
+    }
+
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

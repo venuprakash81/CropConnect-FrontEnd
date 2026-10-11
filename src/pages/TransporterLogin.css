@@ -1,0 +1,585 @@
+/* =========================================
+   TRANSPORTER LOGIN PAGE
+========================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+.transporter-login-page {
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef8f0 0%,
+      #f7fbf8 50%,
+      #e8f5ea 100%
+    );
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  position: relative;
+}
+
+
+/* =========================================
+   HOME BUTTON
+========================================= */
+
+.transporter-home-button {
+  position: absolute;
+
+  top: 25px;
+  right: 30px;
+
+  border: none;
+
+  background: #ffffff;
+
+  color: #176b35;
+
+  padding: 11px 20px;
+
+  border-radius: 10px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.10);
+
+  transition:
+    0.25s ease;
+}
+
+.transporter-home-button:hover {
+  background: #176b35;
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================
+   LOGIN CARD
+========================================= */
+
+.transporter-login-card {
+  width: 100%;
+
+  max-width: 480px;
+
+  background: #ffffff;
+
+  border-radius: 22px;
+
+  padding: 42px;
+
+  box-shadow:
+    0 15px 45px rgba(24, 87, 42, 0.15);
+
+  border:
+    1px solid #e4eee6;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.transporter-login-header {
+  text-align: center;
+
+  margin-bottom: 32px;
+}
+
+
+.transporter-login-icon {
+  width: 78px;
+  height: 78px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  background: #e7f6ea;
+
+  border-radius: 50%;
+
+  font-size: 38px;
+
+  border:
+    1px solid #cce8d2;
+}
+
+
+.transporter-login-header h1 {
+  margin: 0;
+
+  color: #155d2d;
+
+  font-size: 29px;
+
+  font-weight: 700;
+}
+
+
+.transporter-login-header p {
+  margin-top: 10px;
+
+  color: #6b776f;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   FORM GROUP
+========================================= */
+
+.transporter-form-group {
+  margin-bottom: 20px;
+}
+
+
+.transporter-form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #26382b;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+
+.transporter-form-group input {
+  width: 100%;
+
+  height: 50px;
+
+  padding: 0 15px;
+
+  border:
+    1px solid #d6e2d9;
+
+  border-radius: 10px;
+
+  outline: none;
+
+  background: #fbfdfb;
+
+  color: #24352a;
+
+  font-size: 15px;
+
+  transition:
+    0.25s ease;
+}
+
+
+.transporter-form-group input:focus {
+  border-color: #269447;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px rgba(38, 148, 71, 0.10);
+}
+
+
+.transporter-form-group input::placeholder {
+  color: #9aa59e;
+}
+
+
+/* =========================================
+   LOGIN OPTIONS
+========================================= */
+
+.transporter-login-options {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin: 5px 0 22px;
+
+  font-size: 13px;
+}
+
+
+.transporter-login-options label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #59655d;
+
+  cursor: pointer;
+}
+
+
+.transporter-login-options input {
+  accent-color: #238b43;
+
+  cursor: pointer;
+}
+
+
+.transporter-login-options button {
+  border: none;
+
+  background: transparent;
+
+  color: #238b43;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  padding: 0;
+}
+
+
+.transporter-login-options button:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================
+   LOGIN BUTTON
+========================================= */
+
+.transporter-login-button {
+  width: 100%;
+
+  height: 52px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1b7d38,
+      #2ca24d
+    );
+
+  color: #ffffff;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(34, 139, 64, 0.22);
+
+  transition:
+    0.25s ease;
+}
+
+
+.transporter-login-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 20px rgba(34, 139, 64, 0.30);
+}
+
+
+.transporter-login-button:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+
+/* =========================================
+   CREATE ACCOUNT
+========================================= */
+
+.transporter-no-account {
+  text-align: center;
+
+  margin-top: 27px;
+
+  padding-top: 23px;
+
+  border-top:
+    1px solid #e5ebe6;
+}
+
+
+.transporter-no-account p {
+  margin: 0 0 10px;
+
+  color: #6c776f;
+
+  font-size: 14px;
+}
+
+
+.transporter-no-account button {
+  border: none;
+
+  background: transparent;
+
+  color: #1c7f39;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.transporter-no-account button:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================
+   OTHER LOGIN
+========================================= */
+
+.other-login {
+  text-align: center;
+
+  margin-top: 28px;
+}
+
+
+.other-login > p {
+  margin: 0 0 14px;
+
+  color: #7a847d;
+
+  font-size: 13px;
+}
+
+
+.other-login-buttons {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  flex-wrap: wrap;
+}
+
+
+.other-login-buttons button {
+  border:
+    1px solid #d8e5db;
+
+  background: #f8fbf9;
+
+  color: #31503a;
+
+  padding: 9px 13px;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    0.25s ease;
+}
+
+
+.other-login-buttons button:hover {
+  background: #e7f5ea;
+
+  border-color: #b8d9bf;
+
+  color: #176b35;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .transporter-login-page {
+    padding: 75px 15px 25px;
+
+    align-items: flex-start;
+  }
+
+
+  .transporter-home-button {
+    top: 18px;
+
+    right: 18px;
+
+    padding: 9px 15px;
+
+    font-size: 13px;
+  }
+
+
+  .transporter-login-card {
+    padding: 30px 22px;
+
+    border-radius: 18px;
+  }
+
+
+  .transporter-login-header h1 {
+    font-size: 25px;
+  }
+
+
+  .transporter-login-icon {
+    width: 68px;
+
+    height: 68px;
+
+    font-size: 32px;
+  }
+
+
+  .transporter-login-options {
+    align-items: flex-start;
+
+    gap: 12px;
+  }
+
+
+  .other-login-buttons {
+    gap: 7px;
+  }
+
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

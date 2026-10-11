@@ -1,0 +1,1205 @@
+/* ==========================================
+   FARMER CROPS - GREEN AGRITECH THEME
+========================================== */
+
+.farmer-crops-page {
+    min-height: 100vh;
+    padding: 24px 30px 40px;
+    background: #f4f8f2;
+    color: #263d2a;
+    font-family: "Segoe UI", Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.farmer-crops-page * {
+    box-sizing: border-box;
+}
+
+.farmer-crops-page button,
+.farmer-crops-page input,
+.farmer-crops-page select,
+.farmer-crops-page textarea {
+    font: inherit;
+}
+
+.farmer-crops-page button {
+    cursor: pointer;
+}
+
+.farmer-crops-page button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   TOP HEADER
+========================================== */
+
+.fc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 18px 24px;
+    margin-bottom: 22px;
+    background: linear-gradient(120deg, #14532d, #278444);
+    border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(20, 83, 45, 0.13);
+}
+
+.fc-brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 0;
+}
+
+.fc-brand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 13px;
+    font-size: 25px;
+}
+
+.fc-brand h1 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: 750;
+    letter-spacing: -0.4px;
+}
+
+.fc-brand p {
+    margin: 4px 0 0;
+    color: #d9f5dd;
+    font-size: 12px;
+}
+
+/* ==========================================
+   HEADER ACTIONS
+========================================== */
+
+.fc-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.fc-dashboard-link,
+.fc-add-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    min-height: 42px;
+    padding: 10px 16px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.fc-dashboard-link {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.fc-dashboard-link:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.fc-add-button {
+    color: #14532d;
+    background: #d9f99d;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.fc-add-button:hover {
+    background: #bef264;
+    transform: translateY(-2px);
+}
+
+.fc-add-symbol {
+    font-size: 19px;
+    line-height: 1;
+}
+
+/* ==========================================
+   SUMMARY
+========================================== */
+
+.fc-summary {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-height: 86px;
+    padding: 17px 21px;
+    margin-bottom: 28px;
+    background: #ffffff;
+    border: 1px solid #e0ebdd;
+    border-radius: 13px;
+    box-shadow: 0 3px 12px rgba(30, 70, 35, 0.04);
+}
+
+.fc-summary-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    color: #166534;
+    background: #e4f5e4;
+    border-radius: 12px;
+    font-size: 24px;
+}
+
+.fc-summary-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.fc-summary-text span {
+    color: #728174;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.fc-summary-text strong {
+    color: #14532d;
+    font-size: 26px;
+    line-height: 1.1;
+}
+
+.fc-summary-note {
+    margin-left: auto;
+    color: #708071;
+    font-size: 12px;
+    text-align: right;
+}
+
+/* ==========================================
+   SECTION HEADING
+========================================== */
+
+.fc-section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 17px;
+}
+
+.fc-section-heading h2 {
+    margin: 0;
+    color: #194e2b;
+    font-size: 21px;
+    font-weight: 750;
+}
+
+.fc-section-heading p {
+    margin: 5px 0 0;
+    color: #778477;
+    font-size: 12px;
+}
+
+.fc-count {
+    flex-shrink: 0;
+    padding: 7px 12px;
+    color: #166534;
+    background: #e1f3df;
+    border: 1px solid #d2e9d0;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+/* ==========================================
+   SMALL CROP GRID
+   4 cards on desktop
+========================================== */
+
+.fc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 16px;
+}
+
+/* ==========================================
+   CROP CARD
+========================================== */
+
+.fc-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e0e9de;
+    border-radius: 12px;
+    box-shadow: 0 3px 11px rgba(33, 58, 37, 0.055);
+    transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+.fc-card:hover {
+    transform: translateY(-3px);
+    border-color: #a8d3a7;
+    box-shadow: 0 8px 20px rgba(28, 83, 42, 0.12);
+}
+
+/* ==========================================
+   CROP IMAGE
+========================================== */
+
+.fc-image-wrap {
+    position: relative;
+    height: 125px;
+    overflow: hidden;
+    background: #e8f4e5;
+}
+
+.fc-crop-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.fc-card:hover .fc-crop-image {
+    transform: scale(1.035);
+}
+
+.fc-image-fallback {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e9f6e5, #d5edcf);
+    font-size: 38px;
+}
+
+.fc-image-fallback.fc-fallback-visible {
+    display: flex;
+}
+
+.fc-crop-number {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 5px 8px;
+    color: #ffffff;
+    background: rgba(20, 83, 45, 0.87);
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* ==========================================
+   CROP CARD CONTENT
+========================================== */
+
+.fc-card-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    padding: 12px;
+}
+
+.fc-card-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 5px;
+}
+
+.fc-card-title h3 {
+    min-width: 0;
+    margin: 0;
+    color: #175b30;
+    font-size: 16px;
+    font-weight: 750;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.fc-status-badge {
+    flex-shrink: 0;
+    padding: 4px 6px;
+    color: #166534;
+    background: #e5f6e4;
+    border-radius: 5px;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.fc-type {
+    margin: 0 0 9px;
+    color: #7a8779;
+    font-size: 11px;
+}
+
+/* ==========================================
+   QUANTITY AND PRICE
+========================================== */
+
+.fc-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin: 8px 0 10px;
+}
+
+.fc-detail-box {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+    padding: 9px 8px;
+    background: #f3f8f1;
+    border: 1px solid #e6efe3;
+    border-radius: 8px;
+}
+
+.fc-detail-box span {
+    color: #738172;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.fc-detail-box strong {
+    color: #205f32;
+    font-size: 12px;
+    font-weight: 750;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   HARVEST AND LOCATION
+========================================== */
+
+.fc-extra-details {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.fc-extra-details p {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #eef2ec;
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.fc-extra-details p span {
+    flex-shrink: 0;
+    color: #788578;
+}
+
+.fc-extra-details p strong {
+    color: #3d5140;
+    font-size: 10px;
+    font-weight: 650;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.fc-description {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 10px 0 0;
+    color: #778477;
+    font-size: 11px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+/* ==========================================
+   EDIT AND DELETE BUTTONS
+========================================== */
+
+.fc-card-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin-top: auto;
+    padding-top: 13px;
+}
+
+.fc-edit-button,
+.fc-delete-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    min-height: 34px;
+    padding: 8px 5px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 750;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.fc-edit-button {
+    color: #79500c;
+    background: #fff3cd;
+    border-color: #f4e0a1;
+}
+
+.fc-edit-button:hover {
+    background: #ffe7a1;
+    transform: translateY(-1px);
+}
+
+.fc-delete-button {
+    color: #b42323;
+    background: #ffeded;
+    border-color: #f6d1d1;
+}
+
+.fc-delete-button:hover:not(:disabled) {
+    color: #ffffff;
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+/* ==========================================
+   LOADING, ERROR, EMPTY STATES
+========================================== */
+
+.fc-state,
+.fc-empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 45px 20px;
+    background: #ffffff;
+    border: 1px solid #e0ebdd;
+    border-radius: 13px;
+    text-align: center;
+}
+
+.fc-state p,
+.fc-empty p {
+    max-width: 420px;
+    margin: 8px 0 0;
+    color: #718071;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.fc-state h3,
+.fc-empty h2 {
+    margin: 10px 0 0;
+    color: #225632;
+    font-size: 20px;
+}
+
+.fc-spinner {
+    width: 36px;
+    height: 36px;
+    border: 4px solid #dceedd;
+    border-top-color: #218443;
+    border-radius: 50%;
+    animation: fc-spin 0.8s linear infinite;
+}
+
+@keyframes fc-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.fc-error {
+    border-color: #f3d0d0;
+}
+
+.fc-state-icon {
+    font-size: 30px;
+}
+
+.fc-retry-button {
+    margin-top: 18px;
+    padding: 10px 17px;
+    color: #ffffff;
+    background: #166534;
+    border: none;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.fc-retry-button:hover {
+    background: #14532d;
+}
+
+.fc-empty {
+    padding: 55px 20px;
+    border-style: dashed;
+}
+
+.fc-empty-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 72px;
+    height: 72px;
+    background: #e7f5e4;
+    border-radius: 50%;
+    font-size: 38px;
+}
+
+.fc-empty .fc-add-button {
+    margin-top: 20px;
+}
+
+/* ==========================================
+   EDIT POPUP OVERLAY
+========================================== */
+
+.fc-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+    background: rgba(15, 35, 20, 0.66);
+    backdrop-filter: blur(4px);
+}
+
+/* ==========================================
+   EDIT POPUP WINDOW
+========================================== */
+
+.fc-edit-modal {
+    width: 100%;
+    max-width: 650px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid #dcebdc;
+    border-radius: 16px;
+    box-shadow: 0 20px 65px rgba(0, 0, 0, 0.25);
+    animation: fc-modal-appear 0.2s ease-out;
+}
+
+@keyframes fc-modal-appear {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.99);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================
+   POPUP HEADER
+========================================== */
+
+.fc-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 22px 24px;
+    background: #f0f8ed;
+    border-bottom: 1px solid #e0ecdc;
+}
+
+.fc-modal-eyebrow {
+    color: #41824d;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+}
+
+.fc-modal-header h2 {
+    margin: 5px 0 0;
+    color: #14532d;
+    font-size: 24px;
+    font-weight: 750;
+}
+
+.fc-modal-header p {
+    margin: 6px 0 0;
+    color: #748174;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.fc-close-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    color: #536454;
+    background: #ffffff;
+    border: 1px solid #dce8d9;
+    border-radius: 8px;
+    font-size: 25px;
+    line-height: 1;
+}
+
+.fc-close-button:hover:not(:disabled) {
+    color: #ffffff;
+    background: #dc2626;
+}
+
+/* ==========================================
+   EDIT FORM
+========================================== */
+
+.fc-edit-form {
+    padding: 22px 24px;
+}
+
+.fc-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px;
+}
+
+.fc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.fc-field > span {
+    color: #304c35;
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.fc-field input,
+.fc-field select,
+.fc-field textarea {
+    width: 100%;
+    min-width: 0;
+    padding: 11px 12px;
+    color: #263d2a;
+    background: #ffffff;
+    border: 1px solid #d8e4d5;
+    border-radius: 8px;
+    outline: none;
+    font-size: 13px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fc-field input,
+.fc-field select {
+    min-height: 42px;
+}
+
+.fc-field input:focus,
+.fc-field select:focus,
+.fc-field textarea:focus {
+    border-color: #399451;
+    box-shadow: 0 0 0 3px rgba(57, 148, 81, 0.12);
+}
+
+.fc-field input[type="file"] {
+    padding: 9px;
+    font-size: 11px;
+}
+
+.fc-field textarea {
+    resize: vertical;
+    min-height: 85px;
+    line-height: 1.5;
+}
+
+.fc-field small {
+    color: #788578;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.fc-full-width {
+    grid-column: 1 / -1;
+}
+
+/* ==========================================
+   POPUP FOOTER BUTTONS
+========================================== */
+
+.fc-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 21px;
+    margin-top: 22px;
+    border-top: 1px solid #e8eee6;
+}
+
+.fc-cancel-button,
+.fc-save-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 42px;
+    padding: 10px 18px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 750;
+    transition: background 0.2s ease;
+}
+
+.fc-cancel-button {
+    color: #4b5b4d;
+    background: #f1f4ef;
+    border-color: #e0e7dc;
+}
+
+.fc-cancel-button:hover:not(:disabled) {
+    background: #e4e9e0;
+}
+
+.fc-save-button {
+    color: #ffffff;
+    background: #19743a;
+}
+
+.fc-save-button:hover:not(:disabled) {
+    background: #14532d;
+}
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+.fc-header button:focus-visible,
+.fc-card-actions button:focus-visible,
+.fc-modal-actions button:focus-visible,
+.fc-close-button:focus-visible,
+.fc-retry-button:focus-visible {
+    outline: 3px solid #86efac;
+    outline-offset: 3px;
+}
+
+/* ==========================================
+   RESPONSIVE - LAPTOP / SMALL DESKTOP
+========================================== */
+
+@media (max-width: 1150px) {
+    .fc-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .farmer-crops-page {
+        padding: 20px;
+    }
+}
+
+/* ==========================================
+   RESPONSIVE - TABLET
+========================================== */
+
+@media (max-width: 760px) {
+    .farmer-crops-page {
+        padding: 15px;
+    }
+
+    .fc-header {
+        align-items: flex-start;
+        padding: 17px;
+    }
+
+    .fc-header-actions {
+        width: 100%;
+    }
+
+    .fc-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .fc-image-wrap {
+        height: 110px;
+    }
+
+    .fc-card-content {
+        padding: 10px;
+    }
+
+    .fc-card-title h3 {
+        font-size: 15px;
+    }
+
+    .fc-summary {
+        padding: 15px;
+    }
+}
+
+/* ==========================================
+   RESPONSIVE - MOBILE
+========================================== */
+
+@media (max-width: 480px) {
+    .farmer-crops-page {
+        padding: 10px;
+    }
+
+    .fc-header {
+        gap: 15px;
+        padding: 14px;
+        border-radius: 11px;
+    }
+
+    .fc-brand {
+        gap: 9px;
+    }
+
+    .fc-brand-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 21px;
+    }
+
+    .fc-brand h1 {
+        font-size: 21px;
+    }
+
+    .fc-brand p {
+        font-size: 11px;
+    }
+
+    .fc-header-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .fc-dashboard-link,
+    .fc-header-actions .fc-add-button {
+        width: 100%;
+        min-height: 39px;
+        padding: 8px;
+        font-size: 11px;
+    }
+
+    .fc-summary {
+        gap: 10px;
+        min-height: 72px;
+        padding: 12px;
+        margin-bottom: 22px;
+    }
+
+    .fc-summary-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .fc-summary-text strong {
+        font-size: 22px;
+    }
+
+    .fc-summary-note {
+        max-width: 100px;
+        font-size: 10px;
+    }
+
+    .fc-section-heading {
+        align-items: flex-start;
+        margin-bottom: 12px;
+    }
+
+    .fc-section-heading h2 {
+        font-size: 18px;
+    }
+
+    .fc-section-heading p {
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .fc-count {
+        padding: 6px 8px;
+        font-size: 10px;
+    }
+
+    .fc-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .fc-image-wrap {
+        height: 88px;
+    }
+
+    .fc-crop-number {
+        top: 5px;
+        left: 5px;
+        padding: 4px 5px;
+        font-size: 9px;
+    }
+
+    .fc-card-content {
+        padding: 8px;
+    }
+
+    .fc-card-title {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .fc-card-title h3 {
+        font-size: 13px;
+    }
+
+    .fc-status-badge {
+        padding: 3px 5px;
+        font-size: 8px;
+    }
+
+    .fc-type {
+        font-size: 10px;
+    }
+
+    .fc-details-grid {
+        gap: 5px;
+        margin: 5px 0 8px;
+    }
+
+    .fc-detail-box {
+        gap: 4px;
+        padding: 7px 5px;
+    }
+
+    .fc-detail-box span {
+        font-size: 9px;
+    }
+
+    .fc-detail-box strong {
+        font-size: 10px;
+    }
+
+    .fc-extra-details {
+        gap: 6px;
+    }
+
+    .fc-extra-details p {
+        flex-direction: column;
+        gap: 3px;
+        padding-bottom: 5px;
+        font-size: 9px;
+    }
+
+    .fc-extra-details p strong {
+        font-size: 9px;
+        text-align: left;
+    }
+
+    .fc-card-actions {
+        gap: 5px;
+        padding-top: 10px;
+    }
+
+    .fc-edit-button,
+    .fc-delete-button {
+        min-height: 31px;
+        padding: 6px 3px;
+        font-size: 9px;
+    }
+
+    .fc-description {
+        font-size: 10px;
+    }
+
+    .fc-modal-overlay {
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .fc-edit-modal {
+        max-height: calc(100vh - 20px);
+        border-radius: 12px;
+    }
+
+    .fc-modal-header {
+        padding: 16px;
+    }
+
+    .fc-modal-header h2 {
+        font-size: 21px;
+    }
+
+    .fc-edit-form {
+        padding: 16px;
+    }
+
+    .fc-form-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .fc-full-width {
+        grid-column: auto;
+    }
+
+    .fc-modal-actions {
+        position: sticky;
+        bottom: 0;
+        padding: 12px 0 0;
+        background: #ffffff;
+    }
+
+    .fc-cancel-button,
+    .fc-save-button {
+        flex: 1;
+        padding: 10px;
+    }
+}
+
+/* ==========================================
+   EXTRA SMALL SCREENS
+========================================== */
+
+@media (max-width: 330px) {
+    .fc-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fc-image-wrap {
+        height: 145px;
+    }
+
+    .fc-card-title {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .fc-extra-details p {
+        flex-direction: row;
+    }
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

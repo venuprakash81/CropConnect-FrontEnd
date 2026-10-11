@@ -1,0 +1,595 @@
+
+/* =========================================
+   BUYER REGISTRATION PAGE
+========================================= */
+
+.buyer-register-page {
+  min-height: 100vh;
+  padding: 24px 20px 50px;
+  background:
+    radial-gradient(circle at top left, #e5f6e9 0, transparent 34%),
+    linear-gradient(135deg, #f4f8f3, #edf5ee);
+  color: #203328;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* TOP NAVIGATION */
+
+.buyer-register-top-buttons {
+  max-width: 1100px;
+  margin: 0 auto 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.buyer-register-top-buttons button {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.buyer-home-button {
+  background: #ffffff;
+  color: #285b39;
+  box-shadow: 0 4px 14px rgba(27, 70, 41, 0.08);
+}
+
+.buyer-login-button {
+  background: #246b40;
+  color: #ffffff;
+}
+
+.buyer-register-top-buttons button:hover {
+  transform: translateY(-2px);
+  filter: brightness(0.96);
+}
+
+/* MAIN CARD */
+
+.buyer-register-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 36px;
+  background: #ffffff;
+  border: 1px solid #e2ece3;
+  border-radius: 24px;
+  box-shadow: 0 18px 55px rgba(28, 66, 39, 0.09);
+}
+
+/* BRAND */
+
+.buyer-register-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid #e9efe9;
+}
+
+.buyer-brand-logo {
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: #e6f5e8;
+  border-radius: 18px;
+  font-size: 30px;
+}
+
+.buyer-register-header h1 {
+  margin: 0 0 5px;
+  color: #21653a;
+  font-size: 29px;
+  font-weight: 800;
+}
+
+.buyer-register-header p {
+  margin: 0;
+  color: #778579;
+  font-size: 13px;
+}
+
+/* PAGE TITLE */
+
+.buyer-form-title {
+  text-align: center;
+  padding: 35px 0 28px;
+}
+
+.buyer-eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #277346;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.buyer-form-title h2 {
+  margin: 0 0 12px;
+  color: #1d3827;
+  font-size: clamp(27px, 4vw, 35px);
+  font-weight: 800;
+}
+
+.buyer-form-title p {
+  max-width: 560px;
+  margin: 0 auto;
+  color: #738075;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* ALERTS */
+
+.buyer-alert {
+  margin-bottom: 22px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.buyer-alert-error {
+  color: #a12828;
+  background: #fff0f0;
+  border: 1px solid #f2c7c7;
+}
+
+.buyer-alert-success {
+  color: #21653a;
+  background: #eaf8ee;
+  border: 1px solid #bce5c6;
+}
+
+/* FORM SECTIONS */
+
+.buyer-form-section {
+  margin-bottom: 27px;
+  padding: 25px;
+  background: #ffffff;
+  border: 1px solid #e5ece5;
+  border-radius: 18px;
+  box-shadow: 0 5px 18px rgba(30, 60, 36, 0.035);
+}
+
+.buyer-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 25px;
+}
+
+.buyer-section-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: #e8f6eb;
+  font-size: 22px;
+}
+
+.buyer-section-heading h3 {
+  margin: 0 0 6px;
+  color: #234c30;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.buyer-section-heading p {
+  margin: 0;
+  color: #829084;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* FORM GRID */
+
+.buyer-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.buyer-full-width {
+  grid-column: 1 / -1;
+}
+
+.buyer-form-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.buyer-form-group label {
+  margin-bottom: 9px;
+  color: #344b39;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.buyer-form-group label span {
+  color: #d83b3b;
+}
+
+.buyer-form-group input,
+.buyer-form-group select,
+.buyer-form-group textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 13px 14px;
+  border: 1px solid #dce6dd;
+  border-radius: 10px;
+  outline: none;
+  background: #fbfdfb;
+  color: #26392b;
+  font-family: inherit;
+  font-size: 13px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.buyer-form-group input,
+.buyer-form-group select {
+  min-height: 46px;
+}
+
+.buyer-form-group textarea {
+  resize: vertical;
+}
+
+.buyer-form-group input::placeholder,
+.buyer-form-group textarea::placeholder {
+  color: #a0aca2;
+}
+
+.buyer-form-group input:focus,
+.buyer-form-group select:focus,
+.buyer-form-group textarea:focus {
+  border-color: #3d9758;
+  box-shadow: 0 0 0 3px rgba(61, 151, 88, 0.12);
+  background: #ffffff;
+}
+
+.buyer-form-group input[type="file"] {
+  padding: 10px;
+  background: #ffffff;
+}
+
+.buyer-form-group small {
+  margin-top: 7px;
+  color: #859187;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* PROFILE PHOTO */
+
+.buyer-photo-preview {
+  width: 88px;
+  height: 88px;
+  margin-top: 14px;
+  border: 3px solid #e1f2e4;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* MAP ACTIONS */
+
+.buyer-location-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 17px;
+}
+
+.buyer-location-button,
+.buyer-clear-location {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 17px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.buyer-location-button {
+  background: #247345;
+  color: #ffffff;
+}
+
+.buyer-clear-location {
+  background: #edf2ee;
+  color: #465a49;
+}
+
+.buyer-location-button:hover,
+.buyer-clear-location:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.95);
+}
+
+/* LEAFLET MAP */
+
+.buyer-map-container {
+  overflow: hidden;
+  width: 100%;
+  height: 390px;
+  border: 1px solid #dce8dc;
+  border-radius: 15px;
+  background: #eef4ed;
+}
+
+.buyer-map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.buyer-map-help {
+  margin: 12px 0 20px;
+  color: #6d7d70;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.buyer-coordinates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+/* SUBMIT BUTTON */
+
+.buyer-submit-area {
+  padding: 10px 0 24px;
+  text-align: center;
+}
+
+.buyer-register-button {
+  width: 100%;
+  min-height: 54px;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #277d45, #195d35);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(31, 110, 58, 0.18);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.buyer-register-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(31, 110, 58, 0.23);
+}
+
+.buyer-register-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.buyer-submit-area p {
+  margin: 14px 0 0;
+  color: #8a958b;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+/* LOGIN LINK */
+
+.buyer-register-login-section {
+  padding-top: 22px;
+  border-top: 1px solid #e8eee8;
+  text-align: center;
+}
+
+.buyer-register-login-section p {
+  margin: 0 0 12px;
+  color: #778379;
+  font-size: 13px;
+}
+
+.buyer-register-login-section button {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #267544;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.buyer-register-login-section button:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
+  .buyer-register-page {
+    padding: 15px 10px 30px;
+  }
+
+  .buyer-register-container {
+    padding: 22px 15px;
+    border-radius: 18px;
+  }
+
+  .buyer-register-top-buttons button {
+    padding: 11px 13px;
+    font-size: 12px;
+  }
+
+  .buyer-brand-logo {
+    width: 50px;
+    height: 50px;
+    font-size: 25px;
+  }
+
+  .buyer-register-header h1 {
+    font-size: 24px;
+  }
+
+  .buyer-form-title {
+    padding: 27px 0 24px;
+  }
+
+  .buyer-form-section {
+    padding: 18px 14px;
+    border-radius: 14px;
+  }
+
+  .buyer-form-grid,
+  .buyer-coordinates {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+
+  .buyer-full-width {
+    grid-column: auto;
+  }
+
+  .buyer-map-container {
+    height: 320px;
+  }
+
+  .buyer-section-heading {
+    align-items: flex-start;
+    gap: 11px;
+  }
+
+  .buyer-section-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 19px;
+  }
+
+  .buyer-section-heading h3 {
+    font-size: 16px;
+  }
+
+  .buyer-section-heading p {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 380px) {
+  .buyer-register-top-buttons {
+    gap: 7px;
+  }
+
+  .buyer-register-top-buttons button {
+    padding: 10px;
+    font-size: 11px;
+  }
+
+  .buyer-register-container {
+    padding: 17px 11px;
+  }
+
+  .buyer-map-container {
+    height: 280px;
+  }
+}
+
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

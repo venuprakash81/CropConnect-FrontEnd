@@ -1,0 +1,551 @@
+/* ========================================
+   CROPCONNECT - FARMER LOGIN PAGE
+   File: FarmerLogin.css
+======================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.farmer-login-page {
+  min-height: 100vh;
+  width: 100%;
+  padding: 35px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 10% 15%, #d9f8df 0, transparent 32%),
+    radial-gradient(circle at 90% 85%, #c9efd2 0, transparent 32%),
+    linear-gradient(135deg, #f4fbf5, #e8f6eb);
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #183b27;
+}
+
+/* Decorative background circles */
+.farmer-login-page::before,
+.farmer-login-page::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.farmer-login-page::before {
+  width: 260px;
+  height: 260px;
+  top: -110px;
+  right: -80px;
+  background: rgba(51, 170, 82, 0.09);
+}
+
+.farmer-login-page::after {
+  width: 220px;
+  height: 220px;
+  bottom: -100px;
+  left: -65px;
+  background: rgba(51, 170, 82, 0.09);
+}
+
+/* ========================================
+   HOME BUTTON
+======================================== */
+
+.farmer-home-button {
+  position: absolute;
+  top: 25px;
+  left: 28px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 19px;
+  border: 1px solid #cce5d1;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #247c3e;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 5px 16px rgba(26, 92, 44, 0.07);
+  transition: all 0.25s ease;
+}
+
+.farmer-home-button:hover {
+  background: #218b45;
+  border-color: #218b45;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(33, 139, 69, 0.2);
+}
+
+/* ========================================
+   LOGIN CARD
+======================================== */
+
+.farmer-login-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 465px;
+  padding: 38px 38px 32px;
+  border: 1px solid rgba(216, 234, 220, 0.9);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 22px 65px rgba(28, 83, 43, 0.13);
+  animation: farmerCardAppear 0.5s ease-out;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.farmer-login-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.farmer-login-icon {
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 17px;
+  border: 1px solid #ccebd3;
+  border-radius: 23px;
+  background: linear-gradient(135deg, #e8f8eb, #d4f0dc);
+  font-size: 39px;
+  box-shadow: 0 8px 20px rgba(38, 147, 76, 0.1);
+}
+
+.farmer-login-header h1 {
+  margin: 0 0 10px;
+  color: #19472b;
+  font-size: 29px;
+  line-height: 1.3;
+  font-weight: 800;
+  letter-spacing: -0.7px;
+}
+
+.farmer-login-header p {
+  margin: 0;
+  color: #788a7c;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* ========================================
+   FORM GROUPS
+======================================== */
+
+.farmer-form-group {
+  margin-bottom: 22px;
+}
+
+.farmer-form-group label {
+  display: block;
+  margin-bottom: 9px;
+  color: #2c4a34;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.farmer-form-group input {
+  display: block;
+  width: 100%;
+  height: 51px;
+  padding: 0 15px;
+  border: 1px solid #dce8de;
+  border-radius: 12px;
+  outline: none;
+  background: #fbfdfb;
+  color: #213d29;
+  font-family: inherit;
+  font-size: 14px;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.farmer-form-group input::placeholder {
+  color: #a0afa3;
+}
+
+.farmer-form-group input:hover {
+  border-color: #a9d6b3;
+}
+
+.farmer-form-group input:focus {
+  border-color: #29994c;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(41, 153, 76, 0.1);
+}
+
+/* ========================================
+   REMEMBER ME AND FORGOT PASSWORD
+======================================== */
+
+.farmer-login-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 25px;
+}
+
+.farmer-login-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #687b6d;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.farmer-login-options input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #26934c;
+  cursor: pointer;
+}
+
+.farmer-login-options button {
+  padding: 4px 0;
+  border: none;
+  background: transparent;
+  color: #278c49;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.farmer-login-options button:hover {
+  color: #145b2c;
+  text-decoration: underline;
+}
+
+/* ========================================
+   LOGIN BUTTON
+======================================== */
+
+.farmer-login-button {
+  width: 100%;
+  min-height: 53px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #218b45, #35ad5b);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(33, 139, 69, 0.2);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.farmer-login-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #176e35, #278f49);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(33, 139, 69, 0.27);
+}
+
+.farmer-login-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.farmer-login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ========================================
+   REGISTER SECTION
+======================================== */
+
+.farmer-no-account {
+  margin-top: 26px;
+  padding-top: 23px;
+  border-top: 1px solid #e9f0ea;
+  text-align: center;
+}
+
+.farmer-no-account p {
+  margin: 0 0 13px;
+  color: #788a7c;
+  font-size: 13px;
+}
+
+.farmer-no-account button {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1px solid #bfe2c7;
+  border-radius: 11px;
+  background: #f1faf3;
+  color: #247c3e;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.farmer-no-account button:hover {
+  border-color: #26934c;
+  background: #e2f5e7;
+  transform: translateY(-1px);
+}
+
+/* ========================================
+   OTHER LOGIN OPTIONS
+======================================== */
+
+.other-login {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.other-login > p {
+  margin: 0 0 14px;
+  color: #829085;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.other-login > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.other-login > div button {
+  min-width: 0;
+  min-height: 43px;
+  padding: 9px 5px;
+  border: 1px solid #e0eae2;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #496451;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.other-login > div button:hover {
+  border-color: #9ed4aa;
+  background: #f0faf2;
+  color: #218b45;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(33, 139, 69, 0.08);
+}
+
+/* ========================================
+   ANIMATIONS
+======================================== */
+
+@keyframes farmerCardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   TABLET RESPONSIVE
+======================================== */
+
+@media (max-width: 600px) {
+  .farmer-login-page {
+    padding: 85px 18px 25px;
+  }
+
+  .farmer-home-button {
+    top: 18px;
+    left: 18px;
+    padding: 10px 15px;
+  }
+
+  .farmer-login-card {
+    max-width: 430px;
+    padding: 32px 25px 27px;
+    border-radius: 20px;
+  }
+
+  .farmer-login-header h1 {
+    font-size: 26px;
+  }
+
+  .farmer-login-icon {
+    width: 68px;
+    height: 68px;
+    font-size: 35px;
+  }
+}
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 380px) {
+  .farmer-login-page {
+    padding: 75px 12px 20px;
+  }
+
+  .farmer-login-card {
+    padding: 27px 18px 23px;
+    border-radius: 17px;
+  }
+
+  .farmer-login-header h1 {
+    font-size: 23px;
+  }
+
+  .farmer-login-header p {
+    font-size: 12px;
+  }
+
+  .farmer-login-options {
+    align-items: flex-start;
+  }
+
+  .farmer-login-options label,
+  .farmer-login-options button {
+    font-size: 11px;
+  }
+
+  .other-login > div {
+    gap: 6px;
+  }
+
+  .other-login > div button {
+    font-size: 10px;
+    padding: 8px 3px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .farmer-login-card {
+    animation: none;
+  }
+
+  .farmer-home-button,
+  .farmer-login-button,
+  .farmer-no-account button,
+  .other-login > div button,
+  .farmer-form-group input {
+    transition: none;
+  }
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

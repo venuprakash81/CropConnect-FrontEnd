@@ -1,0 +1,391 @@
+* {
+  box-sizing: border-box;
+}
+
+.transporter-payments-page {
+  min-height: 100vh;
+  padding: 35px 20px;
+  background: #f4f7fb;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.transporter-payments-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.transporter-payments-header {
+  margin-bottom: 30px;
+}
+
+.transporter-payments-header h1 {
+  color: #172554;
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.transporter-payments-header p {
+  color: #64748b;
+  font-size: 15px;
+  margin: 0;
+}
+
+.transporter-payment-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-bottom: 30px;
+}
+
+.transporter-payment-card {
+  padding: 26px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 5px 20px rgba(15, 23, 42, 0.07);
+  border: 1px solid #e8edf5;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.transporter-payment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+}
+
+.payment-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 23px;
+  margin-bottom: 18px;
+}
+
+.transporter-payment-card.total .payment-icon {
+  background: #e8f0ff;
+}
+
+.transporter-payment-card.paid .payment-icon {
+  background: #dcfce7;
+}
+
+.transporter-payment-card.pending .payment-icon {
+  background: #fff3d6;
+}
+
+.transporter-payment-card h3 {
+  color: #64748b;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.transporter-payment-card h2 {
+  color: #172554;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.transporter-payment-card p {
+  color: #94a3b8;
+  font-size: 13px;
+  margin: 0;
+}
+
+.transporter-payment-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.transporter-payment-actions button {
+  padding: 13px 24px;
+  border: 1px solid #2563eb;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.transporter-payment-actions button:hover,
+.transporter-payment-actions button.active {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.transporter-payment-details {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #e8edf5;
+  box-shadow: 0 5px 20px rgba(15, 23, 42, 0.06);
+  animation: transporterFadeIn 0.3s ease;
+}
+
+.transporter-payment-details h2 {
+  color: #172554;
+  font-size: 21px;
+  margin: 0 0 8px;
+}
+
+.transporter-payment-details > p {
+  color: #64748b;
+  font-size: 14px;
+  margin: 0 0 22px;
+}
+
+.transporter-payment-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.transporter-payment-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 650px;
+}
+
+.transporter-payment-table th {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 15px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.transporter-payment-table td {
+  padding: 16px 15px;
+  color: #334155;
+  font-size: 14px;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.transporter-payment-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.payment-status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.payment-status.paid {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.payment-status.pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.received-payment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 18px 20px;
+  border: 1px solid #e8edf5;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  background: #ffffff;
+  transition: background 0.2s ease;
+}
+
+.received-payment-item:hover {
+  background: #f8fafc;
+}
+
+.received-payment-item h3 {
+  color: #1e293b;
+  font-size: 15px;
+  margin: 0 0 7px;
+}
+
+.received-payment-item p {
+  color: #64748b;
+  font-size: 13px;
+  margin: 0;
+}
+
+.received-payment-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.received-payment-amount strong {
+  color: #15803d;
+  font-size: 18px;
+}
+
+.received-payment-amount span {
+  color: #15803d;
+  background: #dcfce7;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+@keyframes transporterFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .transporter-payment-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .transporter-payments-page {
+    padding: 22px 14px;
+  }
+
+  .transporter-payments-header h1 {
+    font-size: 24px;
+  }
+
+  .transporter-payment-summary {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .transporter-payment-card {
+    padding: 20px;
+  }
+
+  .transporter-payment-card h2 {
+    font-size: 25px;
+  }
+
+  .transporter-payment-actions {
+    flex-direction: column;
+  }
+
+  .transporter-payment-actions button {
+    width: 100%;
+  }
+
+  .transporter-payment-details {
+    padding: 18px 14px;
+  }
+
+  .received-payment-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .received-payment-amount {
+    align-items: flex-start;
+  }
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

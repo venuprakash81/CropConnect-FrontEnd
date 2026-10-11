@@ -1,0 +1,539 @@
+/* =========================================
+   MY CROPS - COMPLETE CSS
+========================================= */
+
+.my-crops-container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 24px;
+    background: #f1f8f0;
+    color: #243b29;
+    font-family: "Segoe UI", Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.my-crops-container * {
+    box-sizing: border-box;
+}
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #14532d, #238443);
+    border-radius: 14px;
+    box-shadow: 0 5px 16px rgba(20, 83, 45, 0.14);
+}
+
+.page-header h1 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 27px;
+    font-weight: 750;
+    letter-spacing: 0.2px;
+}
+
+/* =========================================
+   HEADER BUTTONS
+========================================= */
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.back-btn,
+.add-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 42px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.back-btn {
+    color: #14532d;
+    background: #ffffff;
+}
+
+.back-btn:hover {
+    background: #e5f5e6;
+    transform: translateY(-2px);
+}
+
+.add-btn {
+    color: #14532d;
+    background: #d9f99d;
+}
+
+.add-btn:hover {
+    background: #bef264;
+    transform: translateY(-2px);
+}
+
+.back-btn:focus-visible,
+.add-btn:focus-visible,
+.crop-buttons button:focus-visible {
+    outline: 3px solid #86efac;
+    outline-offset: 2px;
+}
+
+/* =========================================
+   CROPS GRID
+   Desktop: 4 small boxes per row
+========================================= */
+
+.crop-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    width: 100%;
+    align-items: stretch;
+}
+
+/* =========================================
+   SMALL CROP CARD
+========================================= */
+
+.crop-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #dcebdc;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(31, 53, 36, 0.06);
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+}
+
+.crop-card:hover {
+    transform: translateY(-4px);
+    border-color: #9bcba0;
+    box-shadow: 0 9px 22px rgba(20, 83, 45, 0.12);
+}
+
+/* =========================================
+   CROP IMAGE
+========================================= */
+
+.crop-image {
+    display: block;
+    width: 100%;
+    height: 125px;
+    object-fit: cover;
+    background: #e7f3e5;
+    border-bottom: 1px solid #e0eadf;
+}
+
+/* =========================================
+   CROP DETAILS
+========================================= */
+
+.crop-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    padding: 13px;
+}
+
+.crop-body h2 {
+    margin: 0 0 12px;
+    color: #166534;
+    font-size: 18px;
+    font-weight: 750;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.crop-body p {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0 0 8px;
+    padding-bottom: 7px;
+    color: #56665a;
+    font-size: 12px;
+    line-height: 1.45;
+    border-bottom: 1px solid #edf2ed;
+    overflow-wrap: anywhere;
+}
+
+.crop-body p strong {
+    flex-shrink: 0;
+    color: #304b35;
+    font-weight: 700;
+}
+
+/* =========================================
+   CROP ACTION BUTTONS
+========================================= */
+
+.crop-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+.crop-buttons button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    min-height: 34px;
+    padding: 8px 5px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: center;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.crop-buttons button:hover {
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   VIEW DETAILS BUTTON
+========================================= */
+
+.view-btn {
+    grid-column: 1 / -1;
+    color: #ffffff;
+    background: #15803d;
+}
+
+.view-btn:hover {
+    background: #14532d;
+}
+
+/* =========================================
+   EDIT BUTTON
+========================================= */
+
+.edit-btn {
+    color: #854d0e;
+    background: #fef3c7;
+    border-color: #fde68a !important;
+}
+
+.edit-btn:hover {
+    color: #713f12;
+    background: #fde68a;
+}
+
+/* =========================================
+   DELETE BUTTON
+========================================= */
+
+.delete-btn {
+    color: #b91c1c;
+    background: #fee2e2;
+    border-color: #fecaca !important;
+}
+
+.delete-btn:hover {
+    color: #ffffff;
+    background: #dc2626;
+}
+
+/* =========================================
+   NO CROPS FOUND
+========================================= */
+
+.crop-grid > h2 {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin: 0;
+    padding: 45px 20px;
+    color: #647768;
+    background: #ffffff;
+    border: 1px dashed #b8d5b9;
+    border-radius: 12px;
+    font-size: 19px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* =========================================
+   TABLET
+   3 boxes per row
+========================================= */
+
+@media (max-width: 1050px) {
+    .crop-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .my-crops-container {
+        padding: 20px;
+    }
+
+    .crop-image {
+        height: 120px;
+    }
+}
+
+/* =========================================
+   SMALL TABLET
+   2 boxes per row
+========================================= */
+
+@media (max-width: 720px) {
+    .my-crops-container {
+        padding: 15px;
+    }
+
+    .page-header {
+        padding: 17px;
+        margin-bottom: 18px;
+    }
+
+    .page-header h1 {
+        font-size: 23px;
+    }
+
+    .crop-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .crop-image {
+        height: 110px;
+    }
+
+    .crop-body {
+        padding: 11px;
+    }
+
+    .crop-body h2 {
+        font-size: 16px;
+    }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 450px) {
+    .my-crops-container {
+        padding: 10px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 13px;
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .page-header h1 {
+        font-size: 21px;
+    }
+
+    .header-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+        gap: 8px;
+    }
+
+    .back-btn,
+    .add-btn {
+        width: 100%;
+        min-height: 39px;
+        padding: 9px 5px;
+        font-size: 11px;
+    }
+
+    .crop-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .crop-card {
+        border-radius: 9px;
+    }
+
+    .crop-image {
+        height: 90px;
+    }
+
+    .crop-body {
+        padding: 8px;
+    }
+
+    .crop-body h2 {
+        margin-bottom: 9px;
+        font-size: 14px;
+    }
+
+    .crop-body p {
+        gap: 4px;
+        margin-bottom: 6px;
+        padding-bottom: 5px;
+        font-size: 10px;
+    }
+
+    .crop-buttons {
+        gap: 5px;
+        padding-top: 8px;
+    }
+
+    .crop-buttons button {
+        min-height: 31px;
+        padding: 6px 3px;
+        border-radius: 5px;
+        font-size: 10px;
+    }
+
+    .crop-grid > h2 {
+        padding: 30px 10px;
+        font-size: 16px;
+    }
+}
+
+/* =========================================
+   VERY SMALL SCREENS
+========================================= */
+
+@media (max-width: 330px) {
+    .crop-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .crop-image {
+        height: 135px;
+    }
+
+    .crop-body h2 {
+        font-size: 17px;
+    }
+
+    .crop-body p {
+        font-size: 12px;
+    }
+
+    .crop-buttons button {
+        font-size: 11px;
+    }
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

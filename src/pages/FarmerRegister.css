@@ -1,0 +1,1069 @@
+/* =========================================================
+   FARMER REGISTRATION PAGE
+   ========================================================= */
+
+.farmer-register-page {
+    min-height: 100vh;
+    width: 100%;
+    background:
+        radial-gradient(circle at top left, rgba(46, 139, 87, 0.10), transparent 30%),
+        linear-gradient(135deg, #f4f9f4, #eaf4eb);
+
+    padding: 30px 20px 50px;
+    box-sizing: border-box;
+
+    font-family: Arial, Helvetica, sans-serif;
+    color: #222;
+}
+
+
+/* =========================================================
+   TOP NAVIGATION BUTTONS
+   ========================================================= */
+
+.register-top-buttons {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.register-home-button,
+.register-login-button {
+    border: none;
+    padding: 11px 20px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+
+/* Home */
+
+.register-home-button {
+    background: #ffffff;
+    color: #176b36;
+
+    border: 1px solid #d7e6d9;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+
+.register-home-button:hover {
+    background: #176b36;
+    color: #ffffff;
+
+    transform: translateY(-2px);
+}
+
+
+/* Login */
+
+.register-login-button {
+    background: #176b36;
+    color: #ffffff;
+
+    box-shadow: 0 5px 14px rgba(23, 107, 54, 0.20);
+}
+
+
+.register-login-button:hover {
+    background: #10552b;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+.register-container {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    background: #ffffff;
+
+    border-radius: 24px;
+
+    padding: 35px 40px 45px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #e1ebe2;
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.09);
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.register-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 15px;
+
+    padding-bottom: 25px;
+
+    border-bottom: 1px solid #e7eee8;
+}
+
+
+.register-header .logo {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eaf6ed;
+
+    border-radius: 16px;
+
+    font-size: 32px;
+
+    box-shadow:
+        0 5px 15px rgba(46, 139, 87, 0.12);
+}
+
+
+.register-header h1 {
+    margin: 0;
+
+    color: #176b36;
+
+    font-size: 30px;
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+
+.register-header p {
+    margin: 5px 0 0;
+
+    color: #737c75;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   FORM TITLE
+   ========================================================= */
+
+.form-title {
+    text-align: center;
+
+    padding: 28px 10px 25px;
+}
+
+
+.form-title h2 {
+    margin: 0;
+
+    color: #176b36;
+
+    font-size: 27px;
+    font-weight: 700;
+}
+
+
+.form-title p {
+    max-width: 650px;
+
+    margin: 9px auto 0;
+
+    color: #6d756f;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM SECTION
+   ========================================================= */
+
+.form-section {
+    background: #ffffff;
+
+    border: 1px solid #e2ebe3;
+
+    border-radius: 17px;
+
+    padding: 25px;
+
+    margin-bottom: 22px;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.035);
+}
+
+
+/* =========================================================
+   SECTION HEADING
+   ========================================================= */
+
+.section-heading {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding-bottom: 18px;
+
+    margin-bottom: 20px;
+
+    border-bottom: 1px solid #edf1ed;
+}
+
+
+.section-heading > span {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: #edf8ef;
+
+    border-radius: 11px;
+
+    font-size: 22px;
+}
+
+
+.section-heading h3 {
+    margin: 0;
+
+    color: #23683c;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+.section-heading p {
+    margin: 4px 0 0;
+
+    color: #858d87;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FORM GRID
+   ========================================================= */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 18px 20px;
+}
+
+
+/* =========================================================
+   FORM GROUP
+   ========================================================= */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.form-group label,
+.coordinates label {
+    margin-bottom: 7px;
+
+    color: #364139;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.form-group label span {
+    color: #d83232;
+
+    margin-left: 3px;
+}
+
+
+/* =========================================================
+   INPUTS / SELECT
+   ========================================================= */
+
+.form-group input,
+.form-group select,
+.coordinates input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    min-height: 46px;
+
+    padding: 12px 14px;
+
+    border: 1px solid #d7e2d9;
+
+    border-radius: 10px;
+
+    background: #fbfdfb;
+
+    color: #222;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+
+.form-group input::placeholder {
+    color: #9aa29c;
+}
+
+
+/* Focus */
+
+.form-group input:focus,
+.form-group select:focus,
+.coordinates input:focus {
+    border-color: #2e8b57;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 3px rgba(46, 139, 87, 0.11);
+}
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.form-group select {
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   PROFILE PHOTO
+   ========================================================= */
+
+.profile-group input[type="file"] {
+    padding: 8px;
+
+    cursor: pointer;
+
+    background: #ffffff;
+}
+
+
+.profile-group input[type="file"]::file-selector-button {
+    border: none;
+
+    padding: 9px 13px;
+
+    margin-right: 10px;
+
+    border-radius: 7px;
+
+    background: #2e8b57;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+
+.profile-group input[type="file"]::file-selector-button:hover {
+    background: #176b36;
+}
+
+
+/* =========================================================
+   FARM LOCATION ACTIONS
+   ========================================================= */
+
+.location-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-bottom: 15px;
+}
+
+
+.location-button {
+    border: none;
+
+    background: #edf8ef;
+
+    color: #176b36;
+
+    border: 1px solid #cfe5d3;
+
+    padding: 11px 17px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+
+.location-button:hover {
+    background: #176b36;
+
+    color: #ffffff;
+
+    border-color: #176b36;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 12px rgba(23, 107, 54, 0.18);
+}
+
+
+/* =========================================================
+   MAP
+   ========================================================= */
+
+.map-container {
+    width: 100%;
+
+    height: 390px;
+
+    overflow: hidden;
+
+    border-radius: 15px;
+
+    border: 1px solid #d8e4da;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.07);
+}
+
+
+.farmer-map {
+    width: 100%;
+    height: 100%;
+}
+
+
+/* Leaflet controls */
+
+.farmer-map .leaflet-control-zoom a {
+    color: #176b36;
+}
+
+
+/* =========================================================
+   COORDINATES
+   ========================================================= */
+
+.coordinates {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-top: 18px;
+}
+
+
+.coordinates > div {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.coordinates input {
+    background: #f4f8f4;
+
+    color: #566159;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   LAND DETAILS
+   ========================================================= */
+
+.land-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   SUBMIT AREA
+   ========================================================= */
+
+.submit-area {
+    text-align: center;
+
+    padding: 12px 0 20px;
+}
+
+
+.register-button {
+    width: 100%;
+
+    max-width: 520px;
+
+    min-height: 52px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #238b45,
+            #176b36
+        );
+
+    color: #ffffff;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 18px rgba(35, 139, 69, 0.22);
+
+    transition: all 0.25s ease;
+}
+
+
+.register-button:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #176b36,
+            #10552b
+        );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(35, 139, 69, 0.28);
+}
+
+
+.register-button:active {
+    transform: translateY(0);
+}
+
+
+.submit-area p {
+    margin: 12px 0 0;
+
+    color: #89918b;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   LOGIN SECTION
+   ========================================================= */
+
+.register-login-section {
+    margin-top: 8px;
+
+    padding-top: 25px;
+
+    border-top: 1px solid #e8eee9;
+
+    text-align: center;
+}
+
+
+.register-login-section p {
+    margin: 0 0 10px;
+
+    color: #707971;
+
+    font-size: 14px;
+}
+
+
+.register-login-section button {
+    border: none;
+
+    background: transparent;
+
+    color: #176b36;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    padding: 7px 12px;
+
+    border-radius: 7px;
+
+    transition: all 0.2s ease;
+}
+
+
+.register-login-section button:hover {
+    background: #edf8ef;
+
+    color: #10552b;
+}
+
+
+/* =========================================================
+   RESPONSIVE TABLET
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .farmer-register-page {
+        padding: 20px 15px 40px;
+    }
+
+
+    .register-container {
+        padding: 28px 25px 35px;
+
+        border-radius: 20px;
+    }
+
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+
+
+    .land-row {
+        grid-template-columns: 1fr;
+    }
+
+
+    .map-container {
+        height: 340px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .farmer-register-page {
+        padding: 12px 10px 30px;
+    }
+
+
+    /* Top buttons */
+
+    .register-top-buttons {
+        margin-bottom: 12px;
+    }
+
+
+    .register-home-button,
+    .register-login-button {
+        padding: 9px 12px;
+
+        font-size: 12px;
+    }
+
+
+    /* Main card */
+
+    .register-container {
+        padding: 22px 15px 28px;
+
+        border-radius: 17px;
+    }
+
+
+    /* Header */
+
+    .register-header {
+        gap: 10px;
+
+        padding-bottom: 20px;
+    }
+
+
+    .register-header .logo {
+        width: 48px;
+        height: 48px;
+
+        font-size: 27px;
+
+        border-radius: 13px;
+    }
+
+
+    .register-header h1 {
+        font-size: 23px;
+    }
+
+
+    .register-header p {
+        font-size: 11px;
+    }
+
+
+    /* Title */
+
+    .form-title {
+        padding: 22px 5px;
+    }
+
+
+    .form-title h2 {
+        font-size: 22px;
+    }
+
+
+    .form-title p {
+        font-size: 12px;
+    }
+
+
+    /* Sections */
+
+    .form-section {
+        padding: 18px 15px;
+
+        border-radius: 14px;
+
+        margin-bottom: 16px;
+    }
+
+
+    .section-heading {
+        gap: 10px;
+
+        margin-bottom: 16px;
+    }
+
+
+    .section-heading > span {
+        width: 38px;
+        height: 38px;
+
+        font-size: 19px;
+    }
+
+
+    .section-heading h3 {
+        font-size: 16px;
+    }
+
+
+    .section-heading p {
+        font-size: 11px;
+    }
+
+
+    /* Form */
+
+    .form-grid {
+        gap: 14px;
+    }
+
+
+    .form-group input,
+    .form-group select,
+    .coordinates input {
+        min-height: 44px;
+
+        padding: 11px 12px;
+
+        font-size: 13px;
+    }
+
+
+    /* Map */
+
+    .location-actions {
+        justify-content: stretch;
+    }
+
+
+    .location-button {
+        width: 100%;
+
+        padding: 11px;
+    }
+
+
+    .map-container {
+        height: 300px;
+
+        border-radius: 12px;
+    }
+
+
+    /* Coordinates */
+
+    .coordinates {
+        grid-template-columns: 1fr;
+
+        gap: 13px;
+    }
+
+
+    /* Register */
+
+    .register-button {
+        min-height: 50px;
+
+        font-size: 15px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .register-top-buttons {
+        gap: 8px;
+    }
+
+
+    .register-home-button,
+    .register-login-button {
+        padding: 8px 9px;
+
+        font-size: 11px;
+    }
+
+
+    .register-container {
+        padding: 18px 11px 25px;
+    }
+
+
+    .register-header h1 {
+        font-size: 20px;
+    }
+
+
+    .register-header p {
+        font-size: 10px;
+    }
+
+
+    .form-section {
+        padding: 15px 12px;
+    }
+
+
+    .map-container {
+        height: 260px;
+    }
+}
+
+
+/* =========================================================
+   LEAFLET POPUP
+   ========================================================= */
+
+.leaflet-popup-content-wrapper {
+    border-radius: 10px;
+}
+
+
+.leaflet-popup-content {
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.farmer-register-page::-webkit-scrollbar {
+    width: 8px;
+}
+
+
+.farmer-register-page::-webkit-scrollbar-track {
+    background: #eef4ef;
+}
+
+
+.farmer-register-page::-webkit-scrollbar-thumb {
+    background: #b9d2bd;
+
+    border-radius: 10px;
+}
+
+
+.farmer-register-page::-webkit-scrollbar-thumb:hover {
+    background: #8fb698;
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

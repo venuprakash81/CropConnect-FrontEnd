@@ -1,0 +1,600 @@
+.farmer-bookings-page {
+  min-height: 100vh;
+  padding: 32px;
+  background: #f3f8f1;
+  color: #23392a;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.farmer-bookings-page *,
+.farmer-bookings-page *::before,
+.farmer-bookings-page *::after {
+  box-sizing: border-box;
+}
+
+.fb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 27px;
+}
+
+.fb-eyebrow {
+  display: block;
+  margin-bottom: 9px;
+  color: #278447;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+}
+
+.fb-header h1 {
+  margin: 0;
+  color: #193e28;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 850;
+  letter-spacing: -1px;
+}
+
+.fb-header p {
+  max-width: 650px;
+  margin: 10px 0 13px;
+  color: #788579;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.fb-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  padding: 8px 12px;
+  border: 1px solid #dce9d9;
+  border-radius: 9px;
+  background: #fff;
+  color: #52715a;
+  font-size: 12px;
+}
+
+.fb-email-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #2e9b50;
+}
+
+.fb-refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  flex-shrink: 0;
+  padding: 0 17px;
+  border: 1px solid #d5e4d4;
+  border-radius: 11px;
+  background: #fff;
+  color: #31633f;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.fb-refresh:hover:not(:disabled) {
+  background: #eaf5e8;
+  transform: translateY(-1px);
+}
+
+.fb-refresh:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.fb-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 27px;
+}
+
+.fb-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 20px 17px;
+  border: 1px solid #e0e9dc;
+  border-radius: 17px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgb(32 65 37 / 4%);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.fb-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px rgb(32 65 37 / 8%);
+}
+
+.fb-stat-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 14px;
+  background: #e9f5e7;
+  color: #267b3e;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.fb-stat-card > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.fb-stat-card > div > span {
+  color: #7a897c;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.fb-stat-card strong {
+  overflow-wrap: anywhere;
+  color: #23452d;
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 850;
+}
+
+.fb-alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 22px;
+  padding: 15px 17px;
+  border: 1px solid #f0c7c1;
+  border-radius: 12px;
+  background: #fff0ed;
+  color: #a6382b;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.fb-alert button {
+  flex-shrink: 0;
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.fb-alert button:hover {
+  background: rgb(0 0 0 / 5%);
+}
+
+.fb-bookings-section {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid #e0e9dc;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 5px 20px rgb(31 65 38 / 4%);
+}
+
+.fb-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.fb-section-heading h2 {
+  margin: 0;
+  color: #24462d;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.fb-section-heading p {
+  margin: 7px 0 0;
+  color: #849084;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.fb-last-updated {
+  flex-shrink: 0;
+  color: #839084;
+  font-size: 11px;
+}
+
+.fb-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e8eee5;
+  border-radius: 13px;
+}
+
+.fb-table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+
+.fb-table thead {
+  background: #f1f7ee;
+}
+
+.fb-table th {
+  padding: 15px 16px;
+  border-bottom: 1px solid #e2ebde;
+  color: #526b57;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.fb-table td {
+  padding: 16px;
+  border-bottom: 1px solid #edf1ea;
+  color: #526354;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.fb-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.fb-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.fb-table tbody tr:hover {
+  background: #f9fcf7;
+}
+
+.fb-booking-id {
+  display: inline-block;
+  padding: 6px 8px;
+  border-radius: 7px;
+  background: #eff5ec;
+  color: #507052;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.fb-crop-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 130px;
+}
+
+.fb-crop-icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 10px;
+  background: #e9f5e6;
+  font-size: 19px;
+}
+
+.fb-crop-cell strong {
+  overflow-wrap: anywhere;
+  color: #2a4932;
+  font-size: 12px;
+}
+
+.fb-buyer-cell {
+  display: flex;
+  min-width: 145px;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.fb-buyer-cell strong {
+  color: #354e3a;
+  font-size: 12px;
+}
+
+.fb-buyer-cell span {
+  overflow-wrap: anywhere;
+  color: #859186;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.fb-unit {
+  color: #849084;
+  font-size: 11px;
+}
+
+.fb-amount {
+  color: #258142;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.fb-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 140px;
+  padding: 7px 10px;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.fb-status-success {
+  border-color: #c4e7c9;
+  background: #eaf8ec;
+  color: #23753b;
+}
+
+.fb-status-pending {
+  border-color: #f2dfad;
+  background: #fff8e5;
+  color: #947019;
+}
+
+.fb-status-danger {
+  border-color: #f0c8c4;
+  background: #fff0ee;
+  color: #ad3c32;
+}
+
+.fb-state {
+  display: flex;
+  min-height: 260px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  padding: 28px 20px;
+  border: 1px dashed #ccddc8;
+  border-radius: 16px;
+  background: #fcfefb;
+  text-align: center;
+}
+
+.fb-state p {
+  max-width: 440px;
+  margin: 0;
+  color: #7b897d;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.fb-state h3 {
+  margin: 0;
+  color: #294b32;
+  font-size: 20px;
+}
+
+.fb-spinner {
+  width: 35px;
+  height: 35px;
+  border: 3px solid #dcebdc;
+  border-top-color: #2b8c48;
+  border-radius: 50%;
+  animation: fb-spin 0.8s linear infinite;
+}
+
+@keyframes fb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fb-empty-icon {
+  display: grid;
+  width: 70px;
+  height: 70px;
+  place-items: center;
+  border-radius: 22px;
+  background: #eaf5e7;
+  font-size: 34px;
+}
+
+.fb-primary-button {
+  min-height: 41px;
+  padding: 0 17px;
+  border: 1px solid #287e42;
+  border-radius: 10px;
+  background: #278447;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.fb-primary-button:hover {
+  background: #1d6d39;
+}
+
+@media (max-width: 1100px) {
+  .farmer-bookings-page {
+    padding: 24px;
+  }
+
+  .fb-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fb-stat-card {
+    padding: 17px;
+  }
+}
+
+@media (max-width: 650px) {
+  .farmer-bookings-page {
+    padding: 18px 12px;
+  }
+
+  .fb-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .fb-refresh {
+    width: 100%;
+  }
+
+  .fb-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .fb-stat-card {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px 12px;
+  }
+
+  .fb-stat-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 19px;
+  }
+
+  .fb-stat-card strong {
+    font-size: 21px;
+  }
+
+  .fb-bookings-section {
+    padding: 16px 12px;
+    border-radius: 15px;
+  }
+
+  .fb-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .fb-section-heading h2 {
+    font-size: 19px;
+  }
+
+  .fb-last-updated {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .fb-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

@@ -1,0 +1,700 @@
+.all-crops-page {
+  min-height: 100vh;
+  padding: 32px;
+  box-sizing: border-box;
+  background: #f3f8f2;
+  color: #263629;
+}
+
+.all-crops-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 26px;
+}
+
+.all-crops-eyebrow {
+  color: #258044;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.all-crops-header h1 {
+  margin: 9px 0;
+  color: #174e2b;
+  font-size: 34px;
+}
+
+.all-crops-header p {
+  margin: 0;
+  color: #708073;
+  line-height: 1.6;
+}
+
+.all-crops-refresh {
+  padding: 12px 17px;
+  border: 1px solid #c5ddc8;
+  border-radius: 9px;
+  background: white;
+  color: #176b38;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.all-crops-refresh:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.all-crops-count {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  margin-bottom: 28px;
+  border: 1px solid #e0e9df;
+  border-radius: 14px;
+  background: white;
+}
+
+.all-crops-count-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 13px;
+  background: #e4f5e7;
+  font-size: 26px;
+}
+
+.all-crops-count span:not(.all-crops-count-icon) {
+  display: block;
+  color: #758075;
+  font-size: 13px;
+}
+
+.all-crops-count strong {
+  display: block;
+  margin-top: 4px;
+  color: #176b38;
+  font-size: 25px;
+}
+
+.all-crops-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 24px;
+}
+
+.all-crop-card {
+  overflow: hidden;
+  border: 1px solid #e0e9df;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 5px 18px rgba(28, 70, 38, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.all-crop-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 11px 25px rgba(28, 70, 38, 0.12);
+}
+
+.all-crop-image-wrap {
+  position: relative;
+  height: 195px;
+  overflow: hidden;
+  background: #e4f2e4;
+}
+
+.all-crop-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.all-crop-no-image {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 54px;
+}
+
+.all-crop-stock {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 7px 11px;
+  border-radius: 20px;
+  background: #e0f5e5;
+  color: #176b38;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.all-crop-stock.out-of-stock {
+  background: #fff0ef;
+  color: #b42318;
+}
+
+.all-crop-content {
+  padding: 20px;
+}
+
+.all-crop-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.all-crop-title-row h2 {
+  margin: 0;
+  color: #194e2b;
+  font-size: 21px;
+  overflow-wrap: anywhere;
+}
+
+.all-crop-id {
+  flex-shrink: 0;
+  padding: 5px 8px;
+  border-radius: 20px;
+  background: #f0f6ef;
+  color: #56715a;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.all-crop-content > p {
+  margin: 10px 0;
+  color: #687469;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.all-crop-content > p strong {
+  color: #344b39;
+}
+
+.all-crop-price {
+  margin: 13px 0;
+  color: #218343;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.all-crop-price span {
+  color: #788478;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.all-crop-location {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 15px 0;
+  padding: 12px;
+  border: 1px solid #e1eee0;
+  border-radius: 10px;
+  background: #f5faf3;
+}
+
+.all-crop-location-icon {
+  font-size: 20px;
+}
+
+.all-crop-location > div {
+  min-width: 0;
+}
+
+.all-crop-location > div span {
+  display: block;
+  margin-bottom: 5px;
+  color: #778378;
+  font-size: 11px;
+}
+
+.all-crop-location strong {
+  display: block;
+  color: #245b32;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.all-crop-description {
+  padding-top: 9px;
+  border-top: 1px solid #edf0ed;
+}
+
+.all-crop-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.all-crop-actions button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.all-crop-book-button {
+  border: none;
+  background: #218343;
+  color: white;
+}
+
+.all-crop-book-button:hover {
+  background: #176732;
+}
+
+.all-crop-book-button:disabled {
+  background: #aab7ac;
+  cursor: not-allowed;
+}
+
+.all-crop-contact-button {
+  border: 1px solid #b8d8be;
+  background: #eaf6ec;
+  color: #176b38;
+}
+
+.all-crop-contact-button:hover {
+  background: #d9efde;
+}
+
+/* Loading, empty and error states */
+
+.all-crops-state,
+.all-crops-empty {
+  padding: 55px 20px;
+  border: 1px solid #e0e9df;
+  border-radius: 16px;
+  background: white;
+  color: #687469;
+  text-align: center;
+}
+
+.all-crops-error {
+  color: #b42318;
+}
+
+.all-crops-error button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #218343;
+  color: white;
+  cursor: pointer;
+}
+
+.all-crops-empty > div {
+  font-size: 50px;
+}
+
+.all-crops-empty h2 {
+  color: #194e2b;
+}
+
+/* Modal overlay */
+
+.all-crops-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  overflow-y: auto;
+  background: rgba(16, 37, 21, 0.65);
+  backdrop-filter: blur(3px);
+}
+
+.all-crops-modal {
+  width: 100%;
+  max-width: 520px;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 26px;
+  border: 1px solid #e0e9df;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 22px 65px rgba(0, 0, 0, 0.22);
+}
+
+.all-crops-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.all-crops-modal-header h2 {
+  margin: 8px 0 0;
+  color: #194e2b;
+  font-size: 25px;
+  overflow-wrap: anywhere;
+}
+
+.all-crops-close {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: #eff5ee;
+  color: #354b39;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.all-crops-close:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.all-crops-booking-info {
+  margin-bottom: 20px;
+  padding: 14px;
+  border: 1px solid #e1eee0;
+  border-radius: 10px;
+  background: #f3f9f1;
+}
+
+.all-crops-booking-info p {
+  margin: 7px 0;
+  color: #5e6e60;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.all-crops-booking-info strong {
+  color: #294b31;
+}
+
+.all-crops-booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.all-crops-booking-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #354b39;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.all-crops-booking-form input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #d6e1d5;
+  border-radius: 9px;
+  background: white;
+  color: #263629;
+  font: inherit;
+  font-weight: 400;
+  outline: none;
+}
+
+.all-crops-booking-form input:focus {
+  border-color: #278247;
+  box-shadow: 0 0 0 3px rgba(39, 130, 71, 0.1);
+}
+
+.all-crops-booking-form input[readonly] {
+  background: #f5f8f4;
+  color: #667367;
+}
+
+.all-crops-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #d7ebd9;
+  border-radius: 10px;
+  background: #eaf6eb;
+}
+
+.all-crops-total span {
+  color: #46614b;
+  font-size: 13px;
+}
+
+.all-crops-total strong {
+  color: #176b38;
+  font-size: 22px;
+}
+
+.all-crops-payment-note {
+  margin: 0;
+  color: #788478;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.all-crops-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.all-crops-modal-actions button {
+  padding: 12px 16px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.all-crops-cancel-button {
+  border: 1px solid #d6e1d5;
+  background: white;
+  color: #536454;
+}
+
+.all-crops-confirm-button {
+  border: none;
+  border-radius: 9px;
+  padding: 12px 18px;
+  background: #218343;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.all-crops-confirm-button:hover {
+  background: #176732;
+}
+
+.all-crops-confirm-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Booking confirmation window */
+
+.all-crops-success-modal {
+  max-width: 510px;
+  text-align: center;
+}
+
+.all-crops-success-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 17px;
+  border-radius: 50%;
+  background: #e0f5e5;
+  color: #218343;
+  font-size: 35px;
+  font-weight: 800;
+}
+
+.all-crops-success-modal > h2 {
+  margin: 0;
+  color: #194e2b;
+  font-size: 26px;
+}
+
+.all-crops-success-message {
+  margin: 10px 0 22px;
+  color: #718073;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.all-crops-booking-details {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 22px;
+  padding: 8px 15px;
+  border: 1px solid #e0e9df;
+  border-radius: 12px;
+  background: #f8fbf7;
+  text-align: left;
+}
+
+.all-crops-booking-details > div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5ece3;
+}
+
+.all-crops-booking-details > div:last-child {
+  border-bottom: none;
+}
+
+.all-crops-booking-details span {
+  flex-shrink: 0;
+  color: #718073;
+  font-size: 12px;
+}
+
+.all-crops-booking-details strong {
+  max-width: 65%;
+  color: #29432f;
+  font-size: 12px;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.all-crops-booking-details .all-crops-pending {
+  color: #a66a13;
+}
+
+.all-crops-done-button {
+  width: 100%;
+}
+
+/* Mobile layout */
+
+@media (max-width: 650px) {
+  .all-crops-page {
+    padding: 18px;
+  }
+
+  .all-crops-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .all-crops-header h1 {
+    font-size: 28px;
+  }
+
+  .all-crops-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .all-crops-modal {
+    padding: 20px;
+  }
+
+  .all-crops-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .all-crops-modal-actions button {
+    width: 100%;
+  }
+
+  .all-crops-booking-details > div {
+    gap: 10px;
+  }
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

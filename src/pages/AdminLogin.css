@@ -1,0 +1,386 @@
+* {
+    box-sizing: border-box;
+}
+
+.cc-admin-page {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 35px 20px 65px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e9f5e9, #f5faf2, #e4f2e5);
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.cc-admin-background-shape {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.shape-one {
+    width: 380px;
+    height: 380px;
+    top: -140px;
+    left: -110px;
+    background: rgba(46, 125, 50, 0.09);
+}
+
+.shape-two {
+    width: 450px;
+    height: 450px;
+    bottom: -220px;
+    right: -130px;
+    background: rgba(129, 199, 132, 0.16);
+}
+
+.cc-admin-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    padding: 38px 38px 28px;
+    background: #ffffff;
+    border: 1px solid #e6eee5;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(35, 83, 40, 0.12);
+}
+
+.cc-admin-brand {
+    text-align: center;
+}
+
+.cc-admin-logo {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e9f5e9;
+    border-radius: 18px;
+    font-size: 34px;
+}
+
+.cc-admin-brand h1 {
+    margin: 0;
+    color: #23452a;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+}
+
+.cc-admin-brand h1 span {
+    color: #4c9a45;
+}
+
+.cc-admin-brand p {
+    margin: 7px 0 0;
+    color: #829083;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.cc-admin-divider {
+    height: 1px;
+    width: 100%;
+    margin: 25px 0;
+    background: #edf1eb;
+}
+
+.cc-admin-heading {
+    text-align: center;
+    margin-bottom: 27px;
+}
+
+.cc-admin-lock {
+    width: 47px;
+    height: 47px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #edf7eb;
+    font-size: 21px;
+}
+
+.cc-admin-heading h2 {
+    margin: 0 0 8px;
+    color: #243c28;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.cc-admin-heading p {
+    margin: 0;
+    color: #89948a;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.cc-admin-input-group {
+    margin-bottom: 20px;
+}
+
+.cc-admin-input-group label {
+    display: block;
+    margin-bottom: 9px;
+    color: #344b37;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.cc-admin-input-wrapper {
+    width: 100%;
+    height: 49px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 13px;
+    border: 1px solid #dce6db;
+    border-radius: 10px;
+    background: #fcfefb;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cc-admin-input-wrapper:focus-within {
+    border-color: #47964b;
+    box-shadow: 0 0 0 3px rgba(76, 154, 69, 0.12);
+}
+
+.cc-admin-input-icon {
+    flex-shrink: 0;
+    font-size: 16px;
+    color: #6e9570;
+}
+
+.cc-admin-input-wrapper input {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #253a29;
+    font-size: 14px;
+}
+
+.cc-admin-input-wrapper input::placeholder {
+    color: #a5b0a4;
+}
+
+.cc-admin-show-password {
+    border: none;
+    background: transparent;
+    color: #4c8b4e;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.cc-admin-show-password:hover {
+    color: #246b2a;
+}
+
+.cc-admin-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 17px;
+    padding: 11px 12px;
+    border: 1px solid #f4caca;
+    border-radius: 8px;
+    background: #fff1f1;
+    color: #c33131;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.cc-admin-submit {
+    width: 100%;
+    height: 49px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #39833d, #287431);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 5px 13px rgba(47, 126, 55, 0.19);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.cc-admin-submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #317638, #205e29);
+    box-shadow: 0 8px 17px rgba(47, 126, 55, 0.25);
+}
+
+.cc-admin-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.cc-admin-submit span:not(.cc-admin-spinner) {
+    font-size: 20px;
+}
+
+.cc-admin-spinner {
+    width: 17px;
+    height: 17px;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: cc-admin-spin 0.7s linear infinite;
+}
+
+@keyframes cc-admin-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.cc-admin-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 27px;
+    padding-top: 17px;
+    border-top: 1px solid #edf1eb;
+    color: #879487;
+    font-size: 12px;
+}
+
+.cc-admin-footer-icon {
+    font-size: 14px;
+}
+
+.cc-admin-copyright {
+    position: absolute;
+    bottom: 17px;
+    left: 10px;
+    right: 10px;
+    z-index: 1;
+    margin: 0;
+    color: #829582;
+    font-size: 11px;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .cc-admin-page {
+        padding: 20px 15px 55px;
+    }
+
+    .cc-admin-card {
+        padding: 30px 22px 24px;
+        border-radius: 16px;
+    }
+
+    .cc-admin-brand h1 {
+        font-size: 25px;
+    }
+
+    .cc-admin-heading h2 {
+        font-size: 22px;
+    }
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

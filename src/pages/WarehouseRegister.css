@@ -1,0 +1,1152 @@
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.warehouse-register-page {
+  min-height: 100vh;
+  padding: 40px 20px 70px;
+  background:
+    linear-gradient(
+      135deg,
+      #f0fdf4 0%,
+      #f8fafc 45%,
+      #ecfdf5 100%
+    );
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+  color: #1f2937;
+}
+
+
+/* =====================================================
+   TOP HOME BUTTON
+===================================================== */
+
+.warehouse-register-home-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+
+  border: none;
+  border-radius: 10px;
+
+  padding: 11px 18px;
+
+  background: #ffffff;
+  color: #166534;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.12);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.warehouse-register-home-button:hover {
+  background: #166534;
+  color: #ffffff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.16);
+}
+
+
+/* =====================================================
+   ALREADY REGISTERED / LOGIN BUTTON
+===================================================== */
+
+.warehouse-register-login-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+
+  border: none;
+  border-radius: 10px;
+
+  padding: 11px 18px;
+
+  background: #ffffff;
+  color: #166534;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.12);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.warehouse-register-login-button:hover {
+  background: #166534;
+  color: #ffffff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.16);
+}
+
+
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
+
+.warehouse-container {
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 55px auto 0;
+
+  background: #ffffff;
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 15px 45px rgba(0, 0, 0, 0.10);
+
+  overflow: hidden;
+
+  border: 1px solid #e5e7eb;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.warehouse-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 30px 35px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #166534,
+      #15803d
+    );
+
+  color: #ffffff;
+}
+
+.warehouse-logo {
+  width: 65px;
+  height: 65px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  font-size: 32px;
+
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.18);
+}
+
+.warehouse-header h1 {
+  margin: 0 0 5px;
+
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.warehouse-header p {
+  margin: 0;
+
+  font-size: 14px;
+
+  color: #dcfce7;
+}
+
+
+/* =====================================================
+   PAGE TITLE
+===================================================== */
+
+.warehouse-title {
+  text-align: center;
+
+  padding: 35px 25px 25px;
+}
+
+.warehouse-title h2 {
+  margin: 0 0 10px;
+
+  color: #14532d;
+
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.warehouse-title p {
+  margin: 0 auto;
+
+  max-width: 700px;
+
+  color: #6b7280;
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.warehouse-container form {
+  width: 100%;
+}
+
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.warehouse-section {
+  margin: 22px 30px;
+
+  padding: 25px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =====================================================
+   SECTION HEADING
+===================================================== */
+
+.warehouse-section-heading {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 14px;
+
+  margin-bottom: 24px;
+
+  padding-bottom: 15px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.warehouse-section-heading > span {
+  width: 45px;
+  height: 45px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #dcfce7;
+
+  font-size: 23px;
+}
+
+.warehouse-section-heading h3 {
+  margin: 2px 0 5px;
+
+  color: #14532d;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.warehouse-section-heading p {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.warehouse-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+
+/* =====================================================
+   FORM GROUP
+===================================================== */
+
+.warehouse-group {
+  display: flex;
+
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.warehouse-group.full-width {
+  grid-column: 1 / -1;
+}
+
+
+/* =====================================================
+   LABEL
+===================================================== */
+
+.warehouse-group label {
+  margin-bottom: 8px;
+
+  color: #374151;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.warehouse-group label span {
+  color: #dc2626;
+}
+
+
+/* =====================================================
+   INPUT / SELECT / TEXTAREA
+===================================================== */
+
+.warehouse-group input,
+.warehouse-group select,
+.warehouse-group textarea {
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #1f2937;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.warehouse-group input,
+.warehouse-group select {
+  min-height: 45px;
+}
+
+.warehouse-group textarea {
+  min-height: 110px;
+
+  resize: vertical;
+}
+
+.warehouse-group input::placeholder,
+.warehouse-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+.warehouse-group input:focus,
+.warehouse-group select:focus,
+.warehouse-group textarea:focus {
+  border-color: #16a34a;
+
+  background: #fafffb;
+
+  box-shadow:
+    0 0 0 3px rgba(22, 163, 74, 0.12);
+}
+
+
+/* =====================================================
+   FILE INPUT
+===================================================== */
+
+.warehouse-group input[type="file"] {
+  padding: 9px;
+
+  cursor: pointer;
+
+  background: #f9fafb;
+}
+
+.warehouse-group input[type="file"]::file-selector-button {
+  margin-right: 10px;
+
+  padding: 8px 12px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: #dcfce7;
+
+  color: #166534;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   NUMBER INPUT
+===================================================== */
+
+.warehouse-group input[type="number"] {
+  appearance: textfield;
+}
+
+.warehouse-group input[type="number"]::-webkit-inner-spin-button,
+.warehouse-group input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+
+/* =====================================================
+   LOCATION BUTTON
+===================================================== */
+
+.warehouse-location-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  padding: 11px 18px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #15803d;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.warehouse-location-button:hover {
+  background: #166534;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 16px rgba(22, 101, 52, 0.20);
+}
+
+
+/* =====================================================
+   MAP
+===================================================== */
+
+.warehouse-map {
+  width: 100%;
+
+  height: 400px;
+
+  overflow: hidden;
+
+  border-radius: 14px;
+
+  border: 1px solid #d1d5db;
+
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.warehouse-leaflet-map {
+  width: 100%;
+  height: 100%;
+}
+
+
+/* =====================================================
+   MAP COORDINATES
+===================================================== */
+
+.warehouse-coordinates {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+
+  margin-top: 18px;
+}
+
+.warehouse-coordinates > div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.warehouse-coordinates label {
+  margin-bottom: 7px;
+
+  color: #374151;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.warehouse-coordinates input {
+  width: 100%;
+
+  padding: 11px 13px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 9px;
+
+  background: #f3f4f6;
+
+  color: #374151;
+
+  font-size: 14px;
+
+  outline: none;
+}
+
+
+/* =====================================================
+   CROP CHECKBOX GRID
+===================================================== */
+
+.crop-checkbox-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.crop-checkbox {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  min-height: 48px;
+
+  padding: 11px 13px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  background: #f9fafb;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.crop-checkbox:hover {
+  background: #f0fdf4;
+
+  border-color: #86efac;
+
+  transform: translateY(-1px);
+}
+
+.crop-checkbox input {
+  width: 17px;
+  height: 17px;
+
+  accent-color: #16a34a;
+
+  cursor: pointer;
+}
+
+.crop-checkbox span {
+  color: #374151;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   DOCUMENT GRID
+===================================================== */
+
+.warehouse-document-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+.warehouse-document-box {
+  padding: 18px;
+
+  border: 1px dashed #a7f3d0;
+
+  border-radius: 12px;
+
+  background: #f0fdf4;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.warehouse-document-box:hover {
+  border-color: #22c55e;
+
+  background: #ecfdf5;
+}
+
+.warehouse-document-box label {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #166534;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.warehouse-document-box input[type="file"] {
+  width: 100%;
+
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   SUBMIT AREA
+===================================================== */
+
+.warehouse-submit {
+  text-align: center;
+
+  padding: 35px 30px 45px;
+}
+
+.warehouse-register-button {
+  min-width: 250px;
+
+  padding: 15px 28px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #15803d,
+      #16a34a
+    );
+
+  color: #ffffff;
+
+  font-size: 16px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(22, 163, 74, 0.25);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.warehouse-register-button:hover {
+  background:
+    linear-gradient(
+      135deg,
+      #166534,
+      #15803d
+    );
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 26px rgba(22, 163, 74, 0.30);
+}
+
+.warehouse-register-button:active {
+  transform: translateY(0);
+}
+
+.warehouse-submit p {
+  margin: 14px 0 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   LEAFLET CONTROLS
+===================================================== */
+
+.leaflet-control-zoom a {
+  color: #166534 !important;
+}
+
+.leaflet-control-attribution {
+  font-size: 10px;
+}
+
+
+/* =====================================================
+   RESPONSIVE - TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .warehouse-register-page {
+    padding: 30px 15px 60px;
+  }
+
+  .warehouse-container {
+    margin-top: 60px;
+  }
+
+  .warehouse-section {
+    margin: 18px 20px;
+    padding: 22px;
+  }
+
+  .crop-checkbox-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .warehouse-map {
+    height: 350px;
+  }
+}
+
+
+/* =====================================================
+   RESPONSIVE - MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+  .warehouse-register-page {
+    padding: 90px 10px 40px;
+  }
+
+
+  /* TOP BUTTONS */
+
+  .warehouse-register-home-button,
+  .warehouse-register-login-button {
+    position: absolute;
+
+    top: 15px;
+
+    padding: 9px 12px;
+
+    font-size: 12px;
+  }
+
+  .warehouse-register-home-button {
+    left: 10px;
+  }
+
+  .warehouse-register-login-button {
+    right: 10px;
+  }
+
+
+  /* CONTAINER */
+
+  .warehouse-container {
+    margin-top: 10px;
+
+    border-radius: 16px;
+  }
+
+
+  /* HEADER */
+
+  .warehouse-header {
+    padding: 24px 18px;
+
+    gap: 12px;
+  }
+
+  .warehouse-logo {
+    width: 52px;
+    height: 52px;
+
+    font-size: 25px;
+  }
+
+  .warehouse-header h1 {
+    font-size: 23px;
+  }
+
+  .warehouse-header p {
+    font-size: 12px;
+  }
+
+
+  /* TITLE */
+
+  .warehouse-title {
+    padding: 25px 18px 18px;
+  }
+
+  .warehouse-title h2 {
+    font-size: 22px;
+  }
+
+  .warehouse-title p {
+    font-size: 13px;
+  }
+
+
+  /* SECTIONS */
+
+  .warehouse-section {
+    margin: 15px 12px;
+
+    padding: 18px;
+
+    border-radius: 13px;
+  }
+
+
+  /* SECTION HEADING */
+
+  .warehouse-section-heading {
+    gap: 10px;
+
+    margin-bottom: 20px;
+  }
+
+  .warehouse-section-heading > span {
+    width: 40px;
+    height: 40px;
+
+    font-size: 20px;
+  }
+
+  .warehouse-section-heading h3 {
+    font-size: 17px;
+  }
+
+  .warehouse-section-heading p {
+    font-size: 12px;
+  }
+
+
+  /* GRID */
+
+  .warehouse-grid {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+
+  .warehouse-group.full-width {
+    grid-column: auto;
+  }
+
+
+  /* MAP */
+
+  .warehouse-map {
+    height: 300px;
+  }
+
+
+  /* COORDINATES */
+
+  .warehouse-coordinates {
+    grid-template-columns: 1fr;
+
+    gap: 14px;
+  }
+
+
+  /* CROPS */
+
+  .crop-checkbox-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 9px;
+  }
+
+  .crop-checkbox {
+    padding: 10px;
+
+    min-height: 44px;
+  }
+
+  .crop-checkbox span {
+    font-size: 13px;
+  }
+
+
+  /* DOCUMENTS */
+
+  .warehouse-document-grid {
+    grid-template-columns: 1fr;
+
+    gap: 14px;
+  }
+
+
+  /* SUBMIT */
+
+  .warehouse-submit {
+    padding: 25px 15px 35px;
+  }
+
+  .warehouse-register-button {
+    width: 100%;
+
+    min-width: 0;
+
+    font-size: 15px;
+  }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 420px) {
+
+  .warehouse-register-page {
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  .warehouse-register-home-button,
+  .warehouse-register-login-button {
+    padding: 8px 9px;
+
+    font-size: 11px;
+  }
+
+  .warehouse-header {
+    flex-direction: column;
+
+    text-align: center;
+  }
+
+  .warehouse-header h1 {
+    font-size: 21px;
+  }
+
+  .warehouse-title h2 {
+    font-size: 20px;
+  }
+
+  .warehouse-section {
+    margin-left: 8px;
+    margin-right: 8px;
+
+    padding: 15px;
+  }
+
+  .crop-checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .warehouse-map {
+    height: 260px;
+  }
+}
+
+
+/* =====================================================
+   ACCESSIBILITY
+===================================================== */
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(34, 197, 94, 0.25);
+
+  outline-offset: 2px;
+}
+
+
+/* =====================================================
+   DISABLED
+===================================================== */
+
+button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

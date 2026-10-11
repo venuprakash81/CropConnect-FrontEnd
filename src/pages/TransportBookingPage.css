@@ -1,0 +1,535 @@
+.transport-page {
+  min-height: 100vh;
+  padding: 32px;
+  background: #f4f7fb;
+  color: #1e293b;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.transport-header {
+  margin-bottom: 28px;
+  padding: 30px;
+  border-radius: 18px;
+  background: linear-gradient(120deg, #075985, #0284c7);
+  color: white;
+}
+
+.transport-eyebrow {
+  margin: 0 0 10px;
+  color: #dbeafe;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.transport-header h1 {
+  margin: 0 0 10px;
+  font-size: 30px;
+}
+
+.transport-header p:last-child {
+  max-width: 650px;
+  margin: 0;
+  color: #e0f2fe;
+  line-height: 1.6;
+}
+
+.transport-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(240px, 0.85fr);
+  align-items: start;
+  gap: 22px;
+}
+
+.transport-card,
+.transport-info-card,
+.transport-history {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+}
+
+.transport-card {
+  padding: 26px;
+}
+
+.transport-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 26px;
+}
+
+.transport-card-heading h2,
+.transport-history-heading h2 {
+  margin: 0 0 7px;
+  color: #0f172a;
+  font-size: 21px;
+}
+
+.transport-card-heading p,
+.transport-history-heading p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.transport-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 14px;
+  background: #e0f2fe;
+  font-size: 27px;
+}
+
+.transport-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.transport-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.transport-field label {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.transport-field input,
+.transport-field select,
+.transport-field textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 12px 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  outline: none;
+  background: #fff;
+  color: #1e293b;
+  font: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.transport-field input,
+.transport-field select {
+  min-height: 44px;
+}
+
+.transport-field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.transport-field input:focus,
+.transport-field select:focus,
+.transport-field textarea:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+}
+
+.transport-field input::placeholder,
+.transport-field textarea::placeholder {
+  color: #94a3b8;
+}
+
+.transport-two-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.transport-help {
+  color: #b45309;
+  font-size: 12px;
+}
+
+.transport-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 5px;
+}
+
+.transport-submit-btn,
+.transport-reset-btn,
+.transport-refresh-btn,
+.transport-cancel-btn {
+  min-height: 42px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.transport-submit-btn {
+  background: #0284c7;
+  color: white;
+}
+
+.transport-submit-btn:hover:not(:disabled) {
+  background: #0369a1;
+  transform: translateY(-1px);
+}
+
+.transport-reset-btn {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #475569;
+}
+
+.transport-reset-btn:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.transport-submit-btn:disabled,
+.transport-reset-btn:disabled,
+.transport-refresh-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.transport-side {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.transport-info-card {
+  padding: 22px;
+}
+
+.transport-info-card h3 {
+  margin: 0 0 15px;
+  color: #0f172a;
+  font-size: 16px;
+}
+
+.transport-info-card ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding-left: 19px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.transport-info-card p {
+  overflow-wrap: anywhere;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.transport-info-card strong {
+  color: #334155;
+}
+
+.transport-email {
+  overflow-wrap: anywhere;
+}
+
+.transport-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 13px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.transport-error button {
+  border: 0;
+  background: transparent;
+  color: #991b1b;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.transport-history {
+  margin-top: 24px;
+  padding: 24px;
+}
+
+.transport-history-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.transport-refresh-btn {
+  border: 1px solid #bae6fd;
+  background: #f0f9ff;
+  color: #0369a1;
+}
+
+.transport-refresh-btn:hover:not(:disabled) {
+  background: #e0f2fe;
+}
+
+.transport-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.transport-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.transport-table th {
+  padding: 14px 12px;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.transport-table td {
+  padding: 15px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+  font-size: 13px;
+}
+
+.transport-route {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  white-space: normal;
+}
+
+.transport-route-arrow {
+  color: #0284c7;
+  font-weight: 700;
+}
+
+.transport-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.transport-status.accepted,
+.transport-status.confirmed,
+.transport-status.completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.transport-status.rejected,
+.transport-status.cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.transport-cancel-btn {
+  min-height: 32px;
+  padding: 6px 10px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 12px;
+}
+
+.transport-cancel-btn:hover {
+  background: #fecaca;
+}
+
+.transport-no-action {
+  color: #94a3b8;
+}
+
+.transport-empty {
+  padding: 45px 15px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  color: #64748b;
+  text-align: center;
+  font-size: 14px;
+}
+
+.transport-empty-icon {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 32px;
+}
+
+.transport-empty h3 {
+  margin: 0 0 8px;
+  color: #334155;
+  font-size: 17px;
+}
+
+.transport-empty p {
+  margin: 0;
+}
+
+@media (max-width: 950px) {
+  .transport-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .transport-side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .transport-page {
+    padding: 15px;
+  }
+
+  .transport-header {
+    padding: 22px;
+  }
+
+  .transport-header h1 {
+    font-size: 24px;
+  }
+
+  .transport-card,
+  .transport-history {
+    padding: 18px;
+  }
+
+  .transport-two-columns,
+  .transport-side {
+    grid-template-columns: 1fr;
+  }
+
+  .transport-history-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .transport-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .transport-submit-btn,
+  .transport-reset-btn {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

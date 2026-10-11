@@ -1,0 +1,392 @@
+* {
+  box-sizing: border-box;
+}
+
+.buyer-payments-page {
+  min-height: 100vh;
+  padding: 35px 20px;
+  background: #f4f7fb;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.buyer-payments-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.buyer-payments-header {
+  margin-bottom: 30px;
+}
+
+.buyer-payments-header h1 {
+  color: #172554;
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.buyer-payments-header p {
+  color: #64748b;
+  font-size: 15px;
+  margin: 0;
+}
+
+.buyer-payment-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-bottom: 30px;
+}
+
+.buyer-payment-card {
+  padding: 26px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #e8edf5;
+  box-shadow: 0 5px 20px rgba(15, 23, 42, 0.07);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.buyer-payment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+}
+
+.buyer-payment-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 23px;
+  margin-bottom: 18px;
+}
+
+.buyer-payment-card.total .buyer-payment-icon {
+  background: #e8f0ff;
+}
+
+.buyer-payment-card.paid .buyer-payment-icon {
+  background: #dcfce7;
+}
+
+.buyer-payment-card.pending .buyer-payment-icon {
+  background: #fff3d6;
+}
+
+.buyer-payment-card h3 {
+  color: #64748b;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.buyer-payment-card h2 {
+  color: #172554;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.buyer-payment-card p {
+  color: #94a3b8;
+  font-size: 13px;
+  margin: 0;
+}
+
+.buyer-payment-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.buyer-payment-actions button {
+  padding: 13px 24px;
+  border: 1px solid #2563eb;
+  border-radius: 9px;
+  background: #fff;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.buyer-payment-actions button:hover,
+.buyer-payment-actions button.active {
+  background: #2563eb;
+  color: #fff;
+}
+
+.buyer-payment-details {
+  background: #fff;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #e8edf5;
+  box-shadow: 0 5px 20px rgba(15, 23, 42, 0.06);
+  animation: buyerFadeIn 0.3s ease;
+}
+
+.buyer-payment-details h2 {
+  color: #172554;
+  font-size: 21px;
+  margin: 0 0 8px;
+}
+
+.buyer-payment-details > p {
+  color: #64748b;
+  font-size: 14px;
+  margin: 0 0 22px;
+}
+
+.buyer-payment-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.buyer-payment-table {
+  width: 100%;
+  min-width: 650px;
+  border-collapse: collapse;
+}
+
+.buyer-payment-table th {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 15px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.buyer-payment-table td {
+  padding: 16px 15px;
+  color: #334155;
+  font-size: 14px;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.buyer-payment-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.buyer-payment-status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.buyer-payment-status.paid,
+.buyer-received-amount span.paid {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.buyer-payment-status.pending,
+.buyer-received-amount span.pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.buyer-received-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 18px 20px;
+  border: 1px solid #e8edf5;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  background: #fff;
+  transition: background 0.2s ease;
+}
+
+.buyer-received-item:hover {
+  background: #f8fafc;
+}
+
+.buyer-received-item h3 {
+  color: #1e293b;
+  font-size: 15px;
+  margin: 0 0 7px;
+}
+
+.buyer-received-item p {
+  color: #64748b;
+  font-size: 13px;
+  margin: 0;
+}
+
+.buyer-received-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.buyer-received-amount strong {
+  color: #172554;
+  font-size: 18px;
+}
+
+.buyer-received-amount span {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+@keyframes buyerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .buyer-payment-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .buyer-payments-page {
+    padding: 22px 14px;
+  }
+
+  .buyer-payments-header h1 {
+    font-size: 24px;
+  }
+
+  .buyer-payment-summary {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .buyer-payment-card {
+    padding: 20px;
+  }
+
+  .buyer-payment-card h2 {
+    font-size: 25px;
+  }
+
+  .buyer-payment-actions {
+    flex-direction: column;
+  }
+
+  .buyer-payment-actions button {
+    width: 100%;
+  }
+
+  .buyer-payment-details {
+    padding: 18px 14px;
+  }
+
+  .buyer-received-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .buyer-received-amount {
+    align-items: flex-start;
+  }
+}
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}

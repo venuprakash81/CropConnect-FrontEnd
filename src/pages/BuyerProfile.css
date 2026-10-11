@@ -1,0 +1,338 @@
+
+.bp-page {
+  min-height: 100vh;
+  padding: 30px;
+  background: #f3f8f3;
+  color: #26392b;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.bp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 28px;
+  padding: 20px 24px;
+  border: 1px solid #deeadf;
+  border-radius: 16px;
+  background: white;
+}
+
+.bp-brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.bp-logo {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #238346;
+  color: white;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.bp-brand h1 {
+  margin: 0 0 5px;
+  color: #176633;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.bp-brand span {
+  color: #718074;
+  font-size: 12px;
+}
+
+.bp-card {
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 30px;
+  border: 1px solid #dfe9e0;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0 8px 25px rgba(20, 70, 35, 0.05);
+}
+
+.bp-profile-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 22px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #e1eae2;
+}
+
+.bp-photo {
+  width: 105px;
+  height: 105px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.bp-photo-fallback {
+  display: grid;
+  place-items: center;
+  background: #e7f5e9;
+  color: #238346;
+  font-size: 38px;
+  font-weight: 800;
+}
+
+.bp-identity h2 {
+  margin: 0 0 9px;
+  font-size: 25px;
+  overflow-wrap: anywhere;
+}
+
+.bp-identity p {
+  margin: 0 0 14px;
+  color: #758177;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.bp-badge {
+  display: inline-block;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #e8f6eb;
+  color: #176633;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bp-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 27px 0 20px;
+}
+
+.bp-section-heading h3 {
+  margin: 0 0 7px;
+  font-size: 20px;
+}
+
+.bp-section-heading p {
+  margin: 0;
+  color: #758177;
+  font-size: 13px;
+}
+
+.bp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.bp-detail {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid #e5eee6;
+  border-radius: 13px;
+  background: #f8fbf8;
+}
+
+.bp-detail span {
+  display: block;
+  margin-bottom: 9px;
+  color: #758177;
+  font-size: 12px;
+}
+
+.bp-detail strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.bp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.bp-btn {
+  min-height: 44px;
+  padding: 12px 19px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.bp-primary {
+  background: #238346;
+  color: white;
+}
+
+.bp-primary:hover {
+  background: #176633;
+}
+
+.bp-secondary {
+  border-color: #dce8de;
+  background: white;
+  color: #176633;
+}
+
+.bp-secondary:hover {
+  background: #eaf7ed;
+}
+
+.bp-loading,
+.bp-error {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 25px;
+  background: #f3f8f3;
+  text-align: center;
+}
+
+.bp-error p {
+  color: #a52e26;
+}
+
+.bp-footer {
+  padding: 28px 10px 10px;
+  color: #758177;
+  text-align: center;
+  font-size: 12px;
+}
+
+@media (max-width: 850px) {
+  .bp-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 550px) {
+  .bp-page {
+    padding: 13px;
+  }
+
+  .bp-header,
+  .bp-card {
+    padding: 18px;
+  }
+
+  .bp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bp-section-heading {
+    align-items: stretch;
+  }
+
+  .bp-section-heading .bp-btn,
+  .bp-actions .bp-btn {
+    width: 100%;
+  }
+}
+
+
+
+/* =========================================================
+   CropConnect responsive UI layer
+   Mobile-first improvements; existing JSX and functionality
+   are intentionally preserved.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
+img { height: auto; }
+input, select, textarea, button { max-width: 100%; font: inherit; }
+button, [role="button"], input[type="submit"] { touch-action: manipulation; }
+table { max-width: 100%; }
+pre, code { overflow-wrap: anywhere; }
+a, p, h1, h2, h3, h4, label, td, th { overflow-wrap: anywhere; }
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { min-height: 100vh; width: 100%; }
+  main, section, article, .container, .content, .page-container,
+  .dashboard-container, .dashboard-content, .page-content, .main-content,
+  .wrapper, .form-container, .profile-container, .table-container {
+    max-width: 100%;
+  }
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 { font-size: clamp(1.45rem, 6vw, 2rem); line-height: 1.2; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.25; }
+  h3 { font-size: clamp(1.05rem, 4.2vw, 1.3rem); }
+  p { line-height: 1.55; }
+  input, select, textarea {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+  }
+  button, input[type="submit"], input[type="button"] {
+    min-height: 42px;
+  }
+  form { min-width: 0; max-width: 100%; }
+  table { display: block; width: 100%; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 90px; }
+  .grid, .cards, .card-grid, .dashboard-grid, .stats-grid,
+  .features-grid, .product-grid, .crop-grid, .market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .row, .flex-row, .form-row, .toolbar, .header-actions {
+    flex-wrap: wrap;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .modal, .popup, .dialog, .dropdown-menu {
+    max-width: calc(100vw - 24px);
+  }
+  .sidebar { max-width: 100%; }
+  .map, .leaflet-container, #map { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .container, .content, .page-container, .dashboard-container,
+  .dashboard-content, .page-content, .main-content, .wrapper,
+  .form-container, .profile-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card, .dashboard-card, .stat-card, .crop-card, .profile-card,
+  .form-card, .content-card {
+    border-radius: 14px;
+  }
+  .btn, .button, button, input[type="submit"], input[type="button"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .actions, .button-group, .form-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .actions > *, .button-group > *, .form-actions > * {
+    flex: 1 1 auto;
+  }
+}
