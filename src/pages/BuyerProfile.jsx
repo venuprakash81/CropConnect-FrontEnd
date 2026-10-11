@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./BuyerPages.css";
 
-const API = "http://localhost:8081/api";
-const SERVER = "http://localhost:8081";
+const API = "https://cropconnect-backend-exn7.onrender.com/api";
+const SERVER = "https://cropconnect-backend-exn7.onrender.com";
 
 function getBuyerEmail() {
   return (
