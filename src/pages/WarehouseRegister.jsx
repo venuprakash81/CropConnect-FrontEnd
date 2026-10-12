@@ -9,67 +9,25 @@ import {
   useMap,
 } from "react-leaflet";
 import L from "leaflet";
-
 import "leaflet/dist/leaflet.css";
+
+// Keep your existing CSS import.
 import "./WarehouseRegister.css";
 
-// =====================================================
-// API
-// =====================================================
 const API = "https://cropconnect-backend-exn7.onrender.com/api";
-const DEFAULT_POSITION = { lat: 17.385, lng: 78.4867 };
 
-// =====================================================
-// FIX LEAFLET MARKER
-// =====================================================
-delete L.Icon.Default.prototype._getIconUrl;
+const defaultPosition = [17.385, 78.4867];
 
-L.Icon.Default.mergeOptions({
+const markerIcon = new L.Icon({
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
   iconRetinaUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
   shadowUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
 });
 
-// =====================================================
-// MAP POSITION UPDATER
-// =====================================================
-function MapPositionUpdater({ position }) {
-  const map = useMap();
-
-  React.useEffect(() => {
-    if (position) {
-      map.setView([position.lat, position.lng], 14);
-    }
-  }, [map, position]);
-
-  return null;
-}
-
-// =====================================================
-// LOCATION MARKER
-// =====================================================
-function LocationMarker({ position, setPosition }) {
-  useMapEvents({
-    click(event) {
-      setPosition({
-        lat: event.latlng.lat,
-        lng: event.latlng.lng,
-      });
-    },
-  });
-
-  return position ? (
-    <Marker position={[position.lat, position.lng]} />
-  ) : null;
-}
-
-// =====================================================
-// INITIAL FORM
-// Matches the supplied Warehouse Java entity
-// =====================================================
 const initialFormData = {
   warehouseName: "",
   ownerName: "",
@@ -79,8 +37,8 @@ const initialFormData = {
   address: "",
   city: "",
   state: "",
-  latitude: "",
-  longitude: "",
+  latitude: defaultPosition[0],
+  longitude: defaultPosition[1],
   totalStorageCapacity: "",
   supportedCrops: [],
   coldStorage: false,
@@ -88,26 +46,55 @@ const initialFormData = {
   securityAvailable: false,
 };
 
-// =====================================================
-// WAREHOUSE REGISTER
-// =====================================================
+function MapPositionUpdater({ position }) {
+  const map = useMap();
+
+  React.useEffect(() => {
+    map.setView(position, map.getZoom());
+  }, [map, position]);
+
+  return null;
+}
+
+function LocationMarker({ position, setPosition }) {
+  useMapEvents({
+    click(event) {
+      const nextPosition = [
+        event.latlng.lat,
+        event.latlng.lng,
+      ];
+
+      setPosition(nextPosition);
+    },
+  });
+
+  return <Marker position={position} icon={markerIcon} />;
+}
+
 export default function WarehouseRegister() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState(initialFormData);
-
-  const [position, setPosition] = useState(null);
-
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [warehouseDocument, setWarehouseDocument] = useState(null);
-
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // =====================================================
-  // INPUT HANDLER
-  // =====================================================
+  const [position, setPosition] = useState(defaultPosition);
+
+  const cropOptions = [
+    "Rice",
+    "Wheat",
+    "Maize",
+    "Cotton",
+    "Chilli",
+    "Tomato",
+    "Potato",
+    "Onion",
+    "Other",
+  ];
+
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
 
@@ -115,11 +102,10 @@ export default function WarehouseRegister() {
       ...previous,
       [name]: type === "checkbox" ? checked : value,
     }));
+
+    setError("");
   };
 
-  // =====================================================
-  // CROP CHECKBOX HANDLER
-  // =====================================================
   const handleCropChange = (crop) => {
     setFormData((previous) => {
       const selected = previous.supportedCrops.includes(crop);
@@ -133,76 +119,57 @@ export default function WarehouseRegister() {
     });
   };
 
-  // =====================================================
-  // MAP LOCATION HANDLER
-  // =====================================================
-  const handleMapLocation = (location) => {
-    setPosition(location);
+  const updatePosition = (nextPosition) => {
+    setPosition(nextPosition);
 
     setFormData((previous) => ({
       ...previous,
-      latitude: location.lat.toFixed(6),
-      longitude: location.lng.toFixed(6),
+      latitude: nextPosition[0],
+      longitude: nextPosition[1],
     }));
   };
 
-  // =====================================================
-  // CURRENT LOCATION
-  // =====================================================
-  const getCurrentLocation = () => {
-    if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser.");
-      return;
+  const getResponseMessage = async (response) => {
+    const body = await response.text();
+
+    if (!body) {
+      return {};
     }
 
-    navigator.geolocation.getCurrentPosition(
-      (location) => {
-        handleMapLocation({
-          lat: location.coords.latitude,
-          lng: location.coords.longitude,
-        });
-
-        setError("");
-      },
-      (locationError) => {
-        console.error("Location error:", locationError);
-        setError(
-          "Unable to get your current location. Please allow location permission."
-        );
-      },
-      { enableHighAccuracy: true, timeout: 10000 }
-    );
+    try {
+      return JSON.parse(body);
+    } catch {
+      return { message: body };
+    }
   };
 
-  // =====================================================
-  // RESET FORM
-  // =====================================================
-  const resetForm = () => {
-    setFormData(initialFormData);
-    setPosition(null);
-    setProfilePhoto(null);
-    setWarehouseDocument(null);
-    setError("");
-    setSuccess("");
-  };
-
-  // =====================================================
-  // FORM SUBMISSION
-  // =====================================================
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     setError("");
     setSuccess("");
 
-    if (!formData.ownerName.trim()) {
-      setError("Please enter the owner or manager name.");
-      return;
-    }
+    const requiredFields = [
+      ["warehouseName", "Warehouse name"],
+      ["ownerName", "Owner name"],
+      ["email", "Email"],
+      ["password", "Password"],
+      ["phone", "Phone"],
+      ["address", "Address"],
+      ["city", "City"],
+      ["state", "State"],
+      ["totalStorageCapacity", "Storage capacity"],
+    ];
 
-    if (!formData.email.trim()) {
-      setError("Please enter your email address.");
-      return;
+    for (const [key, label] of requiredFields) {
+      if (
+        formData[key] === "" ||
+        formData[key] === null ||
+        formData[key] === undefined
+      ) {
+        setError(`${label} is required.`);
+        return;
+      }
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
@@ -215,50 +182,44 @@ export default function WarehouseRegister() {
       return;
     }
 
-    if (!/^\d{10}$/.test(formData.phone.trim())) {
-      setError("Phone number must contain exactly 10 digits.");
+    if (!/^[0-9]{10}$/.test(formData.phone.trim())) {
+      setError("Enter a valid 10-digit phone number.");
       return;
     }
 
-    if (!formData.warehouseName.trim()) {
-      setError("Please enter the warehouse name.");
-      return;
-    }
-
-    if (
-      !formData.totalStorageCapacity ||
-      !Number.isFinite(Number(formData.totalStorageCapacity)) ||
-      Number(formData.totalStorageCapacity) <= 0
-    ) {
+    if (Number(formData.totalStorageCapacity) <= 0) {
       setError("Storage capacity must be greater than zero.");
       return;
     }
 
-    if (!formData.latitude || !formData.longitude) {
-      setError("Please select the warehouse location on the map.");
+    if (
+      !Number.isFinite(Number(formData.latitude)) ||
+      !Number.isFinite(Number(formData.longitude))
+    ) {
+      setError("Please select a valid warehouse location on the map.");
       return;
     }
 
-    const warehouse = {
-      ...formData,
-      warehouseName: formData.warehouseName.trim(),
-      ownerName: formData.ownerName.trim(),
-      email: formData.email.trim().toLowerCase(),
-      phone: formData.phone.trim(),
-      address: formData.address.trim(),
-      city: formData.city.trim(),
-      state: formData.state.trim(),
-      latitude: Number(formData.latitude),
-      longitude: Number(formData.longitude),
-      totalStorageCapacity: Number(formData.totalStorageCapacity),
-      supportedCrops: JSON.stringify(formData.supportedCrops),
-      coldStorage: Boolean(formData.coldStorage),
-      loadingFacility: Boolean(formData.loadingFacility),
-      securityAvailable: Boolean(formData.securityAvailable),
-    };
+    setLoading(true);
 
     try {
-      setLoading(true);
+      const warehouse = {
+        ...formData,
+        warehouseName: formData.warehouseName.trim(),
+        ownerName: formData.ownerName.trim(),
+        email: formData.email.trim().toLowerCase(),
+        phone: formData.phone.trim(),
+        address: formData.address.trim(),
+        city: formData.city.trim(),
+        state: formData.state.trim(),
+        latitude: Number(formData.latitude),
+        longitude: Number(formData.longitude),
+        totalStorageCapacity: Number(formData.totalStorageCapacity),
+
+        // Send an array, not a JSON-encoded string.
+        // Warehouse.java should declare this as a List<String>.
+        supportedCrops: formData.supportedCrops,
+      };
 
       const data = new FormData();
 
@@ -282,88 +243,66 @@ export default function WarehouseRegister() {
         body: data,
       });
 
-      const responseText = await response.text();
-
-      let result = {};
-
-      try {
-        result = responseText ? JSON.parse(responseText) : {};
-      } catch {
-        result = { message: responseText };
-      }
+      const result = await getResponseMessage(response);
 
       if (!response.ok) {
+        if (response.status === 409) {
+          throw new Error(
+            result.message || "This email or phone number is already registered."
+          );
+        }
+
         throw new Error(
           result.message ||
             result.error ||
-            `Registration failed (${response.status}).`
+            `Registration failed with status ${response.status}.`
         );
       }
 
-      setSuccess("Warehouse registered successfully.");
+      setSuccess("Warehouse registered successfully! Redirecting to login...");
 
-      window.alert(
-        "Warehouse registered successfully!\n\nPlease login to continue."
-      );
-
-      navigate("/warehouse-login");
-    } catch (submitError) {
-      console.error("Warehouse registration error:", submitError);
-
+      // Allow the success message to appear before navigating.
+      window.setTimeout(() => {
+        navigate("/warehouse-login");
+      }, 1200);
+    } catch (err) {
       setError(
-        submitError.message ||
-          "Unable to connect to the backend. Please check your Spring Boot server."
+        err.message ||
+          "Unable to register the warehouse. Please try again."
       );
     } finally {
       setLoading(false);
     }
   };
 
-  // =====================================================
-  // PAGE UI
-  // =====================================================
   return (
     <div className="warehouse-register-page">
-      <button
-        type="button"
-        className="warehouse-register-home-button"
-        onClick={() => navigate("/")}
-      >
-        🏠 Home
-      </button>
-
-      <button
-        type="button"
-        className="warehouse-register-login-button"
-        onClick={() => navigate("/warehouse-login")}
-      >
-        🔐 Already Registered? Login
-      </button>
-
       <div className="warehouse-container">
-        <div className="warehouse-header">
-          <div className="warehouse-logo">🏬</div>
+        <header className="warehouse-header">
+          <div className="warehouse-logo">🌾</div>
+          <h1 className="warehouse-title">Warehouse Registration</h1>
+          <p>Register your warehouse with CropConnect</p>
 
-          <div>
-            <h1>CropConnect</h1>
-            <p>Smart Farmer-to-Market Platform</p>
-          </div>
-        </div>
+          <button
+            type="button"
+            className="warehouse-register-home-button"
+            onClick={() => navigate("/")}
+          >
+            Home
+          </button>
 
-        <div className="warehouse-title">
-          <h2>Warehouse Registration</h2>
-          <p>
-            Register your warehouse and provide storage facilities for
-            agricultural produce.
-          </p>
-        </div>
+          <button
+            type="button"
+            className="warehouse-register-login-button"
+            onClick={() => navigate("/warehouse-login")}
+          >
+            Already registered? Login
+          </button>
+        </header>
 
         {error && (
           <div className="my-error" role="alert">
             {error}
-            <button type="button" onClick={() => setError("")}>
-              ×
-            </button>
           </div>
         )}
 
@@ -373,26 +312,18 @@ export default function WarehouseRegister() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          {/* OWNER DETAILS */}
-          <div className="warehouse-section">
-            <div className="warehouse-section-heading">
-              <span>👤</span>
-              <div>
-                <h3>Owner / Manager Details</h3>
-                <p>Enter your owner or manager information.</p>
-              </div>
-            </div>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <section className="warehouse-section">
+            <h2 className="warehouse-section-heading">
+              Owner Information
+            </h2>
 
             <div className="warehouse-grid">
-              <div className="warehouse-group full-width">
-                <label>
-                  Owner Name <span>*</span>
-                </label>
+              <div className="warehouse-group">
+                <label htmlFor="ownerName">Owner Name *</label>
                 <input
-                  type="text"
+                  id="ownerName"
                   name="ownerName"
-                  placeholder="Enter owner or manager name"
                   value={formData.ownerName}
                   onChange={handleChange}
                   required
@@ -400,13 +331,12 @@ export default function WarehouseRegister() {
               </div>
 
               <div className="warehouse-group">
-                <label>
-                  Email <span>*</span>
-                </label>
+                <label htmlFor="email">Email *</label>
                 <input
-                  type="email"
+                  id="email"
                   name="email"
-                  placeholder="example@gmail.com"
+                  type="email"
+                  autoComplete="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -414,40 +344,36 @@ export default function WarehouseRegister() {
               </div>
 
               <div className="warehouse-group">
-                <label>
-                  Password <span>*</span>
-                </label>
+                <label htmlFor="password">Password *</label>
                 <input
-                  type="password"
+                  id="password"
                   name="password"
-                  placeholder="Create password"
+                  type="password"
+                  autoComplete="new-password"
+                  minLength={6}
                   value={formData.password}
                   onChange={handleChange}
-                  minLength={6}
-                  autoComplete="new-password"
                   required
                 />
               </div>
 
               <div className="warehouse-group">
-                <label>
-                  Phone Number <span>*</span>
-                </label>
+                <label htmlFor="phone">Phone Number *</label>
                 <input
-                  type="tel"
+                  id="phone"
                   name="phone"
+                  type="tel"
                   maxLength={10}
-                  pattern="[0-9]{10}"
-                  placeholder="10 digit mobile number"
                   value={formData.phone}
                   onChange={handleChange}
                   required
                 />
               </div>
 
-              <div className="warehouse-group">
-                <label>Profile Photo</label>
+              <div className="warehouse-group full-width">
+                <label htmlFor="profilePhoto">Profile Photo</label>
                 <input
+                  id="profilePhoto"
                   type="file"
                   accept="image/*"
                   onChange={(event) =>
@@ -456,296 +382,206 @@ export default function WarehouseRegister() {
                 />
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* WAREHOUSE DETAILS */}
-          <div className="warehouse-section">
-            <div className="warehouse-section-heading">
-              <span>🏢</span>
-              <div>
-                <h3>Warehouse Details</h3>
-                <p>Enter basic information about your warehouse.</p>
-              </div>
-            </div>
+          <section className="warehouse-section">
+            <h2 className="warehouse-section-heading">
+              Warehouse Information
+            </h2>
 
             <div className="warehouse-grid">
-              <div className="warehouse-group full-width">
-                <label>
-                  Warehouse Name <span>*</span>
-                </label>
+              <div className="warehouse-group">
+                <label htmlFor="warehouseName">Warehouse Name *</label>
                 <input
-                  type="text"
+                  id="warehouseName"
                   name="warehouseName"
-                  placeholder="Enter warehouse name"
                   value={formData.warehouseName}
                   onChange={handleChange}
                   required
                 />
               </div>
-            </div>
-          </div>
-
-          {/* ADDRESS */}
-          <div className="warehouse-section">
-            <div className="warehouse-section-heading">
-              <span>📍</span>
-              <div>
-                <h3>Address Information</h3>
-                <p>Enter the warehouse address.</p>
-              </div>
-            </div>
-
-            <div className="warehouse-grid">
-              <div className="warehouse-group full-width">
-                <label>Address</label>
-                <textarea
-                  name="address"
-                  placeholder="Enter complete address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  rows={3}
-                />
-              </div>
 
               <div className="warehouse-group">
-                <label>City</label>
-                <input
-                  type="text"
-                  name="city"
-                  placeholder="Enter city"
-                  value={formData.city}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="warehouse-group">
-                <label>State</label>
-                <input
-                  type="text"
-                  name="state"
-                  placeholder="Enter state"
-                  value={formData.state}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* LOCATION MAP */}
-          <div className="warehouse-section">
-            <div className="warehouse-section-heading">
-              <span>🗺️</span>
-              <div>
-                <h3>Warehouse Location</h3>
-                <p>Select the exact warehouse location on the map.</p>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className="warehouse-location-button"
-              onClick={getCurrentLocation}
-            >
-              📍 Use My Current Location
-            </button>
-
-            <div className="warehouse-map">
-              <MapContainer
-                center={[
-                  position?.lat ?? DEFAULT_POSITION.lat,
-                  position?.lng ?? DEFAULT_POSITION.lng,
-                ]}
-                zoom={5}
-                scrollWheelZoom
-                className="warehouse-leaflet-map"
-              >
-                <TileLayer
-                  attribution="&copy; OpenStreetMap contributors"
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-
-                <MapPositionUpdater
-                  position={position}
-                />
-
-                <LocationMarker
-                  position={position}
-                  setPosition={handleMapLocation}
-                />
-              </MapContainer>
-            </div>
-
-            <div className="warehouse-coordinates">
-              <div>
-                <label>Latitude</label>
-                <input
-                  type="text"
-                  value={formData.latitude}
-                  readOnly
-                />
-              </div>
-
-              <div>
-                <label>Longitude</label>
-                <input
-                  type="text"
-                  value={formData.longitude}
-                  readOnly
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* STORAGE CAPACITY */}
-          <div className="warehouse-section">
-            <div className="warehouse-section-heading">
-              <span>📦</span>
-              <div>
-                <h3>Storage Capacity</h3>
-                <p>Enter warehouse storage capacity.</p>
-              </div>
-            </div>
-
-            <div className="warehouse-grid">
-              <div className="warehouse-group full-width">
-                <label>
-                  Total Storage Capacity <span>*</span>
+                <label htmlFor="totalStorageCapacity">
+                  Total Storage Capacity *
                 </label>
                 <input
-                  type="number"
+                  id="totalStorageCapacity"
                   name="totalStorageCapacity"
-                  min="0.01"
-                  step="0.01"
-                  placeholder="Enter total capacity"
+                  type="number"
+                  min="1"
                   value={formData.totalStorageCapacity}
                   onChange={handleChange}
                   required
                 />
               </div>
-            </div>
-          </div>
 
-          {/* FACILITIES */}
-          <div className="warehouse-section">
-            <div className="warehouse-section-heading">
-              <span>🌡️</span>
-              <div>
-                <h3>Storage Facilities</h3>
-                <p>Select available warehouse facilities.</p>
+              <div className="warehouse-group full-width">
+                <label htmlFor="address">Address *</label>
+                <textarea
+                  id="address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="warehouse-group">
+                <label htmlFor="city">City *</label>
+                <input
+                  id="city"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="warehouse-group">
+                <label htmlFor="state">State *</label>
+                <input
+                  id="state"
+                  name="state"
+                  value={formData.state}
+                  onChange={handleChange}
+                  required
+                />
               </div>
             </div>
+          </section>
+
+          <section className="warehouse-section">
+            <h2 className="warehouse-section-heading">
+              Warehouse Location
+            </h2>
+
+            <p>Select the warehouse location on the map.</p>
+
+            <button
+              type="button"
+              className="warehouse-location-button"
+              onClick={() => updatePosition(defaultPosition)}
+            >
+              Reset to Hyderabad
+            </button>
+
+            <div className="warehouse-map">
+              <MapContainer
+                center={position}
+                zoom={12}
+                scrollWheelZoom
+                className="warehouse-leaflet-map"
+                style={{ height: "350px", width: "100%" }}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+
+                <MapPositionUpdater position={position} />
+
+                <LocationMarker
+                  position={position}
+                  setPosition={updatePosition}
+                />
+              </MapContainer>
+            </div>
+
+            <p className="warehouse-coordinates">
+              Latitude: {Number(position[0]).toFixed(6)} | Longitude:{" "}
+              {Number(position[1]).toFixed(6)}
+            </p>
+          </section>
+
+          <section className="warehouse-section">
+            <h2 className="warehouse-section-heading">
+              Facilities and Crops
+            </h2>
 
             <div className="warehouse-grid">
-              {[
-                ["coldStorage", "Cold Storage"],
-                ["loadingFacility", "Loading Facility"],
-                ["securityAvailable", "Security Available"],
-              ].map(([name, label]) => (
-                <div className="warehouse-group" key={name}>
-                  <label>{label}</label>
-                  <select
-                    name={name}
-                    value={formData[name] ? "Yes" : "No"}
-                    onChange={(event) =>
-                      setFormData((previous) => ({
-                        ...previous,
-                        [name]: event.target.value === "Yes",
-                      }))
-                    }
-                  >
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </select>
-                </div>
-              ))}
-            </div>
-          </div>
+              <div className="warehouse-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="coldStorage"
+                    checked={formData.coldStorage}
+                    onChange={handleChange}
+                  />
+                  Cold Storage Available
+                </label>
+              </div>
 
-          {/* SUPPORTED CROPS */}
-          <div className="warehouse-section">
-            <div className="warehouse-section-heading">
-              <span>🌾</span>
-              <div>
-                <h3>Supported Crops</h3>
-                <p>Select crops that can be stored.</p>
+              <div className="warehouse-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="loadingFacility"
+                    checked={formData.loadingFacility}
+                    onChange={handleChange}
+                  />
+                  Loading Facility Available
+                </label>
+              </div>
+
+              <div className="warehouse-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="securityAvailable"
+                    checked={formData.securityAvailable}
+                    onChange={handleChange}
+                  />
+                  Security Available
+                </label>
               </div>
             </div>
 
+            <h3>Supported Crops</h3>
+
             <div className="crop-checkbox-grid">
-              {[
-                "Rice",
-                "Wheat",
-                "Maize",
-                "Cotton",
-                "Pulses",
-                "Vegetables",
-                "Fruits",
-                "Sugarcane",
-                "Groundnut",
-                "Other",
-              ].map((crop) => (
-                <label className="crop-checkbox" key={crop}>
+              {cropOptions.map((crop) => (
+                <label key={crop} className="crop-checkbox">
                   <input
                     type="checkbox"
                     checked={formData.supportedCrops.includes(crop)}
                     onChange={() => handleCropChange(crop)}
                   />
-                  <span>{crop}</span>
+                  {crop}
                 </label>
               ))}
             </div>
-          </div>
+          </section>
 
-          {/* DOCUMENTS */}
-          <div className="warehouse-section">
-            <div className="warehouse-section-heading">
-              <span>📄</span>
-              <div>
-                <h3>Documents</h3>
-                <p>Upload warehouse supporting documents.</p>
-              </div>
-            </div>
+          <section className="warehouse-section">
+            <h2 className="warehouse-section-heading">
+              Warehouse Document
+            </h2>
 
             <div className="warehouse-document-grid">
               <div className="warehouse-document-box">
-                <label>Warehouse Document</label>
+                <label htmlFor="warehouseDocument">
+                  Upload Warehouse Document
+                </label>
                 <input
+                  id="warehouseDocument"
                   type="file"
                   accept=".pdf,.jpg,.jpeg,.png"
                   onChange={(event) =>
-                    setWarehouseDocument(
-                      event.target.files?.[0] || null
-                    )
+                    setWarehouseDocument(event.target.files?.[0] || null)
                   }
                 />
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* SUBMIT */}
-          <div className="warehouse-submit">
-            <button
-              type="submit"
-              className="warehouse-register-button"
-              disabled={loading}
-            >
-              {loading ? "Registering..." : "🏬 Register Warehouse"}
-            </button>
-
-            <button
-              type="button"
-              className="modal-cancel"
-              onClick={resetForm}
-              disabled={loading}
-            >
-              Reset Form
-            </button>
-
-            <p>
-              Join CropConnect and provide reliable storage facilities
-              to farmers.
-            </p>
-          </div>
+          <button
+            type="submit"
+            className="warehouse-submit warehouse-register-button"
+            disabled={loading}
+          >
+            {loading ? "Registering..." : "Register Warehouse"}
+          </button>
         </form>
       </div>
     </div>
