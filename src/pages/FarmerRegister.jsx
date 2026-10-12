@@ -23,10 +23,8 @@ delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-
   iconUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-
   shadowUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
 });
@@ -84,7 +82,6 @@ const FarmerRegister = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Default India location
   const [position, setPosition] = useState({
     lat: 20.5937,
     lng: 78.9629,
@@ -138,7 +135,7 @@ const FarmerRegister = () => {
         console.error("Location error:", error);
 
         alert(
-          "Unable to get your current location. Please allow location access or select your farm on the map."
+          "Unable to get your current location. Allow location access or select your farm on the map."
         );
       },
       {
@@ -168,7 +165,6 @@ const FarmerRegister = () => {
       return;
     }
 
-    // 5 MB maximum
     if (file.size > 5 * 1024 * 1024) {
       alert("Profile photo must be smaller than 5 MB.");
       e.target.value = "";
@@ -189,11 +185,6 @@ const FarmerRegister = () => {
       return false;
     }
 
-    if (!formData.email.trim()) {
-      alert("Please enter email.");
-      return false;
-    }
-
     if (
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
         formData.email.trim()
@@ -203,12 +194,7 @@ const FarmerRegister = () => {
       return false;
     }
 
-    if (!formData.password) {
-      alert("Please enter password.");
-      return false;
-    }
-
-    if (formData.password.length < 8) {
+    if (!formData.password || formData.password.length < 8) {
       alert("Password must contain at least 8 characters.");
       return false;
     }
@@ -226,37 +212,23 @@ const FarmerRegister = () => {
       return false;
     }
 
-    if (
-      formData.alternativePhone &&
-      formData.alternativePhone === formData.phone
-    ) {
-      alert("Alternative phone must differ from your primary phone.");
-      return false;
-    }
-
     if (!/^\d{12}$/.test(formData.aadhaarNumber)) {
       alert("Aadhaar number must contain exactly 12 digits.");
       return false;
     }
 
-    if (!formData.village.trim()) {
-      alert("Please enter village.");
-      return false;
-    }
+    const requiredFields = [
+      ["village", "village"],
+      ["mandal", "mandal"],
+      ["district", "district"],
+      ["state", "state"],
+    ];
 
-    if (!formData.mandal.trim()) {
-      alert("Please enter mandal.");
-      return false;
-    }
-
-    if (!formData.district.trim()) {
-      alert("Please enter district.");
-      return false;
-    }
-
-    if (!formData.state.trim()) {
-      alert("Please enter state.");
-      return false;
+    for (const [field, label] of requiredFields) {
+      if (!formData[field].trim()) {
+        alert(`Please enter ${label}.`);
+        return false;
+      }
     }
 
     if (!/^\d{6}$/.test(formData.pincode)) {
@@ -295,16 +267,15 @@ const FarmerRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isSubmitting) return;
-
-    if (!validateForm()) return;
+    if (isSubmitting || !validateForm()) {
+      return;
+    }
 
     setIsSubmitting(true);
 
     try {
       const data = new FormData();
 
-      // Normalize email before sending
       const farmerData = {
         ...formData,
         fullName: formData.fullName.trim(),
@@ -315,7 +286,7 @@ const FarmerRegister = () => {
         state: formData.state.trim(),
       };
 
-      // Farmer JSON
+      // JSON part expected by Spring Boot
       data.append(
         "farmer",
         new Blob([JSON.stringify(farmerData)], {
@@ -323,12 +294,11 @@ const FarmerRegister = () => {
         })
       );
 
-      // Profile photo
+      // Optional profile photo
       if (profilePhoto) {
         data.append("profilePhoto", profilePhoto);
       }
 
-      // Spring Boot backend
       const response = await fetch(
         "https://cropconnect-backend-exn7.onrender.com/api/farmers/register",
         {
@@ -337,7 +307,6 @@ const FarmerRegister = () => {
         }
       );
 
-      // Safely handle JSON and text responses
       const responseText = await response.text();
 
       let result = {};
@@ -350,73 +319,77 @@ const FarmerRegister = () => {
         }
       }
 
-      // ========================================
-      // HANDLE ERRORS
-      // ========================================
-
-      if (!response.ok) {
-        const serverMessage =
-          result.message ||
-          result.error ||
-          "";
-
-        const duplicateEmail =
-          response.status === 409 ||
-          /duplicate entry|already registered|email.*already exists|unique constraint/i.test(
-            serverMessage
-          );
-
-        if (duplicateEmail) {
-          alert(
-            "This email is already registered. Please log in with your existing account or use another email."
-          );
-        } else if (response.status === 400) {
-          alert(
-            serverMessage ||
-              "Invalid registration details. Please check your information."
-          );
-        } else if (response.status === 413) {
-          alert("The uploaded profile photo is too large.");
-        } else if (response.status >= 500) {
-          console.error("Backend registration error:", result);
-
-          alert(
-            "The server could not complete registration. Please try again later."
-          );
-        } else {
-          alert(
-            serverMessage ||
-              `Registration failed (HTTP ${response.status}).`
-          );
-        }
-
-        return;
-      }
+      console.log("Registration HTTP status:", response.status);
 
       // ========================================
       // SUCCESS
       // ========================================
 
-      alert("🌱 Farmer registered successfully!");
+      if (response.ok) {
+        alert("🌱 Farmer registered successfully! Please log in.");
 
-      setFormData({ ...initialFormData });
-      setProfilePhoto(null);
+        setFormData({ ...initialFormData });
+        setProfilePhoto(null);
 
-      // Reset file input
-      const fileInput = document.getElementById(
-        "farmer-profile-photo"
-      );
+        const fileInput = document.getElementById(
+          "farmer-profile-photo"
+        );
 
-      if (fileInput) {
-        fileInput.value = "";
+        if (fileInput) {
+          fileInput.value = "";
+        }
+
+        navigate("/farmer-login", { replace: true });
+        return;
       }
 
-      navigate("/farmer-login");
+      // ========================================
+      // ERROR HANDLING
+      // ========================================
+
+      const message =
+        result.message ||
+        result.error ||
+        "";
+
+      console.error("Registration response:", result);
+
+      if (
+        response.status === 409 ||
+        /duplicate entry|already registered|email.*already exists/i.test(
+          message
+        )
+      ) {
+        alert(
+          "This email is already registered. Please log in or use another email."
+        );
+        return;
+      }
+
+      if (response.status === 400) {
+        alert(
+          message ||
+            "Invalid registration details. Please check your information."
+        );
+        return;
+      }
+
+      if (response.status >= 500) {
+        alert(
+          "The server encountered an error. Please try again. If the farmer was already saved, check the database before registering again."
+        );
+        return;
+      }
+
+      alert(
+        message ||
+          `Registration failed. HTTP status: ${response.status}`
+      );
     } catch (error) {
       console.error("Registration error:", error);
 
       alert(
-        "Unable to connect to the registration server. Please check your internet connection and try again."
+        "Unable to connect to the backend. Please check your internet connection and try again."
       );
     } finally {
       setIsSubmitting(false);
@@ -424,14 +397,11 @@ const FarmerRegister = () => {
   };
 
   // ========================================
-  // PAGE
+  // PAGE UI — EXISTING CSS CLASS NAMES
   // ========================================
 
   return (
     <div className="farmer-register-page">
-
-      {/* TOP NAVIGATION */}
-
       <div className="register-top-buttons">
         <button
           type="button"
@@ -450,12 +420,7 @@ const FarmerRegister = () => {
         </button>
       </div>
 
-      {/* MAIN CONTAINER */}
-
       <div className="register-container">
-
-        {/* HEADER */}
-
         <div className="register-header">
           <div className="logo">🌱</div>
 
@@ -465,27 +430,20 @@ const FarmerRegister = () => {
           </div>
         </div>
 
-        {/* TITLE */}
-
         <div className="form-title">
           <h2>Farmer Registration</h2>
-
           <p>
             Register your farm and connect directly with markets,
             buyers and transport services.
           </p>
         </div>
 
-        {/* FORM */}
-
         <form onSubmit={handleSubmit}>
-
           {/* PERSONAL INFORMATION */}
 
           <div className="form-section">
             <div className="section-heading">
               <span>👤</span>
-
               <div>
                 <h3>Personal Information</h3>
                 <p>Enter your personal details</p>
@@ -493,14 +451,10 @@ const FarmerRegister = () => {
             </div>
 
             <div className="form-grid">
-
-              {/* FULL NAME */}
-
               <div className="form-group full-width">
                 <label>
                   Full Name <span>*</span>
                 </label>
-
                 <input
                   type="text"
                   name="fullName"
@@ -512,13 +466,10 @@ const FarmerRegister = () => {
                 />
               </div>
 
-              {/* EMAIL */}
-
               <div className="form-group">
                 <label>
                   Email <span>*</span>
                 </label>
-
                 <input
                   type="email"
                   name="email"
@@ -530,17 +481,14 @@ const FarmerRegister = () => {
                 />
               </div>
 
-              {/* PASSWORD */}
-
               <div className="form-group">
                 <label>
                   Password <span>*</span>
                 </label>
-
                 <input
                   type="password"
                   name="password"
-                  placeholder="Create password (minimum 8 characters)"
+                  placeholder="Create password"
                   value={formData.password}
                   onChange={handleChange}
                   autoComplete="new-password"
@@ -549,13 +497,10 @@ const FarmerRegister = () => {
                 />
               </div>
 
-              {/* PHONE */}
-
               <div className="form-group">
                 <label>
                   Phone Number <span>*</span>
                 </label>
-
                 <input
                   type="tel"
                   name="phone"
@@ -564,16 +509,12 @@ const FarmerRegister = () => {
                   placeholder="10 digit mobile number"
                   value={formData.phone}
                   onChange={handleChange}
-                  autoComplete="tel"
                   required
                 />
               </div>
 
-              {/* ALTERNATIVE PHONE */}
-
               <div className="form-group">
                 <label>Alternative Phone</label>
-
                 <input
                   type="tel"
                   name="alternativePhone"
@@ -585,13 +526,10 @@ const FarmerRegister = () => {
                 />
               </div>
 
-              {/* AADHAAR */}
-
               <div className="form-group">
                 <label>
                   Aadhaar Card Number <span>*</span>
                 </label>
-
                 <input
                   type="password"
                   name="aadhaarNumber"
@@ -605,25 +543,18 @@ const FarmerRegister = () => {
                 />
               </div>
 
-              {/* DOB */}
-
               <div className="form-group">
                 <label>Date of Birth</label>
-
                 <input
                   type="date"
                   name="dateOfBirth"
                   value={formData.dateOfBirth}
                   onChange={handleChange}
-                  autoComplete="bday"
                 />
               </div>
 
-              {/* PROFILE PHOTO */}
-
               <div className="form-group profile-group">
                 <label>Profile Photo</label>
-
                 <input
                   id="farmer-profile-photo"
                   type="file"
@@ -631,7 +562,6 @@ const FarmerRegister = () => {
                   onChange={handleProfilePhoto}
                 />
               </div>
-
             </div>
           </div>
 
@@ -640,7 +570,6 @@ const FarmerRegister = () => {
           <div className="form-section">
             <div className="section-heading">
               <span>📍</span>
-
               <div>
                 <h3>Address Information</h3>
                 <p>
@@ -650,12 +579,10 @@ const FarmerRegister = () => {
             </div>
 
             <div className="form-grid">
-
               <div className="form-group">
                 <label>
                   Village <span>*</span>
                 </label>
-
                 <input
                   type="text"
                   name="village"
@@ -670,7 +597,6 @@ const FarmerRegister = () => {
                 <label>
                   Mandal <span>*</span>
                 </label>
-
                 <input
                   type="text"
                   name="mandal"
@@ -685,7 +611,6 @@ const FarmerRegister = () => {
                 <label>
                   District <span>*</span>
                 </label>
-
                 <input
                   type="text"
                   name="district"
@@ -700,7 +625,6 @@ const FarmerRegister = () => {
                 <label>
                   State <span>*</span>
                 </label>
-
                 <input
                   type="text"
                   name="state"
@@ -715,7 +639,6 @@ const FarmerRegister = () => {
                 <label>
                   PIN Code <span>*</span>
                 </label>
-
                 <input
                   type="text"
                   name="pincode"
@@ -727,7 +650,6 @@ const FarmerRegister = () => {
                   required
                 />
               </div>
-
             </div>
           </div>
 
@@ -736,7 +658,6 @@ const FarmerRegister = () => {
           <div className="form-section">
             <div className="section-heading">
               <span>🗺️</span>
-
               <div>
                 <h3>Farm Location</h3>
                 <p>
@@ -777,7 +698,6 @@ const FarmerRegister = () => {
             <div className="coordinates">
               <div>
                 <label>Latitude</label>
-
                 <input
                   type="text"
                   value={formData.latitude}
@@ -787,7 +707,6 @@ const FarmerRegister = () => {
 
               <div>
                 <label>Longitude</label>
-
                 <input
                   type="text"
                   value={formData.longitude}
@@ -802,7 +721,6 @@ const FarmerRegister = () => {
           <div className="form-section">
             <div className="section-heading">
               <span>🌾</span>
-
               <div>
                 <h3>Land Details</h3>
                 <p>
@@ -812,12 +730,10 @@ const FarmerRegister = () => {
             </div>
 
             <div className="land-row">
-
               <div className="form-group">
                 <label>
                   Total Land <span>*</span>
                 </label>
-
                 <input
                   type="number"
                   step="0.01"
@@ -832,7 +748,6 @@ const FarmerRegister = () => {
 
               <div className="form-group">
                 <label>Land Unit</label>
-
                 <select
                   name="landUnit"
                   value={formData.landUnit}
@@ -843,7 +758,6 @@ const FarmerRegister = () => {
                   <option value="Guntas">Guntas</option>
                 </select>
               </div>
-
             </div>
           </div>
 
@@ -878,7 +792,6 @@ const FarmerRegister = () => {
               🔐 Login to Farmer Account
             </button>
           </div>
-
         </form>
       </div>
     </div>
