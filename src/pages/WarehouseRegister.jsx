@@ -10,16 +10,15 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-
-// Keep your existing CSS import.
 import "./WarehouseRegister.css";
 
 const API = "https://cropconnect-backend-exn7.onrender.com/api";
 
-const defaultPosition = [17.385, 78.4867];
+const DEFAULT_POSITION = [17.385, 78.4867];
 
 const markerIcon = new L.Icon({
-  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
   iconRetinaUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
   shadowUrl:
@@ -37,8 +36,8 @@ const initialFormData = {
   address: "",
   city: "",
   state: "",
-  latitude: defaultPosition[0],
-  longitude: defaultPosition[1],
+  latitude: DEFAULT_POSITION[0],
+  longitude: DEFAULT_POSITION[1],
   totalStorageCapacity: "",
   supportedCrops: [],
   coldStorage: false,
@@ -59,12 +58,7 @@ function MapPositionUpdater({ position }) {
 function LocationMarker({ position, setPosition }) {
   useMapEvents({
     click(event) {
-      const nextPosition = [
-        event.latlng.lat,
-        event.latlng.lng,
-      ];
-
-      setPosition(nextPosition);
+      setPosition([event.latlng.lat, event.latlng.lng]);
     },
   });
 
@@ -75,13 +69,12 @@ export default function WarehouseRegister() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState(initialFormData);
+  const [position, setPosition] = useState(DEFAULT_POSITION);
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [warehouseDocument, setWarehouseDocument] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const [position, setPosition] = useState(defaultPosition);
 
   const cropOptions = [
     "Rice",
@@ -117,35 +110,34 @@ export default function WarehouseRegister() {
           : [...previous.supportedCrops, crop],
       };
     });
+
+    setError("");
   };
 
-  const updatePosition = (nextPosition) => {
-    setPosition(nextPosition);
+  const updatePosition = (newPosition) => {
+    setPosition(newPosition);
 
     setFormData((previous) => ({
       ...previous,
-      latitude: nextPosition[0],
-      longitude: nextPosition[1],
+      latitude: newPosition[0],
+      longitude: newPosition[1],
     }));
   };
 
-  const getResponseMessage = async (response) => {
-    const body = await response.text();
+  const readResponse = async (response) => {
+    const text = await response.text();
 
-    if (!body) {
-      return {};
-    }
+    if (!text) return {};
 
     try {
-      return JSON.parse(body);
+      return JSON.parse(text);
     } catch {
-      return { message: body };
+      return { message: text };
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     setError("");
     setSuccess("");
 
@@ -154,7 +146,7 @@ export default function WarehouseRegister() {
       ["ownerName", "Owner name"],
       ["email", "Email"],
       ["password", "Password"],
-      ["phone", "Phone"],
+      ["phone", "Phone number"],
       ["address", "Address"],
       ["city", "City"],
       ["state", "State"],
@@ -173,7 +165,7 @@ export default function WarehouseRegister() {
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
-      setError("Please enter a valid email address.");
+      setError("Enter a valid email address.");
       return;
     }
 
@@ -182,13 +174,16 @@ export default function WarehouseRegister() {
       return;
     }
 
-    if (!/^[0-9]{10}$/.test(formData.phone.trim())) {
+    if (!/^\d{10}$/.test(formData.phone.trim())) {
       setError("Enter a valid 10-digit phone number.");
       return;
     }
 
-    if (Number(formData.totalStorageCapacity) <= 0) {
-      setError("Storage capacity must be greater than zero.");
+    if (
+      !Number.isFinite(Number(formData.totalStorageCapacity)) ||
+      Number(formData.totalStorageCapacity) <= 0
+    ) {
+      setError("Enter a valid storage capacity greater than zero.");
       return;
     }
 
@@ -196,7 +191,7 @@ export default function WarehouseRegister() {
       !Number.isFinite(Number(formData.latitude)) ||
       !Number.isFinite(Number(formData.longitude))
     ) {
-      setError("Please select a valid warehouse location on the map.");
+      setError("Select a valid location on the map.");
       return;
     }
 
@@ -204,10 +199,10 @@ export default function WarehouseRegister() {
 
     try {
       const warehouse = {
-        ...formData,
         warehouseName: formData.warehouseName.trim(),
         ownerName: formData.ownerName.trim(),
         email: formData.email.trim().toLowerCase(),
+        password: formData.password,
         phone: formData.phone.trim(),
         address: formData.address.trim(),
         city: formData.city.trim(),
@@ -216,9 +211,12 @@ export default function WarehouseRegister() {
         longitude: Number(formData.longitude),
         totalStorageCapacity: Number(formData.totalStorageCapacity),
 
-        // Send an array, not a JSON-encoded string.
-        // Warehouse.java should declare this as a List<String>.
-        supportedCrops: formData.supportedCrops,
+        // Warehouse.java declares supportedCrops as String.
+        supportedCrops: JSON.stringify(formData.supportedCrops),
+
+        coldStorage: Boolean(formData.coldStorage),
+        loadingFacility: Boolean(formData.loadingFacility),
+        securityAvailable: Boolean(formData.securityAvailable),
       };
 
       const data = new FormData();
@@ -243,32 +241,27 @@ export default function WarehouseRegister() {
         body: data,
       });
 
-      const result = await getResponseMessage(response);
+      const result = await readResponse(response);
 
       if (!response.ok) {
-        if (response.status === 409) {
-          throw new Error(
-            result.message || "This email or phone number is already registered."
-          );
-        }
-
         throw new Error(
           result.message ||
             result.error ||
-            `Registration failed with status ${response.status}.`
+            `Registration failed (${response.status}).`
         );
       }
 
-      setSuccess("Warehouse registered successfully! Redirecting to login...");
+      setSuccess(
+        "Registration successful! Redirecting to warehouse login..."
+      );
 
-      // Allow the success message to appear before navigating.
       window.setTimeout(() => {
         navigate("/warehouse-login");
       }, 1200);
     } catch (err) {
       setError(
         err.message ||
-          "Unable to register the warehouse. Please try again."
+          "Registration failed. Please check your connection and try again."
       );
     } finally {
       setLoading(false);
@@ -363,6 +356,7 @@ export default function WarehouseRegister() {
                   id="phone"
                   name="phone"
                   type="tel"
+                  inputMode="numeric"
                   maxLength={10}
                   value={formData.phone}
                   onChange={handleChange}
@@ -375,7 +369,7 @@ export default function WarehouseRegister() {
                 <input
                   id="profilePhoto"
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/webp"
                   onChange={(event) =>
                     setProfilePhoto(event.target.files?.[0] || null)
                   }
@@ -409,7 +403,8 @@ export default function WarehouseRegister() {
                   id="totalStorageCapacity"
                   name="totalStorageCapacity"
                   type="number"
-                  min="1"
+                  min="0.01"
+                  step="any"
                   value={formData.totalStorageCapacity}
                   onChange={handleChange}
                   required
@@ -456,12 +451,12 @@ export default function WarehouseRegister() {
               Warehouse Location
             </h2>
 
-            <p>Select the warehouse location on the map.</p>
+            <p>Click on the map to select the warehouse location.</p>
 
             <button
               type="button"
               className="warehouse-location-button"
-              onClick={() => updatePosition(defaultPosition)}
+              onClick={() => updatePosition(DEFAULT_POSITION)}
             >
               Reset to Hyderabad
             </button>
@@ -475,7 +470,7 @@ export default function WarehouseRegister() {
                 style={{ height: "350px", width: "100%" }}
               >
                 <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  attribution='&copy; OpenStreetMap contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 
@@ -496,7 +491,7 @@ export default function WarehouseRegister() {
 
           <section className="warehouse-section">
             <h2 className="warehouse-section-heading">
-              Facilities and Crops
+              Facilities and Supported Crops
             </h2>
 
             <div className="warehouse-grid">
